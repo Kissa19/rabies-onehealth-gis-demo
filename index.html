@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
-<title>Rabies One Health | GIS Spatial Intelligence v1.1.1 – Fast Map</title>
+<title>Rabies One Health | GIS Spatial Intelligence v1.2 – Animal Density & Priority</title>
 <meta name="description" content="Nakhon Phanom One Health synthetic public demo. No login. No live patient data.">
 <style>
 :root{font-family:Kanit,"Noto Sans Thai",system-ui,sans-serif;color:#e8f2f5;background:#07121c;font-size:14px;font-weight:400;font-synthesis:none;--navy:#07121c;--sidebar:#091b27;--panel:#102331;--panel2:#122b3a;--line:#264351;--text:#eaf4f6;--muted:#92abb6;--teal:#2ce3c0;--cyan:#48b8e9;--yellow:#efc46f;--red:#ff7c86;--green:#54d9a4}
@@ -15,7 +15,7 @@
 @media print{.sidebar,.topbar,.heading-actions,.footer,.demo-banner,.btn{display:none!important}.main-content{padding:5px;background:white;color:#121b20}.panel{break-inside:avoid}.workspace{width:100%}}
 
 
-/* GIS v1.1.1 fast vector map: fully local SVG and keyboard accessible districts */
+/* GIS v1.2 fast vector map: fully local SVG and keyboard accessible districts */
 .v111-mode-btn{padding:8px 11px;border:1px solid #a7d5db;border-radius:8px;background:#effaf8;color:#086e73;font:600 11px Kanit,system-ui;cursor:pointer}
 .v111-mode-btn:hover,.v111-mode-btn:focus-visible{background:#dff4ef;outline:2px solid #2ea99d;outline-offset:2px}
 .v111-vector-map{display:flex;flex-direction:column;justify-content:space-between;height:100%;background:#f6fbfd;overflow:hidden}
@@ -309,6 +309,48 @@ h1{color:#173647;font-weight:650}
 .v11-link{border:0;background:none;color:#107f88;text-align:left;padding:2px;font:inherit;text-decoration:underline;cursor:pointer}
 @media(max-width:550px){.v11-toolbar label{flex:1;flex-wrap:wrap}.v11-toolbar select{min-width:175px;max-width:100%}.v11-map{height:365px!important}.v11-scale{gap:7px}}
 </style>
+<style id="rabies-v12-style">
+.v12-readiness{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 16px}
+.v12-readiness>div{background:#fff;border:1px solid #dbe9ed;border-left:4px solid #25a996;border-radius:12px;padding:14px 16px;box-shadow:0 2px 8px #dce9ee43;display:flex;flex-direction:column;gap:4px}
+.v12-readiness b{font-family:system-ui,sans-serif;font-size:24px;color:#12545d;font-variant-numeric:tabular-nums}
+.v12-readiness span{font-size:11px;color:#597786;line-height:1.6}
+.v12-legend{display:flex;align-items:center;flex-wrap:wrap;gap:15px;padding:12px 15px 5px;font-size:11px;color:#355c68}
+.v12-legend span{display:inline-flex;align-items:center;gap:6px}
+.v12-legend i{display:inline-block;width:15px;height:15px;border:1px solid #9fbcc5;border-radius:4px}
+.v12-legend-note{margin:0 15px 12px;color:#7b6849;font-size:10.5px;line-height:1.6}
+.v12-insight{background:#f5fbfa;border:1px solid #d2e8e5;padding:15px;border-radius:12px;margin:9px 14px 16px;color:#285264}
+.v12-insight-head{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.v12-insight-head strong{font-size:14px;color:#155d62}
+.v12-dot{height:9px;width:9px;background:#19b199;border-radius:50%;box-shadow:0 0 0 4px #d3f1e7}
+.v12-insight p{font-size:11px;line-height:1.65;color:#5c7986;margin:5px 0 12px}
+.v12-ranking{display:flex;flex-direction:column;gap:7px}
+.v12-rank{background:white;border:1px solid #d7e8ec;border-radius:9px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;color:#2f5967;text-align:left;width:100%;cursor:pointer}
+.v12-rank:hover,.v12-rank:focus-visible{border-color:#17998b;background:#e9f8f4}
+.v12-rank b{font:700 16px system-ui,sans-serif;color:#126e70}
+.v12-rank small{font-size:10px;color:#67858f}
+.v12-insight-foot{font-size:10px!important;color:#6c8792!important}
+.v12-all-btn{margin-left:auto;background:white;border:1px solid #c0dedb;border-radius:8px;color:#087b78;padding:5px 9px;cursor:pointer;font-size:10px}
+.v12-insight-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0}
+.v12-insight-grid>div{background:#fff;border:1px solid #dfebed;border-radius:9px;padding:11px 12px;display:flex;flex-direction:column;gap:5px}
+.v12-insight-grid span{font-size:10px;color:#637f8c}
+.v12-insight-grid strong{font:700 17px system-ui,sans-serif;color:#124b56}
+.v12-priority-detail{margin-top:10px;background:#e5f4f0;border-left:3px solid #1eac92;border-radius:5px;padding:9px 10px;display:flex;flex-direction:column;gap:5px;font-size:10.5px;line-height:1.5}
+.v12-priority-detail b{font-size:12px;color:#0e7167}.v12-priority-detail span{color:#517079}
+.v12-priority-detail.v12-warning{background:#fff5e9;border-color:#e3a13a;color:#8d682c}
+.v12-district-grid .cloud-district-card{min-height:78px;justify-content:center}
+.v12-district-grid .cloud-district-card span{font-size:10px}
+.v12-district-grid .cloud-district-card small{font-size:9px;line-height:1.45}
+.v12-district-grid .cloud-district-card small.ok{color:#158a77}
+.v12-district-grid .cloud-district-card small.missing{color:#9d8170}
+.v12-row-state{font-size:10px;color:#9d8170}.v12-row-state.complete{color:#158a77}
+.v12-formula{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:10px 16px}
+.v12-formula>div{background:#f2faf9;border:1px solid #d8ebea;border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.v12-formula strong{font-size:12px;color:#135e62}
+.v12-formula span{font-size:11px;color:#526f7f;line-height:1.7}
+.v111-region.selected .v111-district-label{fill:#035967;font-size:18px}
+@media(max-width:1200px){.v12-readiness{grid-template-columns:repeat(2,minmax(0,1fr))}.v12-formula{grid-template-columns:1fr}}
+@media(max-width:600px){.v12-readiness{gap:8px}.v12-readiness b{font-size:20px}.v12-readiness>div{padding:10px}.v12-readiness span{font-size:10px}.v12-insight{margin:10px 8px}}
+</style>
 </head>
 <body>
 <div id="app" class="shell cloud-app">
@@ -316,12 +358,12 @@ h1{color:#173647;font-weight:650}
     <div class="brand"><div class="brand-mark"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 43C24 43 9 27.7 9 19.3a15 15 0 0 1 30 0C39 27.7 24 43 24 43Z" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="24" cy="22" r="4.5" fill="currentColor"/><circle cx="16" cy="16" r="2" fill="currentColor"/><circle cx="21" cy="12" r="2" fill="currentColor"/><circle cx="27" cy="12" r="2" fill="currentColor"/><circle cx="32" cy="16" r="2" fill="currentColor"/></svg></div><div><strong>RABIES ONE HEALTH</strong><span>GIS Intelligence Platform</span></div></div>
     <div class="sidebar-subtitle">PUBLIC DEMO WORKSPACE</div>
     <nav class="navigation" id="navigation" aria-label="เมนูหลัก"></nav>
-    <div class="sidebar-bottom"><div class="small-prompt"><span class="pulse"></span><span>GIS Spatial Intelligence Public Demo<br><strong>ข้อมูลระบาดวิทยาจำลองเท่านั้น</strong></span></div><div class="side-mini">จังหวัดนครพนม · พื้นที่นำร่อง<br>ออกแบบรองรับเขตสุขภาพที่ 8</div><div class="version">v1.1.1 FAST GIS PUBLIC • READ ONLY</div></div>
+    <div class="sidebar-bottom"><div class="small-prompt"><span class="pulse"></span><span>GIS Spatial Intelligence Public Demo<br><strong>ข้อมูลระบาดวิทยาจำลองเท่านั้น</strong></span></div><div class="side-mini">จังหวัดนครพนม · พื้นที่นำร่อง<br>ออกแบบรองรับเขตสุขภาพที่ 8</div><div class="version">v1.2 FAST GIS PUBLIC • READ ONLY</div></div>
   </aside>
   <div class="workspace">
     <header class="topbar"><button class="mobile-menu" id="mobileMenu" aria-label="เปิดเมนู">☰</button><div class="crumb"><span>ONE HEALTH /</span><strong id="crumbPage">GIS Intelligence</strong></div><div class="top-actions"><span id="connectionBadge" class="status-pill">● PUBLIC DEMO</span></div></header>
     <main class="main-content">
-      <div class="demo-banner"><span class="demo-icon">ⓘ</span><strong>GIS PUBLIC DEMO v1.1.1 — FAST MAP · NO LOGIN</strong><span> · ข้อมูลเหตุการณ์/คน/สัตว์ทั้งหมดเป็นข้อมูลสมมติ 100% · ไม่ได้อ่านข้อมูลผู้ใช้หรือข้อมูลผู้ป่วยจาก Supabase · ห้ามนำไปใช้งานเฝ้าระวังจริง</span></div>
+      <div class="demo-banner"><span class="demo-icon">ⓘ</span><strong>GIS PUBLIC DEMO v1.2 — FAST MAP · NO LOGIN</strong><span> · ข้อมูลเหตุการณ์/คน/สัตว์ทั้งหมดเป็นข้อมูลสมมติ 100% · ไม่ได้อ่านข้อมูลผู้ใช้หรือข้อมูลผู้ป่วยจาก Supabase · ห้ามนำไปใช้งานเฝ้าระวังจริง</span></div>
       <section class="page-heading"><div><div class="eyebrow">ONE HEALTH SPATIAL INTELLIGENCE</div><h1 id="pageTitle">GIS Intelligence</h1><p id="pageDesc">ข้อมูลจำลองสำหรับการนำเสนอ • เปิดได้โดยไม่ต้อง Login</p></div><div class="heading-actions"><label class="filter-caption" for="districtFilter">อำเภอ</label><select id="districtFilter" aria-label="เลือกพื้นที่" disabled><option value="all">นครพนม · ทุกอำเภอ</option></select><button class="btn btn-ghost" type="button" id="refreshBtn" disabled>↻ ล้างตัวกรอง</button><button class="btn btn-ghost" type="button" id="exportBtn" disabled>↧ CSV</button></div></section>
       <div class="cloud-info-bar"><span class="live-dot"></span><span id="dataStatus">กำลังเตรียมชุดข้อมูลสาธิต</span><span class="cloud-info-right" id="dataStamp">ชุดข้อมูลสังเคราะห์ • ค่าคงที่</span></div>
       <div id="pageContent" aria-live="polite"><div class="cloud-placeholder">กำลังเตรียม Public Demo…</div></div>
@@ -391,17 +433,40 @@ function summaryStats(){const ev=filtered('animal_events'), lab=filteredLab(), e
 function overview(){const ev=filtered('animal_events'), acts=filtered('response_actions'), labs=filteredLab();const districtSum=new Map(districts().map(d=>[d.area_code,{...d,events:0,exposures:0}]));data('animal_events').forEach(e=>{const d=districtSum.get(e.area_code);if(d)d.events++});data('exposures').forEach(e=>{const d=districtSum.get(e.area_code);if(d)d.exposures++});
 const drows=[...districtSum.values()].sort((a,b)=>b.events-a.events).map(d=>`<div class="cloud-mini-row"><div><b>${safe(d.area_name_th)}</b><small>เหตุการณ์สัตว์ ${fmt(d.events)} • ผู้สัมผัส ${fmt(d.exposures)}</small></div><button class="cloud-btn-link" data-focus="${safe(d.area_code)}">เลือกพื้นที่ →</button></div>`).join('');
 return `${summaryStats()}<div class="cloud-row">${panel('พื้นที่เฝ้าระวังในฐานข้อมูล','รวม 12 อำเภอ • ขอบเขตแบบย่อจากข้อมูลเปิด ไม่ใช่ขอบเขตทางการล่าสุด',`${districtGrid()}`)}${panel('สถานะการปฏิบัติงาน','รายการจำลองจาก Supabase',`<div class="cloud-right-list">${drows}</div>`)}</div><div class="cloud-two">${panel('ผลตรวจ Lab','เชื่อมด้วย animal_event_id',`<div class="cloud-mini-row"><b>พบเชื้อ</b>${tag(fmt(labs.filter(x=>x.test_result==='positive').length),'positive')}</div><div class="cloud-mini-row"><b>ไม่พบเชื้อ</b>${tag(fmt(labs.filter(x=>x.test_result==='negative').length),'negative')}</div><div class="cloud-mini-row"><b>รอผล</b>${tag(fmt(labs.filter(x=>x.test_result==='pending').length),'pending')}</div>`)}${panel('ภารกิจตอบโต้','สถานะจำลองในฐานข้อมูล',`<div class="cloud-mini-row"><b>ยังดำเนินการ</b>${tag(fmt(acts.filter(x=>['open','in_progress'].includes(x.action_status)).length),'watch')}</div><div class="cloud-mini-row"><b>เสร็จสิ้น</b>${tag(fmt(acts.filter(x=>x.action_status==='done').length),'done')}</div><p class="cloud-footnote">ยังไม่เปิด API สำหรับแก้ไขสถานะหรือส่งแจ้งเตือนจริง</p>`)}</div>`}
-function districtGrid(){const counts=new Map();data('animal_events').forEach(e=>counts.set(e.area_code,(counts.get(e.area_code)||0)+1));const dist=visibleGeo();return `<div class="cloud-district-grid">${dist.map(d=>`<button type="button" class="cloud-district-card ${state.district===d.area_code?'active':''}" data-focus="${safe(d.area_code)}"><strong>อ.${safe(d.area_name_th)}</strong><span>${fmt(counts.get(d.area_code)||0)} เหตุการณ์จำลอง</span></button>`).join('')}</div><p class="cloud-footnote">นี่คือรายการพื้นที่ ไม่ใช่แผนที่ขอบเขตอำเภอหรือการประเมินความเสี่ยง</p>`}
+function districtGrid(){
+ const dist=districts();
+ return `<div class="cloud-district-grid v12-district-grid">${dist.map(d=>{
+ const rows=data('animal_events').filter(e=>e.area_code===d.area_code);
+ const hasDog=!!demoPop(d.area_code,'dog'),hasCat=!!demoPop(d.area_code,'cat');
+ return `<button type="button" class="cloud-district-card ${state.district===d.area_code?'active':''}" data-focus="${safe(d.area_code)}" aria-pressed="${state.district===d.area_code}"><strong>อ.${safe(d.area_name_th)}</strong><span>${rows.length?fmt(rows.length)+' รายการเหตุการณ์จำลอง':'ไม่มีรายการเหตุการณ์ในชุดสาธิต'}</span><small class="v12-completeness ${hasDog&&hasCat?'ok':'missing'}">${hasDog&&hasCat?'มีข้อมูลสุนัขและแมว':'ไม่มีข้อมูลสำรวจสัตว์ครบถ้วน'}</small></button>`;
+ }).join('')}</div><p class="cloud-footnote">ข้อมูลที่ไม่มีรายการบันทึก ไม่เท่ากับยืนยันว่าไม่มีโรค • ข้อมูลจำลองมีรายการสัตว์และข้อมูลประชากรเพียง 3 อำเภอ</p>`;
+}
+
 function readPoint(geom){if(!geom)return null;let g=geom;try{if(typeof g==='string')g=JSON.parse(g)}catch{return null}if(g?.type==='Point'&&Array.isArray(g.coordinates)){const [lng,lat]=g.coordinates.map(Number);if(Math.abs(lat)<=90&&Math.abs(lng)<=180)return [lat,lng]}return null}
 
 // Verifiable geographic boundaries (not invented): Thailand Canonical Admin-Names v1.0.0, ADM2 polygons derived from OCHA COD, 2019. CC BY 4.0 / CC BY 3.0 IGO attribution in README. Simplified boundaries: visualization only.
 const NAKHON_ADM2_GEOJSON={"type":"FeatureCollection","features":[{"type":"Feature","properties":{"area_code":"4801","area_name_th":"เมืองนครพนม","source":"Thailand Canonical ADM2 v1.0.0, OCHA COD polygons, 2019, CC BY"},"geometry":{"type":"Polygon","coordinates":[[[104.78842,17.12754],[104.80061,17.39316],[104.72793,17.49151],[104.64757,17.42694],[104.55431,17.43205],[104.49251,17.36968],[104.41271,17.3614],[104.41605,17.32124],[104.46383,17.285],[104.63066,17.27784],[104.66985,17.33249],[104.68376,17.22268],[104.64558,17.15522],[104.66202,17.16286],[104.71103,17.17931],[104.78842,17.12754]]]}},{"type":"Feature","properties":{"area_code":"4802","area_name_th":"ปลาปาก","source":"Thailand Canonical ADM2 v1.0.0, OCHA COD polygons, 2019, CC BY"},"geometry":{"type":"Polygon","coordinates":[[[104.64558,17.15522],[104.68376,17.22268],[104.66985,17.33249],[104.63066,17.27784],[104.46383,17.285],[104.41605,17.32124],[104.40565,17.28011],[104.43507,17.241],[104.40882,17.13865],[104.51716,17.09684],[104.57326,17.07395],[104.64558,17.15522]]]}},{"type":"Feature","properties":{"area_code":"4803","area_name_th":"ท่าอุเทน","source":"Thailand Canonical ADM2 v1.0.0, OCHA COD polygons, 2019, CC BY"},"geometry":{"type":"Polygon","coordinates":[[[104.72793,17.49151],[104.70554,17.52644],[104.46651,17.65666],[104.36107,17.81487],[104.3008,17.84539],[104.2998,17.74439],[104.38949,17.65458],[104.41259,17.54709],[104.53114,17.5521],[104.64757,17.42694],[104.72793,17.49151]]]}},{"type":"Feature","properties":{"area_code":"4804","area_name_th":"บ้านแพง","source":"Thailand Canonical ADM2 v1.0.0, OCHA COD polygons, 2019, CC BY"},"geometry":{"type":"Polygon","coordinates":[[[104.3008,17.84539],[104.18998,18.02374],[104.11182,18.00481],[104.13414,17.95593],[104.1911,17.88489],[104.17885,17.78663],[104.22368,17.72902],[104.2998,17.74439],[104.3008,17.84539]]]}},{"type":"Feature","properties":{"area_code":"4805","area_name_th":"ธาตุพนม","source":"Thailand Canonical ADM2 v1.0.0, OCHA COD polygons, 2019, CC BY"},"geometry":{"type":"Polygon","coordinates":[[[104.78842,17.12754],[104.71103,17.17931],[104.66202,17.16286],[104.71665,17.10321],[104.71497,17.02479],[104.63332,16.95156],[104.62833,16.86311],[104.65999,16.79227],[104.69236,16.79042],[104.73726,16.80471],[104.76242,16.84092],[104.72935,17.00104],[104.78842,17.12754]]]}},{"type":"Feature","properties":{"area_code":"4806","area_name_th":"เรณูนคร","source":"Thailand Canonical ADM2 v1.0.0, OCHA COD polygons, 2019, CC BY"},"geometry":{"type":"Polygon","coordinates":[[[104.63332,16.95156],[104.71497,17.02479],[104.71665,17.10321],[104.66202,17.16286],[104.64558,17.15522],[104.57326,17.07395],[104.58102,16.98008],[104.63332,16.95156]]]}},{"type":"Feature","properties":{"area_code":"4807","area_name_th":"นาแก","source":"Thailand Canonical ADM2 v1.0.0, OCHA COD polygons, 2019, CC BY"},"geometry":{"type":"Polygon","coordinates":[[[104.57326,17.07395],[104.51716,17.09684],[104.52848,17.05679],[104.43108,17.00151],[104.39669,17.03442],[104.26678,16.92042],[104.25218,16.90693],[104.29602,16.83777],[104.40735,16.8962],[104.48356,16.85355],[104.62833,16.86311],[104.63332,16.95156],[104.58102,16.98008],[104.57326,17.07395]]]}},{"type":"Feature","properties":{"area_code":"4808","area_name_th":"ศรีสงคราม","source":"Thailand Canonical ADM2 v1.0.0, OCHA COD polygons, 2019, CC BY"},"geometry":{"type":"Polygon","coordinates":[[[104.17885,17.78663],[104.06658,17.74021],[104.07115,17.65158],[104.13861,17.59162],[104.13145,17.50948],[104.17852,17.50266],[104.26427,17.50119],[104.41259,17.54709],[104.38949,17.65458],[104.2998,17.74439],[104.22368,17.72902],[104.17885,17.78663]]]}},{"type":"Feature","properties":{"area_code":"4809","area_name_th":"นาหว้า","source":"Thailand Canonical ADM2 v1.0.0, OCHA COD polygons, 2019, CC BY"},"geometry":{"type":"Polygon","coordinates":[[[104.17852,17.50266],[104.13145,17.50948],[104.13861,17.59162],[104.07115,17.65158],[104.01574,17.46211],[104.06281,17.38887],[104.07248,17.37794],[104.19778,17.42938],[104.17852,17.50266]]]}},{"type":"Feature","properties":{"area_code":"4810","area_name_th":"โพนสวรรค์","source":"Thailand Canonical ADM2 v1.0.0, OCHA COD polygons, 2019, CC BY"},"geometry":{"type":"Polygon","coordinates":[[[104.64757,17.42694],[104.53114,17.5521],[104.41259,17.54709],[104.26427,17.50119],[104.17852,17.50266],[104.19778,17.42938],[104.39248,17.41438],[104.41271,17.3614],[104.49251,17.36968],[104.55431,17.43205],[104.64757,17.42694]]]}},{"type":"Feature","properties":{"area_code":"4811","area_name_th":"นาทม","source":"Thailand Canonical ADM2 v1.0.0, OCHA COD polygons, 2019, CC BY"},"geometry":{"type":"Polygon","coordinates":[[[104.17885,17.78663],[104.1911,17.88489],[104.13414,17.95593],[104.06946,17.87816],[103.99929,17.89305],[104.01223,17.8108],[104.06658,17.74021],[104.17885,17.78663]]]}},{"type":"Feature","properties":{"area_code":"4812","area_name_th":"วังยาง","source":"Thailand Canonical ADM2 v1.0.0, OCHA COD polygons, 2019, CC BY"},"geometry":{"type":"Polygon","coordinates":[[[104.51716,17.09684],[104.40882,17.13865],[104.36237,17.09942],[104.39669,17.03442],[104.43108,17.00151],[104.52848,17.05679],[104.51716,17.09684]]]}}]};
 
-const GIS_LAYER={dog_density:'สุนัข / ตร.กม.',cat_density:'แมว / ตร.กม.',vaccination:'วัคซีนสุนัข (%)',signals:'สัญญาณจากเหตุการณ์จำลอง'};
-const V11_COLORS={high:'#0c938c',mid:'#61c5b8',low:'#bfe8de',none:'#e6ecf1',alert:'#e26a61',watch:'#eba55a',quiet:'#abdcd3'};
-const riskLabel={high:'ต้องทบทวน (เหตุยืนยันในชุดสาธิต)',watch:'ติดตาม (เหตุสงสัยในชุดสาธิต)',quiet:'ไม่มีเหตุในชุดสาธิต'};
+const GIS_LAYER={
+ dog_density:'ความหนาแน่นสุนัข (ตัว/ตร.กม.)',
+ cat_density:'ความหนาแน่นแมว (ตัว/ตร.กม.)',
+ vaccination:'ความครอบคลุมวัคซีนสุนัข (%)',
+ signals:'สถานะเหตุการณ์สัตว์ (จำลอง)',
+ priority:'ลำดับการทบทวนพื้นที่ (จำลอง)',
+ completeness:'ความครบถ้วนข้อมูลสัตว์'
+};
+const V11_COLORS={high:'#0b8d89',mid:'#68c5b6',low:'#bce5dc',none:'#e5eaef',alert:'#dd635c',watch:'#edab62',quiet:'#c0dfd5'};
+const V12_PRIORITY_COLORS={high:'#de605b',mid:'#e9a758',low:'#89c9b8'};
 function demoPop(code,species){return data('animal_population').find(p=>p.area_code===code&&p.species===species&&p.survey_year===2026)}
-function demoSignal(code){const events=data('animal_events').filter(e=>e.area_code===code);return events.some(e=>e.event_status==='confirmed')?'high':events.some(e=>e.event_status==='suspected')?'watch':'none'}
+function eventRecordStatus(code){
+ const rows=data('animal_events').filter(e=>e.area_code===code);
+ if(!rows.length)return {status:'unrecorded',label:'ไม่มีรายการเหตุการณ์ในชุดสาธิต',count:0};
+ if(rows.some(e=>e.event_status==='confirmed'))return {status:'confirmed',label:'มีเหตุยืนยันในชุดสาธิต',count:rows.length};
+ if(rows.some(e=>e.event_status==='suspected'))return {status:'suspected',label:'มีเหตุสงสัยในชุดสาธิต',count:rows.length};
+ if(rows.every(e=>e.event_status==='discarded'))return {status:'discarded',label:'มีรายการที่ตัดออกในชุดสาธิต',count:rows.length};
+ return {status:'recorded',label:'มีรายการเหตุการณ์ในชุดสาธิต',count:rows.length};
+}
+
 function ringSqKm(ring){let sum=0;for(let j=0;j<ring.length;j++){const a=ring[j],b=ring[(j+1)%ring.length];if(!Array.isArray(a)||!Array.isArray(b))return NaN;sum+=(b[0]-a[0])*Math.PI/180*(2+Math.sin(a[1]*Math.PI/180)+Math.sin(b[1]*Math.PI/180))}return Math.abs(sum*6371008.8*6371008.8/2)/1e6}
 function polygonKm2(rings){if(!Array.isArray(rings)||!rings.length)return NaN;let sqm=ringSqKm(rings[0]);for(const hole of rings.slice(1))sqm-=ringSqKm(hole);return Math.max(0,sqm)}
 function featureKm2(feature){const g=feature?.geometry;if(!g)return NaN;let result=0;
@@ -410,32 +475,133 @@ function featureKm2(feature){const g=feature?.geometry;if(!g)return NaN;let resu
  else return NaN;
  return Number.isFinite(result)&&result>2&&result<9000?result:NaN;
 }
-function metricsFor(code){const f=state.boundaries?.find(f=>f.properties.area_code===code);const area=f?featureKm2(f):NaN;const dog=demoPop(code,'dog'),cat=demoPop(code,'cat');return {area,dog,cat,hasArea:Number.isFinite(area)};}
-function metric(code){const m=metricsFor(code);if(state.gisMode==='signals'){const sig=demoSignal(code);return sig==='none'?{value:null,text:'ไม่มีสัญญาณในชุดข้อมูลสาธิต',tone:'none'}:{value:sig,text:riskLabel[sig],tone:sig};}
- const p=state.gisMode==='cat_density'?m.cat:m.dog;
- if(!p)return {value:null,text:'ไม่มีข้อมูลประชากรสัตว์',tone:'none'};
- if(state.gisMode==='vaccination'){const v=p===m.cat?m.dog?.vaccinated_count:p.vaccinated_count;const d=m.dog?.population_count;return v!=null&&d>0?{value:100*v/d,text:(100*v/d).toFixed(1)+'%',tone:'data'}:{value:null,text:'ไม่มีข้อมูลวัคซีน',tone:'none'};}
- return m.hasArea?{value:p.population_count/m.area,text:(p.population_count/m.area).toFixed(1)+' ตัว/ตร.กม.',tone:'data'}:{value:null,text:'รอขอบเขต/พื้นที่จาก GIS',tone:'none'};
+function metricsFor(code){
+ const f=state.boundaries?.find(f=>f.properties.area_code===code), area=f?featureKm2(f):NaN;
+ const dog=demoPop(code,'dog'),cat=demoPop(code,'cat');
+ return {area,dog,cat,hasArea:Number.isFinite(area)};
 }
-function legendText(){if(state.gisMode==='signals')return 'สัญญาณสมมติ: เทา=ไม่มีสัญญาณในชุดสาธิต • ส้ม=เหตุสงสัย • แดง=เหตุยืนยัน';if(state.gisMode==='vaccination')return 'สีจาก % วัคซีนจำลอง: น้อยกว่า 55 / 55–<75 / ตั้งแต่ 75 ขึ้นไป';if(state.gisMode==='cat_density')return 'สีจากแมว/ตร.กม.: น้อยกว่า 2 / 2–<5 / ตั้งแต่ 5 ขึ้นไป';return 'สีจากสุนัข/ตร.กม.: น้อยกว่า 5 / 5–<10 / ตั้งแต่ 10 ขึ้นไป';}
-function metricColor(code){const m=metric(code);if(m.tone==='none')return V11_COLORS.none;
- if(state.gisMode==='signals')return m.tone==='high'?V11_COLORS.alert:m.tone==='watch'?V11_COLORS.watch:V11_COLORS.quiet;
- const n=m.value;if(n===null)return V11_COLORS.none;
- const limits=state.gisMode==='vaccination'?[55,75]:state.gisMode==='cat_density'?[2,5]:[5,10];
- return n<limits[0]?V11_COLORS.low:n<limits[1]?V11_COLORS.mid:V11_COLORS.high;
+function coverageFor(code){
+ const m=metricsFor(code), dog=!!m.dog,cat=!!m.cat;
+ return {value:Number(dog)+Number(cat),label:dog&&cat?'มีข้อมูลทั้งสุนัขและแมว':dog||cat?'มีข้อมูลสัตว์เพียงชนิดเดียว':'ไม่มีข้อมูลสำรวจสัตว์',complete:dog&&cat};
 }
+function priorityFor(code){
+ const m=metricsFor(code),e=eventRecordStatus(code),d=m.dog;
+ if(!m.hasArea||!d||!Number.isFinite(Number(d.population_count))||d.population_count<=0||
+ !Number.isFinite(Number(d.vaccinated_count))||d.vaccinated_count<0||d.vaccinated_count>d.population_count||e.status==='unrecorded')
+ return {score:null,label:'ยังประเมินไม่ได้ (ข้อมูลไม่ครบ)',tone:'none',eligible:false};
+ const density=d.population_count/m.area, vaccination=100*d.vaccinated_count/d.population_count;
+ const eventPts=e.status==='confirmed'?45:e.status==='suspected'?25:0;
+ const vaxPts=30*(1-vaccination/100),densityPts=25*Math.min(1,density/12);
+ const score=Math.round(eventPts+vaxPts+densityPts);
+ const tone=score>=65?'high':score>=40?'mid':'low';
+ const label=tone==='high'?'ทบทวนก่อน':tone==='mid'?'ติดตามเพิ่มเติม':'ทบทวนตามปกติ';
+ return {score,label,tone,eligible:true,density,vaccination,eventPts,vaxPts,densityPts};
+}
+function metric(code){
+ const m=metricsFor(code),mode=state.gisMode;
+ if(mode==='signals'){
+  const e=eventRecordStatus(code);
+  return {value:e.status,text:e.label,tone:e.status==='confirmed'?'high':e.status==='suspected'?'watch':e.status==='discarded'?'quiet':e.status==='unrecorded'?'none':'quiet'};
+ }
+ if(mode==='completeness'){
+  const c=coverageFor(code);
+  return {value:c.value,text:c.label,tone:c.value===2?'high':c.value===1?'mid':'none'};
+ }
+ if(mode==='priority'){
+  const p=priorityFor(code);
+  return {value:p.score,text:p.eligible?`${p.score}/100 คะแนน · ${p.label}`:p.label,tone:p.tone};
+ }
+ const p=mode==='cat_density'?m.cat:m.dog;
+ if(!p)return {value:null,text:'ไม่มีข้อมูลสำรวจสัตว์สำหรับตัวชี้วัดนี้',tone:'none'};
+ if(mode==='vaccination'){
+  const d=m.dog;
+  if(!d||d.population_count<=0||d.vaccinated_count==null)return {value:null,text:'ไม่มีข้อมูลตัวตั้งหรือตัวหารของวัคซีน',tone:'none'};
+  const n=100*d.vaccinated_count/d.population_count;
+  return {value:n,text:n.toFixed(1)+'%',tone:'data'};
+ }
+ if(!m.hasArea)return {value:null,text:'ไม่มีขอบเขต GIS เพื่อคำนวณพื้นที่',tone:'none'};
+ const n=p.population_count/m.area;
+ return {value:n,text:n.toFixed(1)+' ตัว/ตร.กม.',tone:'data'};
+}
+function legendText(){
+ const mode=state.gisMode;
+ if(mode==='signals')return 'เทา = ไม่มีรายการเหตุการณ์ในชุดสาธิต (ไม่ใช่ไม่มีโรค) · เขียว = มีรายการแต่ตัดออก · ส้ม = สงสัย · แดง = ยืนยัน';
+ if(mode==='completeness')return 'เทา = ไม่มีข้อมูลสำรวจสัตว์ · เขียวอ่อน = มีข้อมูลชนิดเดียว · เขียวเข้ม = มีทั้งสุนัขและแมว';
+ if(mode==='priority')return 'คะแนนสาธิต: เทา = ข้อมูลไม่ครบ · เขียว = ต่ำกว่า 40 · ส้ม = 40–64 · แดง = ตั้งแต่ 65 · ไม่ใช่ระดับความเสี่ยงจริง';
+ if(mode==='vaccination')return 'เทา = ไม่มีข้อมูล · เขียวอ่อน = ต่ำกว่า 55% · เขียวกลาง = 55–<75% · เขียวเข้ม = ตั้งแต่ 75%';
+ if(mode==='cat_density')return 'เทา = ไม่มีข้อมูล · เขียวอ่อน = ต่ำกว่า 2 · เขียวกลาง = 2–<5 · เขียวเข้ม = ตั้งแต่ 5 ตัว/ตร.กม.';
+ return 'เทา = ไม่มีข้อมูล · เขียวอ่อน = ต่ำกว่า 5 · เขียวกลาง = 5–<10 · เขียวเข้ม = ตั้งแต่ 10 ตัว/ตร.กม.';
+}
+function metricColor(code){
+ const m=metric(code);if(m.tone==='none'||m.value===null)return V11_COLORS.none;
+ const mode=state.gisMode;
+ if(mode==='signals')return m.tone==='high'?V11_COLORS.alert:m.tone==='watch'?V11_COLORS.watch:V11_COLORS.quiet;
+ if(mode==='completeness')return m.value===2?V11_COLORS.high:V11_COLORS.mid;
+ if(mode==='priority')return V12_PRIORITY_COLORS[m.tone]||V11_COLORS.none;
+ const limits=mode==='vaccination'?[55,75]:mode==='cat_density'?[2,5]:[5,10];
+ return m.value<limits[0]?V11_COLORS.low:m.value<limits[1]?V11_COLORS.mid:V11_COLORS.high;
+}
+function dynamicLegend(){
+ const mode=state.gisMode;
+ let entries;
+ if(mode==='signals')entries=[['#e5eaef','ไม่มีรายการ'],['#c0dfd5','ตัดออก'],['#edab62','สงสัย'],['#dd635c','ยืนยัน']];
+ else if(mode==='completeness')entries=[['#e5eaef','ไม่มีข้อมูล'],['#68c5b6','ชนิดเดียว'],['#0b8d89','ครบ 2 ชนิด']];
+ else if(mode==='priority')entries=[['#e5eaef','คำนวณไม่ได้'],['#89c9b8','<40'],['#e9a758','40–64'],['#de605b','≥65']];
+ else if(mode==='vaccination')entries=[['#e5eaef','ไม่มีข้อมูล'],['#bce5dc','<55%'],['#68c5b6','55–<75%'],['#0b8d89','≥75%']];
+ else if(mode==='cat_density')entries=[['#e5eaef','ไม่มีข้อมูล'],['#bce5dc','<2'],['#68c5b6','2–<5'],['#0b8d89','≥5']];
+ else entries=[['#e5eaef','ไม่มีข้อมูล'],['#bce5dc','<5'],['#68c5b6','5–<10'],['#0b8d89','≥10']];
+ return `<div class="v12-legend" aria-label="คำอธิบายสัญลักษณ์ ${safe(GIS_LAYER[mode])}">${entries.map(([c,l])=>`<span><i style="background:${c}"></i>${safe(l)}</span>`).join('')}</div><p class="v12-legend-note">${safe(legendText())}</p>`;
+}
+
 function geometryStatus(){const n=state.boundaries?.length||0;return n===12?`GeoJSON ในเว็บ: พร้อมใช้ ${n}/12 อำเภอ`:'GeoJSON: '+state.boundaryStatus}
-function boundaryPopup(code){const m=metricsFor(code),out=metric(code);
- return `<div class="v11-popup"><strong>อ.${safe(areaName(code))}</strong><span>${safe(GIS_LAYER[state.gisMode])}: <b>${safe(out.text)}</b></span><span>พื้นที่เชิงคำนวณ: ${m.hasArea?m.area.toFixed(1)+' ตร.กม.':'—'}</span><small>สีและตัวเลขเป็นการสาธิต ไม่ใช่ค่าความเสี่ยงที่ผ่านรับรอง</small><button type="button" data-focus="${safe(code)}">ดูข้อมูลอำเภอนี้ →</button></div>`;
+function boundaryPopup(code){
+ const m=metricsFor(code),out=metric(code),c=coverageFor(code),p=priorityFor(code);
+ return `<div class="v11-popup"><strong>อ.${safe(areaName(code))}</strong><span>${safe(GIS_LAYER[state.gisMode])}: <b>${safe(out.text)}</b></span><span>ข้อมูลสัตว์: ${safe(c.label)}</span><span>จัดลำดับติดตาม: ${p.eligible?p.score+'/100':'ไม่มีข้อมูลครบ'}</span><span>พื้นที่คำนวณจาก GIS: ${m.hasArea?m.area.toFixed(1)+' ตร.กม.':'—'}</span><small>ตัวเลขและคะแนนทั้งหมดเป็นการสาธิต ไม่ใช่การประเมินโรคจริง</small><button type="button" data-focus="${safe(code)}">ดูรายละเอียดอำเภอนี้ →</button></div>`;
 }
-function v11MetricsRows(){const regions=visibleGeo();return regions.map(d=>{const m=metricsFor(d.area_code);const dogs=m.dog,cats=m.cat;const density=Number.isFinite(m.area)&&dogs?(dogs.population_count/m.area).toFixed(1):'—';const catDensity=Number.isFinite(m.area)&&cats?(cats.population_count/m.area).toFixed(1):'—';const vaccine=dogs&&dogs.population_count>0&&dogs.vaccinated_count!=null?(dogs.vaccinated_count/dogs.population_count*100).toFixed(1)+'%':'—';return `<tr><td><button class="v11-link" data-focus="${safe(d.area_code)}">${safe(d.area_name_th)}</button></td><td>${Number.isFinite(m.area)?m.area.toFixed(1):'—'}</td><td>${density}</td><td>${catDensity}</td><td>${vaccine}</td><td>${safe(metric(d.area_code).text)}</td></tr>`});}
+function v11MetricsRows(){
+ return visibleGeo().map(d=>{
+ const m=metricsFor(d.area_code),p=priorityFor(d.area_code),c=coverageFor(d.area_code);
+ const density=m.hasArea&&m.dog?(m.dog.population_count/m.area).toFixed(1):'—';
+ const catDensity=m.hasArea&&m.cat?(m.cat.population_count/m.area).toFixed(1):'—';
+ const vaccine=m.dog&&m.dog.population_count>0&&m.dog.vaccinated_count!=null?(m.dog.vaccinated_count/m.dog.population_count*100).toFixed(1)+'%':'—';
+ const status=eventRecordStatus(d.area_code);
+ return `<tr><td><button class="v11-link" data-focus="${safe(d.area_code)}">${safe(d.area_name_th)}</button></td><td>${m.hasArea?m.area.toFixed(1):'—'}</td><td>${density}</td><td>${catDensity}</td><td>${vaccine}</td><td><span class="v12-row-state ${c.complete?'complete':'missing'}">${safe(c.label)}</span></td><td>${safe(status.label)}</td><td>${p.eligible?`${p.score}/100 · ${safe(p.label)}`:'ข้อมูลไม่ครบ'}</td></tr>`;
+ }).join('');
+}
+function gisReadinessStrip(){
+ const ds=districts(),full=ds.filter(d=>coverageFor(d.area_code).complete).length,
+ partial=ds.filter(d=>coverageFor(d.area_code).value===1).length,
+ eventCovered=ds.filter(d=>eventRecordStatus(d.area_code).status!=='unrecorded').length,
+ scored=ds.filter(d=>priorityFor(d.area_code).eligible).length;
+ return `<div class="v12-readiness"><div><b>${full}/${ds.length}</b><span>อำเภอที่มีข้อมูลสัตว์ครบ 2 ชนิด</span></div><div><b>${ds.length-full-partial}</b><span>อำเภอที่ยังไม่มีข้อมูลสัตว์</span></div><div><b>${eventCovered}/${ds.length}</b><span>อำเภอที่มีรายการเหตุการณ์จำลอง</span></div><div><b>${scored}/${ds.length}</b><span>อำเภอที่คำนวณคะแนนสาธิตได้</span></div></div>`;
+}
+function districtInsightPanel(){
+ if(state.district==='all'){
+  const p=districts().map(d=>({name:d.area_name_th,code:d.area_code,p:priorityFor(d.area_code)})).filter(x=>x.p.eligible).sort((a,b)=>b.p.score-a.p.score);
+  return `<div class="v12-insight"><div class="v12-insight-head"><span class="v12-dot"></span><strong>ภาพรวมการจัดลำดับติดตาม</strong></div><p>ข้อมูลทดลองมีเพียง ${p.length} อำเภอที่คำนวณคะแนนได้ และยังไม่ครอบคลุมทุกพื้นที่</p><div class="v12-ranking">${p.map((d,i)=>`<button data-focus="${d.code}" class="v12-rank"><span>${i+1}. อ.${safe(d.name)}</span><b>${d.p.score}<small>/100</small></b></button>`).join('')}</div><p class="v12-insight-foot">เลือกชื่ออำเภอหรือคลิกบนแผนที่เพื่อดูจำนวนสัตว์ ความหนาแน่น วัคซีน และเหตุการณ์</p></div>`;
+ }
+ const code=state.district,m=metricsFor(code),ev=eventRecordStatus(code),pri=priorityFor(code),c=coverageFor(code);
+ const dogDensity=m.dog&&m.hasArea?(m.dog.population_count/m.area).toFixed(1):'—',
+ catDensity=m.cat&&m.hasArea?(m.cat.population_count/m.area).toFixed(1):'—',
+ vaccine=m.dog&&m.dog.population_count>0&&m.dog.vaccinated_count!=null?(100*m.dog.vaccinated_count/m.dog.population_count).toFixed(1)+'%':'—';
+ return `<div class="v12-insight"><div class="v12-insight-head"><span class="v12-dot"></span><strong>อ.${safe(areaName(code))}</strong><button data-focus="all" class="v12-all-btn">ทุกอำเภอ ×</button></div><p>${safe(c.label)} • ${safe(ev.label)}</p><div class="v12-insight-grid"><div><span>สุนัขจำลอง</span><strong>${m.dog?fmt(m.dog.population_count):'—'}</strong></div><div><span>แมวจำลอง</span><strong>${m.cat?fmt(m.cat.population_count):'—'}</strong></div><div><span>สุนัข / ตร.กม.</span><strong>${dogDensity}</strong></div><div><span>แมว / ตร.กม.</span><strong>${catDensity}</strong></div><div><span>วัคซีนสุนัข</span><strong>${vaccine}</strong></div><div><span>คะแนนติดตาม (จำลอง)</span><strong>${pri.eligible?pri.score+'/100':'—'}</strong></div></div>${pri.eligible?`<div class="v12-priority-detail"><b>${safe(pri.label)}</b><span>เหตุการณ์ ${pri.eventPts.toFixed(0)} + ช่องว่างวัคซีน ${pri.vaxPts.toFixed(1)} + ความหนาแน่น ${pri.densityPts.toFixed(1)} = ${pri.score}/100 (ปัดเศษ)</span></div>`:`<div class="v12-priority-detail v12-warning">ยังจัดลำดับไม่ได้เพราะข้อมูลสาธิตไม่ครบ ไม่ควรตีความว่าเสี่ยงต่ำ</div>`}<p class="v12-insight-foot">ข้อมูลปี 2569 เป็นตัวเลขสังเคราะห์ • ขอบเขต GIS ปี 2019 แบบย่อ • ไม่ใช่ผลประเมินความเสี่ยงทางระบาดวิทยา</p></div>`;
+}
+
 function refreshV11Widgets(){const s=document.getElementById('v11BoundaryStatus');if(s)s.textContent=geometryStatus();const w=document.getElementById('v11MetricTable');if(w)w.innerHTML=v11MetricsRows().join('');}
 // Static and local; no network call to GISTDA in this Public Demo build.
 function loadGISTDABoundaries(){state.boundaries=NAKHON_ADM2_GEOJSON.features;state.boundaryStatus='ขอบเขตอำเภอพร้อมใช้ (ไฟล์ GeoJSON สาธิต)';refreshV11Widgets();}
 
-function mapPanel(){const ev=filtered('animal_events');const valid=ev.filter(x=>readPoint(x.location_point));const opts=Object.entries(GIS_LAYER).map(([k,v])=>`<option value="${k}" ${state.gisMode===k?'selected':''}>${v}</option>`).join('');return panel('แผนที่เชิงพื้นที่ · นครพนม 12 อำเภอ','GeoJSON ขอบเขตจริงแบบย่อ (ปี 2019) แสดงทันที • เปิด OpenStreetMap เพิ่มได้เมื่อต้องการ',`<div class="v11-toolbar"><label for="v11ModeSelect">ชั้นข้อมูล <select id="v11ModeSelect" aria-label="เลือกชั้นข้อมูล GIS">${opts}</select></label><button type="button" id="v111BasemapToggle" class="v111-mode-btn" aria-pressed="${state.basemap==='osm'}">${state.basemap==='osm'?'แสดงแผนที่แบบเร็ว':'เปิดพื้นหลัง OpenStreetMap'}</button><span class="v11-status" id="v11BoundaryStatus">${safe(geometryStatus())}</span></div><div id="cloudMapCanvas" class="cloud-map-canvas v11-map" role="img" aria-label="แผนที่ขอบเขตอำเภอจังหวัดนครพนม">${mapFallback()}</div><div class="v11-scale"><span><i style="background:#e6ecf1"></i> ไม่มีข้อมูล</span><span><i style="background:#bfe8de"></i> ต่ำ</span><span><i style="background:#61c5b8"></i> กลาง</span><span><i style="background:#0c938c"></i> สูง</span><span class="v11-alert-legend">โหมดสัญญาณ: ส้ม=ติดตาม แดง=ทบทวน</span></div><div class="cloud-footnote">ขอบเขตอำเภอ: Thailand Canonical ADM2 v1.0.0 (OCHA COD, ปี 2019; CC BY) แบบย่อบรรจุในเว็บไซต์ • <a href="https://github.com/DevelopedbyWill/thailand-canonical-admin-names" target="_blank" rel="noopener noreferrer">ดูที่มาของข้อมูล GIS</a> • ข้อมูลประชากร วัคซีน และเหตุการณ์เป็น <strong>ข้อมูลสังเคราะห์</strong> • ไม่มีหมุดพิกัดผู้ป่วย/สัตว์ที่แต่งขึ้น</div>`)}
+function mapPanel(){
+ const opts=Object.entries(GIS_LAYER).map(([k,v])=>`<option value="${k}" ${state.gisMode===k?'selected':''}>${v}</option>`).join('');
+ return panel('แผนที่เชิงพื้นที่ · นครพนม 12 อำเภอ','GeoJSON ขอบเขตจริงแบบย่อ (ปี 2019) แสดงทันที • เปิด OpenStreetMap เพิ่มได้เมื่อต้องการ',`<div class="v11-toolbar"><label for="v11ModeSelect">ชั้นข้อมูล <select id="v11ModeSelect" aria-label="เลือกชั้นข้อมูล GIS">${opts}</select></label><button type="button" id="v111BasemapToggle" class="v111-mode-btn" aria-pressed="${state.basemap==='osm'}">${state.basemap==='osm'?'แสดงแผนที่แบบเร็ว':'เปิดพื้นหลัง OpenStreetMap'}</button><span class="v11-status" id="v11BoundaryStatus">${safe(geometryStatus())}</span></div><div id="cloudMapCanvas" class="cloud-map-canvas v11-map" role="img" aria-label="แผนที่ขอบเขตอำเภอจังหวัดนครพนม">${mapFallback()}</div>${dynamicLegend()}<div class="cloud-footnote">ขอบเขตอำเภอ: Thailand Canonical ADM2 v1.0.0 (OCHA COD, ปี 2019; CC BY) แบบย่อบรรจุในเว็บไซต์ • <a href="https://github.com/DevelopedbyWill/thailand-canonical-admin-names" target="_blank" rel="noopener noreferrer">ดูที่มาของข้อมูล GIS</a> • ข้อมูลประชากร วัคซีน เหตุการณ์ และคะแนนทั้งหมดเป็น <strong>ข้อมูลสังเคราะห์</strong></div>`);
+}
+
 function mapFallback(){return `<div class="cloud-simple-map"><div style="font-size:35px">◇</div><strong>กำลังเตรียมแผนที่ขอบเขตแบบเร็ว</strong><small>ขอบเขตอำเภอจริงแบบย่อแสดงโดยไม่ต้องเชื่อมบริการแผนที่ออนไลน์</small></div>`}
-function gis(){const ev=filtered('animal_events');return `${summaryStats()}<div class="cloud-infonote"><strong>การแปลผล:</strong> ขอบเขตอำเภอจากชุดข้อมูลเปิด OCHA COD ปี 2019 (แผนที่แบบย่อ) ใช้เพื่อ <strong>สาธิตวิธีทำแผนที่</strong> เท่านั้น และอาจไม่ใช่ขอบเขตการปกครองฉบับล่าสุด • ความหนาแน่นคำนวณจาก <strong>จำนวนสัตว์จำลอง ÷ พื้นที่ polygon จากแผนที่แบบย่อ</strong> ไม่ใช่ข้อมูลเฝ้าระวังจริง • พื้นที่ไม่มีข้อมูลแสดงสีเทา • ไม่ตีความสีเป็นการจัดระดับความเสี่ยงจริง</div><div class="cloud-row">${mapPanel()}${panel('เลือกอำเภอและดูเหตุการณ์จำลอง','คลิกชื่อหรือ polygon เพื่อกรองข้อมูล • ไม่ใช่จุดเกิดเหตุจริง',districtGrid())}</div>${panel('พื้นที่และตัวชี้วัด GIS','ปีสำรวจจำลอง 2569 • ไม่มีตัวเลขทดแทนในอำเภอที่ไม่สำรวจ',`<div class="v11-table-caption">ตารางแสดงค่าความหนาแน่นจาก GeoJSON แบบย่อ 12 อำเภอ (ข้อมูลสัตว์เป็นตัวเลขสมมติ)</div><div class="cloud-table-wrap"><table class="cloud-table"><thead><tr><th>อำเภอ</th><th>พื้นที่ GIS (ตร.กม.)</th><th>สุนัข/ตร.กม.</th><th>แมว/ตร.กม.</th><th>วัคซีนสุนัข</th><th>${safe(GIS_LAYER[state.gisMode])}</th></tr></thead><tbody id="v11MetricTable">${v11MetricsRows().join('')}</tbody></table></div>`)}${panel('เหตุการณ์เชื่อมกับพื้นที่','พิกัดไม่ได้ระบุ จึงไม่วางหมุดลงบนแผนที่',tbl(['Event ID','อำเภอ','สัตว์','สถานะ','วันที่','พิกัด'],ev.map(e=>`<tr><td class="mono">${safe(e.event_code)}</td><td>${safe(areaName(e.area_code))}</td><td>${safe(genderSpecies[e.species]||e.species)}</td><td>${tag(eventStatus[e.event_status]||e.event_status,e.event_status==='confirmed'?'urgent':e.event_status==='suspected'?'pending':'negative')}</td><td>${dt(e.reported_on)}</td><td>${readPoint(e.location_point)?'มี':'ไม่มี'}</td></tr>`)))}`}
+function gis(){
+ const ev=filtered('animal_events');
+ return `${summaryStats()}${gisReadinessStrip()}<div class="cloud-infonote"><strong>แนวทางแปลผล v1.2:</strong> สีเทาของชั้นสัตว์หมายถึง <strong>ไม่มีข้อมูลสำรวจ</strong> ไม่ใช่ไม่มีประชากรสัตว์ • สีเทาของชั้นเหตุการณ์หมายถึง <strong>ไม่มีรายการในชุดสาธิต</strong> ไม่ได้ยืนยันว่าไม่มีโรค • คะแนนลำดับติดตามคำนวณได้เฉพาะพื้นที่ที่มีข้อมูลครบ และ <strong>ไม่ใช่คะแนนความเสี่ยงจริง</strong></div><div class="cloud-row">${mapPanel()}${panel('วิเคราะห์รายอำเภอ · ชุดสาธิต','เลือก polygon หรือชื่ออำเภอเพื่อดูข้อมูลและสูตรคำนวณ',districtInsightPanel()+districtGrid())}</div>${panel('เปรียบเทียบความหนาแน่น วัคซีน และความพร้อมข้อมูล','ปีสำรวจจำลอง พ.ศ. 2569 • ไม่มีตัวเลขแทนพื้นที่ที่ขาดข้อมูล',`<div class="v11-table-caption">ความหนาแน่น = จำนวนสัตว์จำลอง ÷ พื้นที่จากขอบเขต ADM2 แบบย่อ (ปี 2019) • คะแนนลำดับติดตามใช้เพื่อสาธิตการวิเคราะห์เท่านั้น</div><div class="cloud-table-wrap"><table class="cloud-table"><thead><tr><th>อำเภอ</th><th>พื้นที่ GIS (ตร.กม.)</th><th>สุนัข/ตร.กม.</th><th>แมว/ตร.กม.</th><th>วัคซีนสุนัข</th><th>ข้อมูลสัตว์</th><th>สถานะเหตุการณ์</th><th>คะแนนติดตาม (สาธิต)</th></tr></thead><tbody id="v11MetricTable">${v11MetricsRows()}</tbody></table></div>`)}${panel('สูตรคำนวณคะแนนติดตาม (ตัวอย่าง ไม่ใช่แบบจำลองความเสี่ยงที่ผ่านการรับรอง)','แสดงคะแนนเฉพาะอำเภอที่มีจำนวนสุนัข จำนวนได้รับวัคซีน พื้นที่ GIS และบันทึกเหตุการณ์ครบ',`<div class="v12-formula"><div><strong>เหตุการณ์ (0–45 คะแนน)</strong><span>ยืนยัน = 45 • สงสัย = 25 • ตัดออก = 0</span></div><div><strong>ช่องว่างวัคซีน (0–30 คะแนน)</strong><span>30 × (1 − จำนวนสุนัขได้รับวัคซีน ÷ จำนวนสุนัข)</span></div><div><strong>ความหนาแน่น (0–25 คะแนน)</strong><span>25 × min(1, สุนัขต่อ ตร.กม. ÷ 12)</span></div></div><p class="cloud-footnote">รวมคะแนนและปัดเป็นจำนวนเต็ม • 0–39 = ทบทวนตามปกติ • 40–64 = ติดตามเพิ่มเติม • 65 ขึ้นไป = ทบทวนก่อน • ค่าตัดทุกค่าเป็น <strong>สมมติสำหรับทดสอบ UI</strong> ไม่ใช่เกณฑ์กรมควบคุมโรคหรือกรมปศุสัตว์ และไม่ควรใช้ตัดสินใจสาธารณสุข</p>`)}${panel('เหตุการณ์สัตว์เชื่อมกับพื้นที่','ไม่มีพิกัดจริง จึงไม่วางหมุดบนแผนที่',tbl(['Event ID','อำเภอ','สัตว์','สถานะ','วันที่','พิกัด'],ev.map(e=>`<tr><td class="mono">${safe(e.event_code)}</td><td>${safe(areaName(e.area_code))}</td><td>${safe(genderSpecies[e.species]||e.species)}</td><td>${tag(eventStatus[e.event_status]||e.event_status,e.event_status==='confirmed'?'urgent':e.event_status==='suspected'?'pending':'negative')}</td><td>${dt(e.reported_on)}</td><td>${readPoint(e.location_point)?'มี':'ไม่มี'}</td></tr>`)))}`;
+}
+
 function animals(){const ev=filtered('animal_events'),labs=filteredLab();return `<div class="cloud-stats">${stat('เหตุสัตว์ทั้งหมด',fmt(ev.length),'ข้อมูลจำลองในเว็บไซต์')}${stat('ยืนยัน',fmt(ev.filter(x=>x.event_status==='confirmed').length),'ผลสำรวจจำลอง')}${stat('ส่งตรวจ',fmt(labs.length),'รายการ lab_results')}${stat('รอผล Lab',fmt(labs.filter(x=>x.test_result==='pending').length),'ยังไม่ทราบผล')}</div>${panel('Animal Event Registry','รหัสพื้นที่มาตรฐานเชื่อมกับ geo_areas',tbl(['Event ID','วันที่','อำเภอ','ชนิดสัตว์','สถานะ','จำนวน'],ev.map(e=>`<tr><td class="mono">${safe(e.event_code)}</td><td>${dt(e.reported_on)}</td><td>${safe(areaName(e.area_code))}</td><td>${safe(genderSpecies[e.species]||e.species)}</td><td>${tag(eventStatus[e.event_status]||e.event_status,e.event_status==='confirmed'?'urgent':'watch')}</td><td>${fmt(e.animal_count)}</td></tr>`)))}<div class="spacer"></div>${panel('Laboratory Results','Join ด้วย animal_event_id โดยไม่มีการจับคู่พิกัดอัตโนมัติ',tbl(['Specimen','Animal Event','เก็บตัวอย่าง','รายงานผล','ผลตรวจ'],labs.map(l=>`<tr><td class="mono">${safe(l.specimen_code)}</td><td class="mono">${safe(eventFor(l.animal_event_id)?.event_code||'ไม่พบ')}</td><td>${dt(l.collected_on)}</td><td>${dt(l.tested_on)}</td><td>${tag(labStatus[l.test_result]||l.test_result,l.test_result==='positive'?'urgent':l.test_result==='pending'?'pending':'negative')}</td></tr>`)))}<div class="spacer"></div><p class="cloud-infonote">DLD Data Exchange Workbench รุ่น v0.9 ยังอยู่ใน Prototype สาธิตออฟไลน์ใน ZIP • Cloud v1.0 ยังไม่มีการนำเข้าข้อมูลจากกรมปศุสัตว์จริง</p>`}
 function pep(){const ex=filtered('exposures'),pd=filteredDoses();return `<div class="cloud-stats">${stat('ผู้สัมผัส',fmt(ex.length),'รหัสสมมติ ไม่ใช่ข้อมูลบุคคล')}${stat('เริ่ม PEP',fmt(ex.filter(x=>x.pep_status==='started').length),'สถานะจำลอง')}${stat('ต้องติดตาม',fmt(ex.filter(x=>x.pep_status==='follow_up_needed').length),'ข้อมูลทดลอง')}${stat('นัดวัคซีน',fmt(pd.length),'ข้อมูล pep_doses')}</div><div class="cloud-infonote">ห้ามบันทึกชื่อ–สกุล เลขประจำตัวประชาชน เบอร์โทรศัพท์ หรือข้อมูลผู้ป่วยจริงใน Project DEV นี้ • ข้อมูลแสดงเป็น token จำลอง</div>${panel('ทะเบียนผู้สัมผัสแบบไม่ระบุตัวตน','เชื่อมเหตุการณ์สัตว์ด้วย Event ID ที่ผ่านการตรวจ',tbl(['Exposure token','วันสัมผัส','อำเภอ','ต้นเหตุสัตว์','ระดับสัมผัส','PEP'],ex.map(e=>`<tr><td class="mono">${safe(e.exposure_code)}</td><td>${dt(e.exposed_on)}</td><td>${safe(areaName(e.area_code))}</td><td class="mono">${safe(eventFor(e.animal_event_id)?.event_code||'ไม่เชื่อม')}</td><td>${safe(e.exposure_category)}</td><td>${tag(peps[e.pep_status]||e.pep_status,e.pep_status==='follow_up_needed'?'urgent':'info')}</td></tr>`)))}<div class="spacer"></div>${panel('รายการนัด/รับวัคซีน','ข้อมูลจำลอง ไม่มีเวชระเบียนหรือข้อมูลระบุตัวบุคคล',tbl(['Exposure token','Dose','วันนัด','วันรับ','สถานะ'],pd.map(d=>`<tr><td class="mono">${safe(data('exposures').find(e=>e.id===d.exposure_id)?.exposure_code||'—')}</td><td>${fmt(d.dose_number)}</td><td>${dt(d.due_on)}</td><td>${dt(d.administered_on)}</td><td>${tag(doses[d.dose_status]||d.dose_status,d.dose_status==='missed'?'urgent':d.dose_status==='administered'?'done':'watch')}</td></tr>`)))}`}
 function population(){const pop=filtered('animal_population');const dogs=pop.filter(p=>p.species==='dog'),cats=pop.filter(p=>p.species==='cat');const dogN=dogs.reduce((n,p)=>n+p.population_count,0),catN=cats.reduce((n,p)=>n+p.population_count,0),vaxN=dogs.reduce((n,p)=>n+(p.vaccinated_count||0),0),haveTotal=dogs.length>0;const vaccinated=haveTotal?`${(100*vaxN/dogN).toFixed(1)}%`:'—';const area=status=>status?`มีขอบเขต GIS ${state.boundaries?.length}/12 อำเภอ`:'ยังไม่สามารถคำนวณพื้นที่ GIS';return `<div class="cloud-stats">${stat('สุนัขที่สำรวจ',fmt(dogN),'เฉพาะอำเภอที่มีข้อมูลจำลอง')}${stat('แมวที่สำรวจ',fmt(catN),'เฉพาะอำเภอที่มีข้อมูลจำลอง')}${stat('สุนัขได้รับวัคซีน',fmt(vaxN),'จากตัวนับสมมติ')}${stat('ความครอบคลุมวัคซีน',vaccinated,'คำนวณจากฐานข้อมูลจำลอง')}</div><div class="cloud-infonote">ค่าความหนาแน่นใช้ตัวหารพื้นที่ polygon จาก GeoJSON ปี 2019 แบบย่อ จึงเป็นค่าประมาณเพื่อสาธิตเท่านั้น • ${safe(area(!!state.boundaries))} • <strong>ข้อมูลสำรวจสัตว์/วัคซีนทั้งหมดเป็นสมมติ</strong></div>${panel('เปรียบเทียบความหนาแน่นสัตว์และวัคซีนรายอำเภอ','ปีสำรวจจำลอง พ.ศ. 2569',tbl(['อำเภอ','พื้นที่ GIS (ตร.กม.)','สุนัข/ตร.กม.','แมว/ตร.กม.','วัคซีนสุนัข (%)'],visibleGeo().map(d=>{const m=metricsFor(d.area_code);return `<tr><td>${safe(d.area_name_th)}</td><td>${Number.isFinite(m.area)?m.area.toFixed(1):'—'}</td><td>${m.hasArea&&m.dog?(m.dog.population_count/m.area).toFixed(1):'—'}</td><td>${m.hasArea&&m.cat?(m.cat.population_count/m.area).toFixed(1):'—'}</td><td>${m.dog?.vaccinated_count!=null?(100*m.dog.vaccinated_count/m.dog.population_count).toFixed(1)+'%':'—'}</td></tr>`})))}<div class="spacer"></div>${panel('ประชากรสัตว์รายอำเภอ','กรองได้ • เฉพาะสามอำเภอที่มีข้อมูลสังเคราะห์',tbl(['อำเภอ','ชนิดสัตว์','จำนวน','ไม่มีเจ้าของ','วัคซีน','ปี'],pop.map(p=>`<tr><td>${safe(areaName(p.area_code))}</td><td>${safe(genderSpecies[p.species]||p.species)}</td><td>${fmt(p.population_count)}</td><td>${p.unowned_count==null?'—':fmt(p.unowned_count)}</td><td>${p.vaccinated_count==null?'—':fmt(p.vaccinated_count)}</td><td>${safe(p.survey_year)}</td></tr>`)))}<div class="spacer"></div>${panel('ความครบถ้วนของข้อมูลสำรวจ','ห้ามเติมตัวเลขเองสำหรับพื้นที่ที่ยังไม่มีข้อมูล',`<div class="cloud-district-grid">${districts().map(d=>{const ok=data('animal_population').some(p=>p.area_code===d.area_code);return `<div class="cloud-district-card"><strong>อ.${safe(d.area_name_th)}</strong><span>${ok?'มีข้อมูลสังเคราะห์':'ไม่มีข้อมูล'}</span></div>`}).join('')}</div>`)}`}
@@ -469,7 +635,7 @@ function drawFastVectorMap(){
 }
 function loadLeafletMap(){if(state.basemap!=='osm'){drawFastVectorMap();return;}loadOSMMap();}
 async function loadOSMMap(){const mount=$('cloudMapCanvas');if(!mount)return;try{const L=await ensureLeaflet();if(!mount.isConnected||state.page!=='gis'||!state.loadedAt)return;mount.innerHTML='';const map=L.map(mount,{zoomControl:true,scrollWheelZoom:false});state.map=map;map.setView([17.42,104.58],9);L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap contributors',maxZoom:18}).addTo(map);
- if(state.boundaries?.length){const target=state.district;const geo=L.geoJSON({type:'FeatureCollection',features:state.boundaries},{style:f=>{const code=f.properties.area_code,highlight=target==='all'||code===target;return {color:highlight?'#176d79':'#a1b3be',weight:highlight?1.8:1,fillColor:metricColor(code),fillOpacity:highlight?.67:.12,opacity:1};},onEachFeature:(f,layer)=>{const code=f.properties.area_code;layer.bindPopup(boundaryPopup(code));layer.bindTooltip('อ.'+areaName(code),{sticky:true,direction:'auto'});layer.on('mouseover',()=>layer.setStyle({weight:3,color:'#074c59',fillOpacity:.84}));layer.on('mouseout',()=>{if(map===state.map)geo.resetStyle(layer)});layer.on('click',()=>{if(map===state.map){layer.openPopup()}});}}).addTo(map);
+ if(state.boundaries?.length){const target=state.district;const geo=L.geoJSON({type:'FeatureCollection',features:state.boundaries},{style:f=>{const code=f.properties.area_code,highlight=target==='all'||code===target;return {color:highlight?'#176d79':'#a1b3be',weight:highlight?1.8:1,fillColor:metricColor(code),fillOpacity:highlight?.67:.12,opacity:1};},onEachFeature:(f,layer)=>{const code=f.properties.area_code;layer.bindPopup(boundaryPopup(code));layer.bindTooltip('อ.'+areaName(code),{sticky:true,direction:'auto'});layer.on('mouseover',()=>layer.setStyle({weight:3,color:'#074c59',fillOpacity:.84}));layer.on('mouseout',()=>{if(map===state.map)geo.resetStyle(layer)});layer.on('click',()=>{if(map===state.map)focusDistrict(code)});}}).addTo(map);
  const bounds=target==='all'?geo.getBounds():L.geoJSON(state.boundaries.filter(f=>f.properties.area_code===target)).getBounds();if(bounds.isValid())map.fitBounds(bounds,{padding:[20,20],maxZoom:11});
  }else{const statusDiv=L.control({position:'topright'});statusDiv.onAdd=()=>{const d=L.DomUtil.create('div','v11-map-warning');d.textContent='ยังไม่ได้ขอบเขต GISTDA • ไม่มี polygon จำลอง';return d};statusDiv.addTo(map)}
  for(const e of filtered('animal_events')){const pt=readPoint(e.location_point);if(pt){L.circleMarker(pt,{radius:8,color:'#fff',weight:2,fillColor:'#e56b66',fillOpacity:.95}).addTo(map).bindPopup(`${safe(e.event_code)} • ${safe(areaName(e.area_code))} (สมมติ)`)} }
