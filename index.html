@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
-<title>Rabies One Health | GIS Spatial Intelligence v1.4 – HDC & PEP Comparison</title>
+<title>Rabies One Health | GIS Spatial Intelligence v1.5 – HDC & Hospital Readiness</title>
 <meta name="description" content="Nakhon Phanom One Health synthetic public demo. No login. No live patient data.">
 <style>
 :root{font-family:Kanit,"Noto Sans Thai",system-ui,sans-serif;color:#e8f2f5;background:#07121c;font-size:14px;font-weight:400;font-synthesis:none;--navy:#07121c;--sidebar:#091b27;--panel:#102331;--panel2:#122b3a;--line:#264351;--text:#eaf4f6;--muted:#92abb6;--teal:#2ce3c0;--cyan:#48b8e9;--yellow:#efc46f;--red:#ff7c86;--green:#54d9a4}
@@ -413,6 +413,13 @@ h1{color:#173647;font-weight:650}
 @media(max-width:1200px){.v12-readiness{grid-template-columns:repeat(2,minmax(0,1fr))}.v12-formula{grid-template-columns:1fr}}
 @media(max-width:600px){.v12-readiness{gap:8px}.v12-readiness b{font-size:20px}.v12-readiness>div{padding:10px}.v12-readiness span{font-size:10px}.v12-insight{margin:10px 8px}}
 </style>
+<style>
+.v15-banner{background:#f3fbfa;border:1px solid #ccebe4;border-radius:15px;padding:19px;margin:12px 0 18px;color:#1c4650;line-height:1.7}
+.v15-banner p{margin:8px 0}.v15-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:13px 0}
+.v15-btn,.v15-upload{border:1px solid #0d938d;background:#0b817d;color:white;font-size:13px;font-weight:700;border-radius:9px;padding:10px 14px;cursor:pointer;display:inline-block}
+.v15-btn.light{background:white;color:#0c7775}.v15-neutral,.v15-warn,.v15-ok{padding:10px 13px;border-radius:8px;background:white}
+.v15-warn{color:#922e24;border:1px solid #e4a49c}.v15-ok{color:#075d4c;border:1px solid #85ccae}
+</style>
 </head>
 <body>
 <div id="app" class="shell cloud-app">
@@ -420,7 +427,7 @@ h1{color:#173647;font-weight:650}
     <div class="brand"><div class="brand-mark"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 43C24 43 9 27.7 9 19.3a15 15 0 0 1 30 0C39 27.7 24 43 24 43Z" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="24" cy="22" r="4.5" fill="currentColor"/><circle cx="16" cy="16" r="2" fill="currentColor"/><circle cx="21" cy="12" r="2" fill="currentColor"/><circle cx="27" cy="12" r="2" fill="currentColor"/><circle cx="32" cy="16" r="2" fill="currentColor"/></svg></div><div><strong>RABIES ONE HEALTH</strong><span>GIS Intelligence Platform</span></div></div>
     <div class="sidebar-subtitle">PUBLIC DEMO WORKSPACE</div>
     <nav class="navigation" id="navigation" aria-label="เมนูหลัก"></nav>
-    <div class="sidebar-bottom"><div class="small-prompt"><span class="pulse"></span><span>GIS Spatial Intelligence Public Demo<br><strong>ข้อมูลสาธิต + ความครอบคลุม HDC</strong></span></div><div class="side-mini">จังหวัดนครพนม · พื้นที่นำร่อง<br>ออกแบบรองรับเขตสุขภาพที่ 8</div><div class="version">v1.4 HDC + PEP PUBLIC • READ ONLY</div></div>
+    <div class="sidebar-bottom"><div class="small-prompt"><span class="pulse"></span><span>GIS Spatial Intelligence Public Demo<br><strong>ข้อมูลสาธิต + ความครอบคลุม HDC</strong></span></div><div class="side-mini">จังหวัดนครพนม · พื้นที่นำร่อง<br>ออกแบบรองรับเขตสุขภาพที่ 8</div><div class="version">v1.5 HDC + PEP PUBLIC • READ ONLY</div></div>
   </aside>
   <div class="workspace">
     <header class="topbar"><button class="mobile-menu" id="mobileMenu" aria-label="เปิดเมนู">☰</button><div class="crumb"><span>ONE HEALTH /</span><strong id="crumbPage">GIS Intelligence</strong></div><div class="top-actions"><span id="connectionBadge" class="status-pill">● PUBLIC DEMO</span></div></header>
@@ -651,7 +658,13 @@ function districtInsightPanel(){
 
 function refreshV11Widgets(){const s=document.getElementById('v11BoundaryStatus');if(s)s.textContent=geometryStatus();const w=document.getElementById('v11MetricTable');if(w)w.innerHTML=v11MetricsRows().join('');}
 // Static and local; no network call to GISTDA in this Public Demo build.
-function loadGISTDABoundaries(){state.boundaries=NAKHON_ADM2_GEOJSON.features;state.boundaryStatus='ขอบเขตอำเภอพร้อมใช้ (ไฟล์ GeoJSON สาธิต)';refreshV11Widgets();}
+function loadGISTDABoundaries(){
+document.addEventListener('click',e=>{if(e.target.closest('[data-v15template]')){v15Template();return;}if(e.target.closest('[data-v15clear]')){v15HospitalRows=null;v15FileName='';v15Messages=[];render();return;}});
+document.addEventListener('change',async e=>{if(e.target?.id==='v15HospitalCsv'){
+const f=e.target.files?.[0];if(!f)return;
+try{if(f.size>2_000_000)throw Error('ไฟล์ใหญ่เกิน 2 MB');if(!/\.csv$/i.test(f.name))throw Error('ต้องเป็น .csv เท่านั้น');v15Import(await f.text(),f.name);}catch(err){v15HospitalRows=null;v15Messages=[String(err.message||err)];}render();}});
+
+state.boundaries=NAKHON_ADM2_GEOJSON.features;state.boundaryStatus='ขอบเขตอำเภอพร้อมใช้ (ไฟล์ GeoJSON สาธิต)';refreshV11Widgets();}
 
 function mapPanel(){
  const opts=Object.entries(GIS_LAYER).map(([k,v])=>`<option value="${k}" ${state.gisMode===k?'selected':''}>${v}</option>`).join('');
@@ -700,8 +713,55 @@ function v14HdcMap(){
 function v14Detail(){let n=v14CurrentCoverage();const all=state.district==='all';return `<div class="v14-district-detail"><small>เลือกอำเภอจากแผนที่หรือตารางด้านล่าง</small><strong>${all?'นครพนม · ทั้งจังหวัด':'อ.'+safe(areaName(state.district))}</strong><div class="v14-district-number">${all?26:(n??'—')}<span>แถวข้อมูล HDC</span></div><small>${all?'มีข้อมูลจาก 12 อำเภอ':`รหัสอำเภอ ${safe(state.district)}`} · ปีงบประมาณ 2569</small>${all?'':'<button type="button" class="v14-tab" data-v14district="all" style="margin-top:8px">แสดงทุกอำเภอ</button>'}<hr style="border:none;border-top:1px solid #d9e8e8;margin:17px 0"><strong style="font-size:13px">ข้อมูลวัคซีนหลังสัมผัส</strong><small>ยังไม่แสดงตัวเลข • รอตรวจสอบนิยามฟิลด์ <code>cont / im / ide / immu</code> และความหมายของ <code>areacode</code></small></div>`}
 function v14HdcRows(){const list=districts().filter(d=>state.district==='all'||state.district===d.area_code);return list.map(d=>{const n=V14_HDC_COVERAGE[d.area_code];return `<tr data-v14district="${d.area_code}" class="${state.district===d.area_code?'v14-selected':''}"><td><button type="button" data-v14district="${d.area_code}">อ.${safe(d.area_name_th)}</button></td><td class="v14-mono">${d.area_code}</td><td>${n==null?'ไม่มีข้อมูล':fmt(n)}</td><td>${n==null?'ไม่มีรายการ':'รับข้อมูลแล้ว'}</td><td>รอตรวจนิยาม</td></tr>`}).join('')}
 function v14HDC(){return `<div class="cloud-stats">${stat('แถวข้อมูล HDC',26,'ไม่ใช่จำนวนผู้ป่วยหรือจำนวนโดส')}${stat('อำเภอที่มีแถวข้อมูล','12/12','ไม่เท่ากับความครบถ้วนของทุกหน่วยบริการ')}${stat('แถวผ่านตรวจรูปแบบ',26,'ถูกตัดออก 0 แถว')}${stat('จำนวนผู้ได้รับวัคซีน','—','ยังไม่รับรองนิยามตัวนับ')}</div><div class="v14-flag"><strong>HDC จริง / ยังไม่อนุมัติ KPI:</strong> ข้อมูลรับเข้าสู่ Supabase DEV แบบจำกัดสิทธิ์แล้ว ณ 20 ต.ค. 2569 · ปีงบประมาณ 2569 • ตัวเลขในหน้านี้แสดงเพียงจำนวนแถวตามอำเภอ ไม่รวมตัวนับผู้รับวัคซีนที่ยังไม่ได้รับรอง • หน้าเว็บนี้เป็น Snapshot ไม่ได้ดึง API สด</div><div class="v14-grid">${panel('แผนที่ความครอบคลุม HDC · 12 อำเภอ','คลิกเพื่อเลือกอำเภอ • สีหมายถึงจำนวนแถวในชุดสรุปเท่านั้น',v14HdcMap())}${panel('รายละเอียดพื้นที่','สถานะข้อมูลรับเข้าระบบ ไม่ใช่ผลลัพธ์ PEP',v14Detail())}</div>${panel('ข้อมูล HDC รายอำเภอ','Source: s_rebies_overview • FY 2569 • จำนวนแถวในชุดนำเข้า ไม่ใช่จำนวนคน',`<div class="v14-table cloud-table-wrap"><table class="cloud-table"><thead><tr><th>อำเภอ</th><th>รหัส</th><th>แถว HDC</th><th>สถานะต้นทาง</th><th>ตัวชี้วัดวัคซีน</th></tr></thead><tbody>${v14HdcRows()}</tbody></table></div><p class="v14-note">จัดพื้นที่ตามอักขระ 4 ตัวแรกของ areacode; ยังไม่ยืนยันว่าเป็นพื้นที่อยู่ของผู้สัมผัสหรือพื้นที่บริการ • 26 แถวสรุปจาก 26 รหัสหน่วยบริการในชุดนำเข้านี้</p>`)}${panel('ก่อนนำตัวเลขการรับวัคซีนขึ้นแผนที่','ตรวจ Data Dictionary ร่วมกับผู้รับผิดชอบ HDC',`<div class="v14-hospital"><div><strong>01 · นิยามคอลัมน์</strong><p>cont, im, ide, immu, im3, id3, im5, id4 และ booster_comp เป็นจำนวนคน/ครั้ง/คอร์สหรือไม่</p></div><div><strong>02 · เกณฑ์พื้นที่</strong><p>areacode เป็นภูมิลำเนา/สถานบริการ หรือรหัสรายงาน และมีหน่วยบริการใดบ้าง</p></div><div><strong>03 · การนับข้ามหน่วย</strong><p>ข้อมูลผู้รับบริการรายเดียวอาจอยู่หลายหน่วยบริการ จึงต้องตรวจการนับซ้ำก่อนรายงาน</p></div></div>`)}`}
-function v14Hospital(){return `<div class="cloud-stats">${stat('โรงพยาบาลที่เชื่อม HIS','—','ยังไม่เชื่อมข้อมูลจริง')}${stat('จำนวนผู้สัมผัส','—','ยังไม่มีข้อมูลโรงพยาบาล')}${stat('ผู้เริ่ม/ครบ PEP','—','รอนิยามร่วมและ API')}${stat('การอัปเดตข้อมูล','—','ยังไม่ได้กำหนดความถี่')}</div><div class="v14-flag"><strong>Hospital HIS / PEP:</strong> อยู่ในขั้นเตรียมการเชื่อมต่อกับโรงพยาบาล ไม่แสดงศูนย์ (0) แทนข้อมูลที่ยังไม่มี</div>${panel('ช่องทางการเชื่อมโรงพยาบาล','จัดทำเป็น Adapter รายโรงพยาบาลโดยผ่านสิทธิ์และข้อตกลงข้อมูล',`<div class="v14-hospital"><div><strong>API / HIS</strong><p>เชื่อมผ่าน Backend ที่ยืนยันตัวตน ไม่ใส่ Credential หรือข้อมูลระบุตัวบุคคลใน GitHub Pages</p></div><div><strong>Data Contract</strong><p>นิยามผู้สัมผัส เริ่ม PEP รับครบชุด วันที่รับบริการ พื้นที่และ HOSPCODE ต้องเทียบเคียง HDC ได้</p></div><div><strong>Quality & Privacy</strong><p>ตรวจรายการซ้ำ ความครบถ้วน และการอนุมัติข้อมูลก่อนส่งตัวเลขสรุปเข้าสู่ One Health GIS</p></div></div>`)}${panel('เตรียมเปรียบเทียบตามอำเภอ','แสดงสถานะการเชื่อม ไม่ตีความว่าไม่มีผู้สัมผัส',tbl(['อำเภอ','HDC','โรงพยาบาล'],districts().map(d=>`<tr><td>${safe(d.area_name_th)}</td><td>รับข้อมูล ${V14_HDC_COVERAGE[d.area_code]??'—'} แถว</td><td>รอเชื่อม</td></tr>`)))}`}
-function v14Compare(){return `<div class="v14-flag"><strong>ยังไม่สามารถเทียบจำนวนผู้ได้รับวัคซีนได้:</strong> HDC นำเข้าข้อมูลจริงแล้ว แต่ยังไม่รับรองนิยามตัวชี้วัด ส่วน HIS/PEP โรงพยาบาลยังไม่เชื่อม • จึงไม่แสดงผลต่างเป็น 0 หรือร้อยละเปรียบเทียบ</div>${panel('เปรียบเทียบความพร้อมข้อมูล HDC ↔ โรงพยาบาล','แสดงช่องว่างข้อมูลก่อนสร้าง Discrepancy Dashboard',tbl(['อำเภอ','HDC FY2569','HIS / PEP โรงพยาบาล','ผลต่าง','สถานะ'],districts().filter(d=>state.district==='all'||state.district===d.area_code).map(d=>`<tr><td><button class="v14-tab" data-v14district="${d.area_code}" type="button">อ.${safe(d.area_name_th)}</button></td><td>รับ ${V14_HDC_COVERAGE[d.area_code]??'—'} แถว</td><td class="v14-no-data">รอเชื่อม</td><td>—</td><td>ยังไม่เทียบตัวชี้วัด</td></tr>`)))}${panel('เงื่อนไขการเปรียบเทียบที่ถูกต้อง','HDC และโรงพยาบาลอาจมีข้อมูลซ้ำกันโดยธรรมชาติ ห้ามรวมยอด',`<div class="v14-hospital"><div><strong>นิยามและหน่วยนับ</strong><p>คน ≠ ครั้งรับบริการ ≠ โดสวัคซีน ≠ คอร์ส PEP ต้องจัดให้อยู่ในนิยามเดียวกัน</p></div><div><strong>ช่วงเวลารายงาน</strong><p>ปีงบประมาณ/เดือนบริการ วันตัดข้อมูล และเวลาดึงต้องตรงกัน</p></div><div><strong>พื้นที่และสถานบริการ</strong><p>เปรียบเทียบรหัสอำเภอเดียวกันและชุด HOSPCODE/การย้ายรักษาที่ตกลงกัน</p></div></div><p class="v14-note">เมื่อแหล่งข้อมูลทั้งสองพร้อมแล้ว จึงคำนวณผลต่าง HDC − HIS พร้อมแสดง QC และสถานะตรวจทาน โดยไม่นำสองยอดมาบวกกัน</p>`)}`}
+
+/* v1.5: Hospital aggregate CSV is validated ONLY in this browser session.
+   No local storage, no fetch, no database writes, no patient-level data. */
+let v15HospitalRows=null, v15FileName='', v15Messages=[];
+const V15_METRICS={exposed:'ผู้สัมผัส',pep_started:'เริ่ม PEP',pep_completed:'รับ PEP ครบตามเกณฑ์ของแหล่งข้อมูล'};
+function v15CsvParse(text){const out=[];let row=[],cell='',quoted=false;for(let i=0;i<text.length;i++){
+const ch=text[i];if(quoted){if(ch==='"'&&text[i+1]==='"'){cell+='"';i++;}else if(ch==='"'){quoted=false;}else cell+=ch;}
+else if(ch==='"'){if(cell!=='')throw Error('รูปแบบเครื่องหมายคำพูด CSV ไม่ถูกต้อง');quoted=true;}
+else if(ch===','){row.push(cell);cell='';}
+else if(ch==='\n'||ch==='\r'){if(ch==='\r'&&text[i+1]==='\n')i++;row.push(cell);if(row.some(v=>v.trim()))out.push(row);row=[];cell='';}
+else cell+=ch;}
+if(quoted)throw Error('ข้อความ CSV มีเครื่องหมายคำพูดปิดไม่ครบ');row.push(cell);if(row.some(v=>v.trim()))out.push(row);
+return out;}
+const V15_HEADERS=['district_code','fiscal_year','period_start','period_end','metric_code','unit','count','source_scope'];
+function v15Import(text,filename){const csv=v15CsvParse(text.replace(/^\uFEFF/,''));if(csv.length<2)throw Error('ต้องมีชื่อคอลัมน์และแถวข้อมูลอย่างน้อย 1 แถว');
+const heads=csv[0].map(x=>x.trim());if(new Set(heads).size!==heads.length)throw Error('มีชื่อคอลัมน์ซ้ำ');
+const missing=V15_HEADERS.filter(k=>!heads.includes(k));if(missing.length)throw Error('ขาดคอลัมน์: '+missing.join(', '));
+const forbidden=['cid','hn','an','patient_name','name','surname','first_name','last_name','phone','address','birth_date','dob','national_id','passport','exposure_id','person_id','birthdate'];
+const bad=heads.filter(k=>forbidden.includes(k.toLowerCase()));if(bad.length)throw Error('พบคอลัมน์ข้อมูลรายบุคคลที่ห้ามนำเข้า: '+bad.join(', '));
+const used=new Set(),rows=[],errors=[];
+for(let i=1;i<csv.length;i++){const r=csv[i];if(r.length!==heads.length){errors.push('แถว '+(i+1)+': จำนวนคอลัมน์ไม่ตรง');continue;}
+const o=Object.fromEntries(heads.map((h,j)=>[h,r[j].trim()]));let err='';
+if(!/^48(0[1-9]|1[0-2])$/.test(o.district_code))err='รหัสอำเภอไม่ถูกต้อง';
+else if(o.fiscal_year!=='2569')err='รับเฉพาะปีงบประมาณ 2569';
+else if(!/^\d{4}-\d{2}-\d{2}$/.test(o.period_start)||!/^\d{4}-\d{2}-\d{2}$/.test(o.period_end)||o.period_start>o.period_end||Number.isNaN(Date.parse(o.period_start))||Number.isNaN(Date.parse(o.period_end)))err='วันที่ไม่ถูกต้อง';
+else if(!Object.hasOwn(V15_METRICS,o.metric_code))err='metric_code ไม่รองรับ';
+else if(o.unit!=='persons')err='unit ต้องเป็น persons';
+else if(!/^(0|[1-9]\d*)$/.test(o.count)||!Number.isSafeInteger(Number(o.count)))err='count ต้องเป็นจำนวนเต็มไม่ติดลบ';
+else if(!/^[A-Za-z0-9_-]{3,50}$/.test(o.source_scope))err='source_scope ไม่ถูกต้อง';
+const key=[o.district_code,o.fiscal_year,o.period_start,o.period_end,o.metric_code,o.source_scope].join('|');
+if(!err&&used.has(key))err='คีย์ซ้ำ';
+if(err){errors.push('แถว '+(i+1)+': '+err);continue;}used.add(key);rows.push(o);
+}
+if(errors.length){v15HospitalRows=null;v15FileName='';v15Messages=errors.slice(0,12);return;}
+v15HospitalRows=rows;v15FileName=filename;v15Messages=[];
+}
+function v15Template(){const content='\uFEFF'+V15_HEADERS.join(',')+'\r\n4801,2569,2025-10-01,2026-09-30,exposed,persons,120,HOSP_GROUP_A\r\n4801,2569,2025-10-01,2026-09-30,pep_started,persons,115,HOSP_GROUP_A\r\n';
+const b=new Blob([content],{type:'text/csv;charset=utf-8'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='HIS_PEP_Aggregate_Template_v1.5.csv';a.click();setTimeout(()=>URL.revokeObjectURL(u),2000);}
+function v15CountRows(d,code){return (v15HospitalRows||[]).filter(r=>r.district_code===d&&r.metric_code===code).reduce((n,r)=>n+Number(r.count),0)}
+function v15HospitalIntro(){return `<div class="v15-banner"><strong>v1.5 • เครื่องมือเตรียมรับข้อมูล HIS/PEP</strong><p>ตรวจไฟล์สรุปรายอำเภอเฉพาะในเบราว์เซอร์ของคุณ • ไม่อัปโหลดไป GitHub หรือ Supabase • ห้ามเลือกไฟล์ข้อมูลรายบุคคล</p><div class="v15-actions"><button type="button" class="v15-btn" data-v15template>ดาวน์โหลดแม่แบบ CSV</button><label class="v15-upload" for="v15HospitalCsv">ตรวจ CSV โรงพยาบาล (Aggregate only)</label><input id="v15HospitalCsv" type="file" accept=".csv,text/csv" style="display:none"><button type="button" class="v15-btn light" data-v15clear>ล้างข้อมูลในหน้านี้</button></div>${v15Status()}</div>`}
+function v15Status(){if(v15Messages.length)return `<p class="v15-warn"><strong>ไฟล์ไม่ผ่านการตรวจ:</strong> ${v15Messages.map(safe).join(' • ')}</p>`;
+if(!v15HospitalRows)return `<p class="v15-neutral">ข้อมูลโรงพยาบาล: ยังไม่ได้นำเข้าตัวอย่าง • ไม่แสดงยอดเป็นศูนย์</p>`;
+return `<p class="v15-ok">ผ่านการตรวจโครงสร้าง ${v15HospitalRows.length} แถว จากไฟล์ ${safe(v15FileName)} • รวม ${new Set(v15HospitalRows.map(x=>x.district_code)).size}/12 อำเภอ • ข้อมูลอยู่ในหน่วยความจำของแท็บนี้เท่านั้น</p>`;}
+function v15CompareIntro(){let rows=v15HospitalRows;
+const view=rows?tbl(['อำเภอ','ผู้สัมผัส HIS','เริ่ม PEP HIS','ครบชุด HIS','HDC เทียบเคียง'],districts().filter(d=>state.district==='all'||state.district===d.area_code).map(d=>{const mine=rows.filter(r=>r.district_code===d.area_code);const val=c=>mine.some(r=>r.metric_code===c)?fmt(v15CountRows(d.area_code,c)):'—';return `<tr><td>${safe(d.area_name_th)}</td><td>${val('exposed')}</td><td>${val('pep_started')}</td><td>${val('pep_completed')}</td><td>รอนิยาม HDC</td></tr>`})):'<p class="v15-neutral">ยังไม่มีไฟล์สรุป HIS/PEP ให้ตรวจ • ตัวเลข HDC ยังไม่ผ่านการรับรองนิยาม จึงไม่คำนวณส่วนต่าง</p>';
+return `<div class="v15-banner"><strong>v1.5 • Reconciliation Readiness</strong><p>เปรียบเทียบได้ต่อเมื่อหน่วยนับ ปีงบประมาณ ช่วงเวลารายงาน พื้นที่ และนิยาม HDC/HIS ตรงกัน โดยไม่นำยอดจากสองแหล่งมาบวกกัน</p>${v15Status()}${panel('ตัวอย่างสรุปจากไฟล์โรงพยาบาลที่ตรวจแล้ว (เฉพาะเบราว์เซอร์)','ไม่ใช่ข้อมูลจาก HDC และไม่ใช่ผลการเปรียบเทียบจริง',view)}</div>`}
+
+function v14Hospital(){return v15HospitalIntro()+ `<div class="cloud-stats">${stat('โรงพยาบาลที่เชื่อม HIS','—','ยังไม่เชื่อมข้อมูลจริง')}${stat('จำนวนผู้สัมผัส','—','ยังไม่มีข้อมูลโรงพยาบาล')}${stat('ผู้เริ่ม/ครบ PEP','—','รอนิยามร่วมและ API')}${stat('การอัปเดตข้อมูล','—','ยังไม่ได้กำหนดความถี่')}</div><div class="v14-flag"><strong>Hospital HIS / PEP:</strong> อยู่ในขั้นเตรียมการเชื่อมต่อกับโรงพยาบาล ไม่แสดงศูนย์ (0) แทนข้อมูลที่ยังไม่มี</div>${panel('ช่องทางการเชื่อมโรงพยาบาล','จัดทำเป็น Adapter รายโรงพยาบาลโดยผ่านสิทธิ์และข้อตกลงข้อมูล',`<div class="v14-hospital"><div><strong>API / HIS</strong><p>เชื่อมผ่าน Backend ที่ยืนยันตัวตน ไม่ใส่ Credential หรือข้อมูลระบุตัวบุคคลใน GitHub Pages</p></div><div><strong>Data Contract</strong><p>นิยามผู้สัมผัส เริ่ม PEP รับครบชุด วันที่รับบริการ พื้นที่และ HOSPCODE ต้องเทียบเคียง HDC ได้</p></div><div><strong>Quality & Privacy</strong><p>ตรวจรายการซ้ำ ความครบถ้วน และการอนุมัติข้อมูลก่อนส่งตัวเลขสรุปเข้าสู่ One Health GIS</p></div></div>`)}${panel('เตรียมเปรียบเทียบตามอำเภอ','แสดงสถานะการเชื่อม ไม่ตีความว่าไม่มีผู้สัมผัส',tbl(['อำเภอ','HDC','โรงพยาบาล'],districts().map(d=>`<tr><td>${safe(d.area_name_th)}</td><td>รับข้อมูล ${V14_HDC_COVERAGE[d.area_code]??'—'} แถว</td><td>รอเชื่อม</td></tr>`)))}`}
+function v14Compare(){return v15CompareIntro()+ `<div class="v14-flag"><strong>ยังไม่สามารถเทียบจำนวนผู้ได้รับวัคซีนได้:</strong> HDC นำเข้าข้อมูลจริงแล้ว แต่ยังไม่รับรองนิยามตัวชี้วัด ส่วน HIS/PEP โรงพยาบาลยังไม่เชื่อม • จึงไม่แสดงผลต่างเป็น 0 หรือร้อยละเปรียบเทียบ</div>${panel('เปรียบเทียบความพร้อมข้อมูล HDC ↔ โรงพยาบาล','แสดงช่องว่างข้อมูลก่อนสร้าง Discrepancy Dashboard',tbl(['อำเภอ','HDC FY2569','HIS / PEP โรงพยาบาล','ผลต่าง','สถานะ'],districts().filter(d=>state.district==='all'||state.district===d.area_code).map(d=>`<tr><td><button class="v14-tab" data-v14district="${d.area_code}" type="button">อ.${safe(d.area_name_th)}</button></td><td>รับ ${V14_HDC_COVERAGE[d.area_code]??'—'} แถว</td><td class="v14-no-data">รอเชื่อม</td><td>—</td><td>ยังไม่เทียบตัวชี้วัด</td></tr>`)))}${panel('เงื่อนไขการเปรียบเทียบที่ถูกต้อง','HDC และโรงพยาบาลอาจมีข้อมูลซ้ำกันโดยธรรมชาติ ห้ามรวมยอด',`<div class="v14-hospital"><div><strong>นิยามและหน่วยนับ</strong><p>คน ≠ ครั้งรับบริการ ≠ โดสวัคซีน ≠ คอร์ส PEP ต้องจัดให้อยู่ในนิยามเดียวกัน</p></div><div><strong>ช่วงเวลารายงาน</strong><p>ปีงบประมาณ/เดือนบริการ วันตัดข้อมูล และเวลาดึงต้องตรงกัน</p></div><div><strong>พื้นที่และสถานบริการ</strong><p>เปรียบเทียบรหัสอำเภอเดียวกันและชุด HOSPCODE/การย้ายรักษาที่ตกลงกัน</p></div></div><p class="v14-note">เมื่อแหล่งข้อมูลทั้งสองพร้อมแล้ว จึงคำนวณผลต่าง HDC − HIS พร้อมแสดง QC และสถานะตรวจทาน โดยไม่นำสองยอดมาบวกกัน</p>`)}`}
 function v14Overview(){return `<div class="cloud-stats">${stat('HDC มีข้อมูล','26 แถว','จากปีงบประมาณ 2569')}${stat('HDC รายอำเภอ','12/12','แถวข้อมูลสรุป')}${stat('โรงพยาบาล','รอเชื่อม','HIS / PEP')}${stat('PEP ใน Demo',fmt(data('exposures').length),'ข้อมูลสังเคราะห์แยกจาก HDC')}</div><div class="v14-flag">แหล่งข้อมูล 2 ระดับ: <strong>HDC เป็นข้อมูลจริงที่อยู่ใน Private Staging</strong> และแสดงเฉพาะ metadata ความครอบคลุมบนเว็บนี้ • <strong>ทะเบียนผู้สัมผัส/นัดวัคซีนด้านล่างเป็นข้อมูลจำลอง</strong> ไม่ใช่ผู้สัมผัสจาก HDC</div>${v14DemoPEP()}`}
 function pep(){return v14Header()+v14Nav()+(v14Tab==='hdc'?v14HDC():v14Tab==='hospital'?v14Hospital():v14Tab==='compare'?v14Compare():v14Overview())}
 
@@ -792,10 +852,10 @@ document.addEventListener('keydown',e=>{const dist=e.target.closest('[data-v14di
 document.addEventListener('click',e=>{const nav=e.target.closest('[data-nav]');if(nav){navigate(nav.dataset.nav);return}const dist=e.target.closest('[data-focus]');if(dist){focusDistrict(dist.dataset.focus);return}});
 state.boundaries=NAKHON_ADM2_GEOJSON.features;state.boundaryStatus='ขอบเขตอำเภอพร้อมใช้';
 loadPublicDemo();$('refreshBtn').disabled=false;$('exportBtn').disabled=false;$('districtFilter').disabled=false;updateDistrictFilter();render();
-window.__RABIES_V14_PEP_STATUS__=()=>({version:'1.4',activeTab:v14Tab,hdcRows:V14_HDC_SNAPSHOT.stored_rows,hdcDistricts:Object.keys(V14_HDC_COVERAGE).length,countsPerDistrict:Object.values(V14_HDC_COVERAGE).reduce((a,b)=>a+b,0),hospitalConnected:false,metricDefinitionsVerified:false,publicMetricsApproved:false,selectedDistrict:state.district});
+window.__RABIES_V14_PEP_STATUS__=()=>({version:'1.5',activeTab:v14Tab,hdcRows:V14_HDC_SNAPSHOT.stored_rows,hdcDistricts:Object.keys(V14_HDC_COVERAGE).length,countsPerDistrict:Object.values(V14_HDC_COVERAGE).reduce((a,b)=>a+b,0),hospitalConnected:false,metricDefinitionsVerified:false,publicMetricsApproved:false,selectedDistrict:state.district});
+window.__RABIES_V15_STATUS__=()=>({version:'1.5',hospitalAggregateImported:!!v15HospitalRows,hospitalRows:v15HospitalRows?.length||0,publicMetricsApproved:false});
 window.__RABIES_PUBLIC_DEMO_STATUS__=()=>({publicDemo:true,loaded:!!state.loadedAt,page:state.page,gisMode:state.gisMode,geometryLoaded:state.boundaries?.length||0,geometryStatus:state.boundaryStatus,counts:Object.fromEntries(Object.entries(state.data).map(([k,v])=>[k,v.length]))});
 })();
 
 </script>
 </body></html>
-<!-- Trigger GitHub Pages rebuild: v1.4 -->
