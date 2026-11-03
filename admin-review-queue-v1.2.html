@@ -1,0 +1,78 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Rabies HDC | Admin Review Queue v1.2</title><style>
+:root{font-family:system-ui,'Noto Sans Thai',Tahoma,sans-serif;color:#e8f0fc;background:#0b1525}*{box-sizing:border-box}body{margin:0}header{background:#13243a;border-bottom:1px solid #28415e;padding:20px max(20px,calc((100vw - 1120px)/2))}h1{font-size:clamp(20px,3vw,29px);margin:4px 0}header p,.muted{color:#aebed3}main{max-width:1120px;margin:auto;padding:24px 18px 60px}.box{background:#13243a;border:1px solid #2b425d;border-radius:16px;padding:18px;margin-bottom:18px}.flex{display:flex;gap:12px;flex-wrap:wrap;align-items:center}.between{justify-content:space-between}.label{font-size:13px;color:#b2c4dd}.stat{flex:1;min-width:155px;background:#0e1d30;border:1px solid #294563;padding:14px;border-radius:12px}.big{font-weight:800;font-size:27px;margin-top:7px}input,button,select,textarea{font:inherit;border-radius:9px;padding:11px;border:1px solid #47627f}input,select,textarea{background:#081727;color:white;max-width:100%;padding:11px;border:1px solid #47627f;border-radius:9px}input{min-width:240px}select,textarea{width:100%}textarea{min-height:100px;resize:vertical}.formgrid{display:grid;grid-template-columns:1fr 2fr;gap:14px}.formgrid label{display:block;margin-bottom:6px;color:#cbdaf1}.note{border-left:3px solid #4b9bdc;padding-left:12px;color:#becfe5}.audititem{padding:12px 0;border-bottom:1px solid #2e4056}.audititem:last-child{border-bottom:0}.error{color:#ffbcc7}.success{color:#b2f7d7}button{background:#2476d0;color:white;font-weight:700;cursor:pointer}button.secondary{background:#263a56}button:disabled{opacity:.5;cursor:not-allowed}.badge{border:1px solid #56677d;border-radius:99px;padding:4px 9px;font-size:12px;white-space:nowrap}.warn{background:#4a3719;color:#ffda9a;border-color:#9d6a21}.good{background:#153b33;color:#a4f0cb;border-color:#28745b}.bad{background:#4a222a;color:#ffafbc;border-color:#9f455a}table{width:100%;border-collapse:collapse;min-width:730px;font-size:14px}th,td{text-align:left;border-bottom:1px solid #2e4056;padding:13px 10px;vertical-align:top}th{color:#b9cbe4}section[hidden],div[hidden]{display:none!important}.tablewrap{overflow:auto}.msg{padding:10px;border-radius:8px;background:#20324a;white-space:pre-wrap}.codes{font-family:ui-monospace,monospace;color:#d4e7ff}footer{color:#9db1c8;font-size:13px;padding-top:14px}.simple{font-size:13px;color:#bed1e8}a{color:#a5cbff}@media(max-width:700px){.formgrid{grid-template-columns:1fr}.box{padding:13px}header{padding:16px 20px}input{width:100%}} 
+</style></head><body><header><div class="label">RABIES ONE HEALTH INTELLIGENCE · NAKHON PHANOM</div><h1>HDC Admin Review Queue <span class="badge">v1.2 · REVIEW & AUDIT</span></h1><p>ตรวจทานรอบ Sync และผล QC ก่อนเผยแพร่ · สำหรับผู้ดูแลที่ได้รับสิทธิ์เท่านั้น</p></header><main>
+<section id="login" class="box"><h2>เข้าสู่ระบบผู้ดูแล</h2><p class="muted">ใช้บัญชี Supabase Auth เดิมของ Rabies One Health — ไม่ต้องสมัครใหม่</p><form id="loginForm" class="flex"><input id="email" type="email" placeholder="อีเมลผู้ดูแล" autocomplete="username" required><input id="password" type="password" placeholder="รหัสผ่าน" autocomplete="current-password" required><button id="signIn" type="submit">เข้าสู่ระบบ</button></form><p id="loginMsg" class="simple" role="status"></p></section>
+<section id="dashboard" hidden><div class="box"><div class="flex between"><div><b>รายการตรวจทานข้อมูล HDC</b><div class="label" id="userLabel"></div></div><div class="flex"><button class="secondary" id="reload">โหลดข้อมูลใหม่</button><button class="secondary" id="logout">ออกจากระบบ</button></div></div><p id="status" class="msg" role="status">กำลังตรวจสิทธิ์ผู้ดูแล...</p></div>
+<div id="summary" class="flex" hidden><div class="stat"><div class="label">รอบ Sync ล่าสุด</div><div class="big" id="lastSync">—</div></div><div class="stat"><div class="label">จำนวนแถว</div><div class="big" id="rows">—</div></div><div class="stat"><div class="label">อำเภอ</div><div class="big" id="districts">—</div></div><div class="stat"><div class="label">คำแนะนำ</div><div class="big" style="font-size:18px" id="recommend">—</div></div></div>
+<div class="box"><h2>สถานะเผยแพร่ล่าสุด</h2><p id="published">—</p><p class="muted">ข้อมูลรอบใหม่ไม่ถูกเผยแพร่จากหน้านี้ และไม่มีปุ่มอนุมัติ</p></div>
+<div class="box"><div class="flex between"><h2>ประวัติรอบ Sync และผล QC</h2><span class="badge">แสดงสูงสุด 12 รอบ</span></div><div class="tablewrap"><table><thead><tr><th>เวลา Sync (ไทย)</th><th>จำนวนแถว</th><th>อำเภอ</th><th>Structural QC</th><th>Change QC</th><th>คำแนะนำ</th></tr></thead><tbody id="runs"></tbody></table></div></div>
+<div class="box"><h2>รายละเอียดการเปลี่ยนแปลง</h2><p class="muted">คลิกรอบ Sync ในตาราง เพื่อดู HOSPCODE และเหตุผลที่ต้องตรวจทาน</p><div id="detail">เลือกรอบ Sync เพื่อดูรายละเอียด</div></div>
+<div class="box" id="reviewBox"><h2>บันทึกผลตรวจทาน (Review v1.2)</h2><p class="note">การบันทึกนี้เป็นเพียงความเห็นของผู้ตรวจ ไม่มีการอนุมัติหรือเผยแพร่ข้อมูล HDC อัตโนมัติ</p>
+<p id="chosenRun" class="label">กรุณาเลือกรอบ Sync</p>
+<form id="reviewForm"><div class="formgrid"><div><label for="reviewAction">ผลตรวจทาน</label><select id="reviewAction" required><option value="">-- เลือกผลตรวจ --</option><option value="acknowledged">รับทราบการเปลี่ยนแปลง</option><option value="request_information">ขอข้อมูลเพิ่มเติม</option><option value="rejected">ไม่ยอมรับข้อมูลรอบนี้</option></select></div><div><label for="reviewNote">เหตุผล / ผลการตรวจ (10–2,000 ตัวอักษร)</label><textarea id="reviewNote" required minlength="10" maxlength="2000" placeholder="ระบุหลักฐานที่ตรวจสอบ ประเด็น HOSPCODE หรือเหตุผลในการให้ผลตรวจทาน"></textarea></div></div><div class="flex" style="margin-top:12px"><button id="saveReview" type="submit">บันทึกผลตรวจทาน</button><span class="label" id="reviewMessage" role="status"></span></div></form></div>
+<div class="box"><div class="flex between"><h2>Audit History — ประวัติการตรวจทาน</h2><button id="refreshHistory" class="secondary" type="button">โหลดประวัติใหม่</button></div><div id="historyStatus" class="label"></div><div id="historyList" aria-live="polite"></div></div>
+</section><footer>Admin-only operational information · ข้อมูลภายในสำหรับผู้ดูแล · ไม่เก็บรหัสผ่านในไฟล์ · ใช้ Publishable Key เท่านั้น</footer>
+</main><script type="module">
+import {createClient} from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.0/+esm';
+const URL='https://fnazteahhsjooocuezut.supabase.co';
+const KEY='sb_publishable_Cko1Hj22yG74iWU8XfTjgA_w7wh1Bvl';
+const supabase=createClient(URL,KEY,{auth:{autoRefreshToken:true,persistSession:true,detectSessionInUrl:false}});
+const $=id=>document.getElementById(id);const fmt=x=>new Date(x).toLocaleString('th-TH',{timeZone:'Asia/Bangkok',day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+const safe=x=>String(x??'—').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const describe=x=>x==='READY_FOR_HUMAN_APPROVAL'?'เสนออนุมัติ':x==='REVIEW'?'ต้องตรวจทาน':x==='BLOCK'?'ห้ามเผยแพร่':'ไม่ทราบ';
+const badge=x=>'<span class="badge '+(x==='pass'||x==='READY_FOR_HUMAN_APPROVAL'?'good':x==='BLOCK'?'bad':'warn')+'">'+safe(x==='REVIEW'||x==='BLOCK'||x==='READY_FOR_HUMAN_APPROVAL'?describe(x):x||'ไม่มีผล QC')+'</span>';
+let items=[];let selectedRun=null;let busy=false;
+function showSession(user){$('login').hidden=!!user;$('dashboard').hidden=!user;if(user)$('userLabel').textContent=user.email||'Authenticated administrator';}
+async function load(){ $('status').textContent='กำลังอ่านข้อมูลจาก Supabase...';$('summary').hidden=true;$('runs').replaceChildren();$('detail').textContent='เลือกรอบ Sync เพื่อดูรายละเอียด';selectedRun=null;$('chosenRun').textContent='กรุณาเลือกรอบ Sync';$('reviewMessage').textContent='';$('historyList').replaceChildren();try{
+ const {data:{session},error:se}=await supabase.auth.getSession();if(se||!session){showSession(null);return}
+ const r=await fetch(URL+'/functions/v1/rabies-hdc-review-queue',{method:'GET',headers:{'Authorization':'Bearer '+session.access_token,'apikey':KEY},cache:'no-store'});
+ const j=await r.json();if(!r.ok||!j.ok)throw new Error((r.status===403?'บัญชีนี้ยังไม่มีสิทธิ์ผู้ดูแลจังหวัด/เขต (403)':r.status===401?'กรุณาเข้าสู่ระบบอีกครั้ง (401)':j.error||'API error')+' · HTTP '+r.status);
+ items=j.items||[];$('status').textContent='อ่านข้อมูลสำเร็จ · ข้อมูลภายในสำหรับผู้ดูแล · ไม่ได้เผยแพร่รอบใหม่';
+ let last=items[0];$('summary').hidden=!last;if(last){$('lastSync').textContent=fmt(last.started_at);$('rows').textContent=last.received_rows??'—';$('districts').textContent=(last.district_count??'—')+'/12';$('recommend').textContent=describe(last.recommendation);}
+ const pub=j.latest_public_release;$('published').textContent=pub?'อนุมัติล่าสุด '+fmt(pub.approved_at)+' · ข้อมูลจากรอบ '+fmt(pub.source_updated_at):'ยังไม่พบข้อมูลเผยแพร่ที่ได้รับอนุมัติ';
+ items.forEach((it,i)=>{const tr=document.createElement('tr');tr.style.cursor='pointer';tr.innerHTML='<td>'+safe(fmt(it.started_at))+'</td><td>'+safe(it.received_rows)+'</td><td>'+safe(it.district_count)+'/12</td><td>'+badge(it.qc?.qc_status)+'</td><td>'+badge(it.change?.change_status)+'</td><td>'+badge(it.recommendation)+'</td>';
+ tr.addEventListener('click',()=>detail(i));$('runs').appendChild(tr)});if(items.length)detail(0);
+ }catch(e){$('status').textContent='ไม่สามารถแสดงข้อมูล: '+e.message+' (ไม่มีการเปลี่ยนแปลงข้อมูล Production)';}}
+function detail(i){const it=items[i], c=it.change||{};selectedRun=it.id;$('chosenRun').textContent='รอบที่เลือก: '+fmt(it.started_at)+' · Run ID: '+it.id;$('reviewMessage').textContent='';loadHistory();const reasons=(c.reasons||[]).map(safe).join(', ')||'ไม่มีผล Change QC';$('detail').innerHTML='<p><b>รอบ '+safe(fmt(it.started_at))+'</b> · '+badge(it.recommendation)+'</p><p>เหตุผล: '+reasons+'</p><p>HOSPCODE เพิ่ม: <span class="codes">'+safe((c.new_hospcodes||[]).join(', ')||'ไม่มี')+'</span></p><p>HOSPCODE หายจากรอบเปรียบเทียบ: <span class="codes">'+safe((c.missing_hospcodes||[]).join(', ')||'ไม่มี')+'</span></p><p class="muted">รหัสที่เปลี่ยนแปลงเป็นสัญญาณให้ตรวจสอบ ไม่ใช่หลักฐานว่าหน่วยบริการหยุดส่งข้อมูลจริง</p>'}
+
+const API=URL+'/functions/v1/rabies-hdc-review-v12';
+const actionNames={acknowledged:'รับทราบการเปลี่ยนแปลง',request_information:'ขอข้อมูลเพิ่มเติม',rejected:'ไม่ยอมรับข้อมูลรอบนี้'};
+async function requestReview(method,body=null,runId=null){
+ const {data:{session}}=await supabase.auth.getSession();
+ if(!session?.access_token)throw new Error('กรุณาเข้าสู่ระบบใหม่');
+ const headers={'Authorization':'Bearer '+session.access_token,'apikey':KEY};
+ if(body)headers['Content-Type']='application/json';
+ const target=API+(method==='GET'&&runId?'?run_id='+encodeURIComponent(runId)+'&limit=50':'');
+ const response=await fetch(target,{method,headers,cache:'no-store',...(body?{body:JSON.stringify(body)}:{})});
+ const result=await response.json();
+ if(!response.ok||!result.ok)throw new Error((result.error||'API error')+' (HTTP '+response.status+')');
+ return result;
+}
+async function loadHistory(){
+ const run=selectedRun;
+ $('historyStatus').textContent='กำลังโหลดประวัติ...';$('historyList').replaceChildren();
+ if(!run)return;
+ try{const result=await requestReview('GET',null,run);if(run!==selectedRun)return;
+   const events=result.events||[];$('historyStatus').textContent=events.length+' รายการ · สำหรับรอบ Sync ที่เลือก';
+   for(const e of events){const div=document.createElement('div');div.className='audititem';div.innerHTML='<div><strong>'+safe(actionNames[e.review_action]||e.review_action)+'</strong> · '+safe(fmt(e.recorded_at))+'</div><div class="simple">ผู้ตรวจ (User ID): '+safe(e.reviewer_id)+'</div><p>'+safe(e.review_note)+'</p>';$('historyList').appendChild(div)}
+   if(!events.length)$('historyList').textContent='ยังไม่มีการบันทึกผลตรวจทานรอบนี้';
+ }catch(err){$('historyStatus').textContent='ไม่สามารถอ่านประวัติ: '+err.message;}
+}
+$('reviewForm').addEventListener('submit',async(e)=>{
+ e.preventDefault();if(busy)return;
+ const action=$('reviewAction').value;const note=$('reviewNote').value.trim();const run=selectedRun;
+ if(!run){$('reviewMessage').textContent='กรุณาเลือกรอบ Sync';return}
+ if(!actionNames[action]||note.length<10||note.length>2000){$('reviewMessage').textContent='กรุณาเลือกผลและระบุเหตุผล 10–2,000 ตัวอักษร';return}
+ if(!confirm('ยืนยันบันทึกผลตรวจทานรอบที่เลือก?\nการบันทึกจะเก็บเป็นประวัติถาวร และไม่ทำให้เกิดการเผยแพร่ HDC'))return;
+ busy=true;$('saveReview').disabled=true;$('reviewMessage').textContent='กำลังบันทึก...';
+ try{const result=await requestReview('POST',{run_id:run,request_id:crypto.randomUUID(),review_action:action,review_note:note});
+   $('reviewMessage').textContent='บันทึกสำเร็จ · ไม่มีการเผยแพร่ข้อมูล';$('reviewMessage').className='success';$('reviewNote').value='';$('reviewAction').value='';await loadHistory();
+ }catch(err){$('reviewMessage').textContent='บันทึกไม่สำเร็จ: '+err.message;$('reviewMessage').className='error';}
+ finally{busy=false;$('saveReview').disabled=false;}
+});
+$('refreshHistory').addEventListener('click',loadHistory);
+
+$('loginForm').addEventListener('submit',async e=>{e.preventDefault();$('signIn').disabled=true;$('loginMsg').textContent='กำลังเข้าสู่ระบบ...';const {data,error}=await supabase.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});$('password').value='';$('signIn').disabled=false;if(error){$('loginMsg').textContent='เข้าสู่ระบบไม่สำเร็จ: '+error.message;return}showSession(data.user);await load()});
+$('reload').addEventListener('click',load);$('logout').addEventListener('click',async()=>{await supabase.auth.signOut();showSession(null);items=[];selectedRun=null;$('historyList').replaceChildren();$('reviewNote').value='';$('reviewMessage').textContent=''});
+const {data:{session}}=await supabase.auth.getSession();showSession(session?.user||null);if(session)await load();
+</script></body></html>
