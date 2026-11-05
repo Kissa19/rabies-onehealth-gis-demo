@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow"><meta name="color-scheme" content="dark">
-<title>Rabies One Health · Development Progress</title>
+<title>Rabies One Health · Team Development Dashboard</title>
 <style>
 :root{color-scheme:dark;font-family:system-ui,"Noto Sans Thai",sans-serif;background:#061622;color:#eaf5fa;--panel:#10283b;--line:#33556d;--teal:#5fe5c8;--muted:#a4c1d0}*{box-sizing:border-box}body{margin:0;line-height:1.6}
 a{color:#92e8ff}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #f5d477;outline-offset:2px}
@@ -12,24 +12,49 @@ header{padding:34px max(22px,calc((100% - 1120px)/2));background:linear-gradient
 .wrap{max-width:1120px;margin:auto;padding:22px 18px 65px}h2{margin:32px 0 13px;font-size:22px}h3{font-size:17px;margin:0 0 8px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.stats{grid-template-columns:repeat(3,minmax(0,1fr))}.card{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:20px}.card p{margin:8px 0}.stat strong{display:block;font-size:27px;color:#fff}.badge{display:inline-block;font-size:12px;border:1px solid #4b9c8d;border-radius:20px;color:#a5f3db;padding:3px 9px;font-weight:700}.warn{color:#ffddb0;border-color:#b49258}.pending{color:#a9d8ff;border-color:#719bbb}.link{display:inline-block;text-decoration:none;padding:8px 12px;border:1px solid #558aa5;background:#1c3d50;border-radius:9px;margin-top:10px}.links a{margin-right:9px}.step{padding:16px;border:1px solid var(--line);border-radius:12px;background:#102638}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.note{background:#3d3528;border-left:4px solid #e4b75b;border-radius:8px;padding:13px 17px}.row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}.out{background:#193647;color:#d9f4ff;border:1px solid #52809a;border-radius:9px;padding:8px 14px}
 table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:11px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:#a5d0dd}.scroll{overflow-x:auto}footer{border-top:1px solid var(--line);margin-top:36px;padding-top:19px;color:var(--muted);font-size:13px}
 @media(max-width:800px){.grid,.stats,.steps{grid-template-columns:1fr}.gate-card{padding:24px}.wrap{padding:16px 14px 50px}}
+</style><style>
+.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.quick .card{min-height:115px}.quick strong{font-size:27px;display:block;color:white}.micro{font-size:12px;color:var(--muted)}.viz-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.barline{display:grid;grid-template-columns:90px 1fr 48px;gap:11px;align-items:center;margin:13px 0;font-size:13px}.track{height:14px;border-radius:20px;background:#183c4c;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,#46bda5,#80e8d2);border-radius:20px}.split{height:22px;border-radius:16px;display:flex;overflow:hidden;background:#1c4354;margin:16px 0}.split .pos{background:#fa9569}.split .neg{background:#4cbba9}.pill{display:inline-flex;align-items:center;gap:7px;margin-right:16px;font-size:13px}.dot{height:10px;width:10px;border-radius:50%;display:inline-block}.flexlinks{display:flex;gap:10px;flex-wrap:wrap}.mutedbox{background:#172d3b;padding:14px 16px;border-radius:10px;border:1px solid var(--line)}@media(max-width:850px){.quick,.viz-grid{grid-template-columns:1fr 1fr}}@media(max-width:560px){.quick,.viz-grid{grid-template-columns:1fr}}
 </style></head><body>
-<section id="gate" aria-label="ทางเข้าทีมพัฒนา"><form id="gateForm" class="gate-card" autocomplete="off">
-<div class="gate-eyebrow">RABIES ONE HEALTH · TEAM WORKSPACE</div>
-<h1>Development Progress</h1><p class="sub">ภาพรวมความก้าวหน้าโครงการโรคพิษสุนัขบ้าในสัตว์และวัคซีน PEP · จังหวัดนครพนม</p>
-<label for="teamCode">รหัสสำหรับทีมผู้ร่วมพัฒนา</label><input id="teamCode" class="field" type="password" required maxlength="32" autocomplete="off" placeholder="กรอกรหัสทีม" aria-describedby="gateError">
-<button type="button" id="toggleCode" class="toggle" aria-pressed="false">แสดงรหัส</button>
-<div id="gateError" class="error" role="status" aria-live="polite"></div>
-<button class="gate-btn" type="submit">เข้าสู่หน้าความก้าวหน้า</button>
-<p class="sub">หน้านี้ใช้รหัสเพื่อจัดระเบียบการเข้าชมสื่อสาธิตเท่านั้น ไม่ใช่ระบบรักษาความลับ โปรดอย่าใส่ข้อมูลส่วนบุคคลหรือข้อมูลผู้ป่วยในหน้าเว็บ</p>
-</form></section>
-<div id="content" class="hidden">
-<header><div class="row"><div><small style="color:#74e6d2;font-weight:800">NAKHON PHANOM · DEVELOPER PROTOTYPE</small><h1>Rabies One Health Intelligence<br>Development Progress</h1><p class="sub">แสดงความก้าวหน้าทั้งฝั่งสัตว์และฝั่งคน/วัคซีน PEP สำหรับผู้ร่วมพัฒนา · บันทึกสถานะ ณ 5 พฤศจิกายน 2569</p></div><button id="signOut" class="out">ล็อกหน้าความก้าวหน้า</button></div></header>
-<main class="wrap"><div class="note"><strong>Development Preview ไม่ใช่การเผยแพร่ข้อมูลใหม่</strong> — ข้อมูล Animal Lab ยังอยู่ใน Staging · ข้อมูล PEP สาธารณะใช้ชุดอนุมัติแล้ว · เมนู Admin ยืนยันตัวตนแยกต่างหาก</div>
+<div id="content">
+<header><div class="row"><div><small style="color:#74e6d2;font-weight:800">NAKHON PHANOM · DEVELOPER PROTOTYPE</small><h1>Rabies One Health Intelligence<br>Development Progress</h1><p class="sub">แสดงความก้าวหน้าทั้งฝั่งสัตว์และฝั่งคน/วัคซีน PEP สำหรับผู้ร่วมพัฒนา · เปิดดูโดยไม่ต้องใช้รหัส · บันทึกสถานะ ณ 5 พฤศจิกายน 2569</p></div><a class="link" href="index.html">กลับสู่ Prototype</a></div></header>
+<main class="wrap"><div class="note"><strong>Team Preview · สรุปข้อมูลเพื่อร่วมพัฒนา</strong> — แสดงเฉพาะข้อมูลสรุปแบบ Snapshot ของ Animal Lab ที่ยังอยู่ใน Staging และตัวเลข PEP จากชุดอนุมัติเดิม · หน้า Admin ยังต้อง Login แยกต่างหาก · หน้า GitHub Pages นี้เปิดให้ผู้มีลิงก์เข้าชมได้</div>
 <h2>ภาพรวมความก้าวหน้า</h2><div class="grid stats">
 <div class="card stat"><span class="muted">Animal Lab Import</span><strong>676/676</strong><small class="muted">นำเข้าข้อมูล Staging ครบแล้ว</small></div>
 <div class="card stat"><span class="muted">Animal Dashboard v1.1</span><strong>UAT ผ่าน</strong><small class="muted">การแสดงผลและตัวกรอง</small></div>
 <div class="card stat"><span class="muted">Human PEP</span><strong>Production</strong><small class="muted">ชุดเผยแพร่ที่ได้รับอนุมัติ</small></div>
 </div>
+
+<section id="team-snapshot" aria-labelledby="snapshot-heading">
+<h2 id="snapshot-heading">Dashboard สรุปสำหรับทีมพัฒนา <span class="badge pending">Snapshot · 5 พ.ย. 2569</span></h2>
+<p class="muted">ตัวเลขสำหรับสาธิตจากชุดข้อมูลที่ตรวจสอบแล้ว ไม่ใช่ Dashboard แบบเรียลไทม์ · ผลตรวจสัตว์ยังอยู่ใน Staging และยังไม่ผ่านขั้นตอนอนุมัติเผยแพร่ · ไม่แสดงข้อมูลตัวอย่างรายตัวหรือพิกัดจุด</p>
+<h3>โรคพิษสุนัขบ้าในสัตว์ · Animal Laboratory Surveillance</h3>
+<div class="quick">
+ <div class="card"><span class="micro">ตัวอย่างส่งตรวจ</span><strong>676</strong><span class="micro">นครพนม · 2021–2026</span></div>
+ <div class="card"><span class="micro">ผลบวก</span><strong>21</strong><span class="micro">3.1% ของตัวอย่างส่งตรวจ</span></div>
+ <div class="card"><span class="micro">ผลลบ</span><strong>655</strong><span class="micro">96.9% ของตัวอย่างส่งตรวจ</span></div>
+ <div class="card"><span class="micro">พื้นที่ที่ครอบคลุม</span><strong>12</strong><span class="micro">อำเภอ · ข้อมูล Staging</span></div>
+</div>
+<div class="viz-grid" style="margin-top:15px">
+<div class="card"><h3>สัดส่วนผลตรวจ</h3><div class="split" role="img" aria-label="ผลบวก 21 ตัวอย่าง 3.1 เปอร์เซ็นต์ ผลลบ 655 ตัวอย่าง 96.9 เปอร์เซ็นต์"><div class="pos" style="width:3.1065%"></div><div class="neg" style="width:96.8935%"></div></div><div><span class="pill"><i class="dot" style="background:#fa9569"></i>ผลบวก 21</span><span class="pill"><i class="dot" style="background:#4cbba9"></i>ผลลบ 655</span></div><p class="micro">หมายเหตุ: เป็น Positivity ในตัวอย่างที่ถูกส่งตรวจ ไม่ใช่อุบัติการณ์หรือความชุกของโรคในประชากรสัตว์</p></div>
+<div class="card"><h3>จำนวนตัวอย่างจำแนกชนิดสัตว์</h3>
+<div class="barline"><span>สุนัข</span><div class="track"><div class="fill" style="width:100%"></div></div><strong>566</strong></div>
+<div class="barline"><span>แมว</span><div class="track"><div class="fill" style="width:9.36%"></div></div><strong>53</strong></div>
+<div class="barline"><span>หนู</span><div class="track"><div class="fill" style="width:8.84%"></div></div><strong>50</strong></div>
+<div class="barline"><span>สัตว์อื่น</span><div class="track"><div class="fill" style="width:1.24%"></div></div><strong>7</strong></div>
+<p class="micro">แสดงเฉพาะจำนวนส่งตรวจเพื่อไม่เปิดเผยผลบวกรายกลุ่มสัตว์ที่มีตัวอย่างน้อย</p></div></div>
+<div class="card" style="margin-top:15px"><h3>คุณภาพพิกัด GIS</h3>
+<div class="quick" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="mutedbox"><strong style="font-size:23px">18</strong><div class="micro">Actual · พิกัดจริงในข้อมูลต้นทาง</div></div><div class="mutedbox"><strong style="font-size:23px">658</strong><div class="micro">Centroid · ตำแหน่งตัวแทนพื้นที่ ต้องทบทวน</div></div></div>
+<p class="micro">ข้อจำกัด: Centroid ไม่ใช่พิกัดการเกิดโรคจริง และการมี Centroid ไม่ทำให้ผลตรวจห้องปฏิบัติการเป็นโมฆะ</p></div>
+<h3 style="margin-top:22px">คนและวัคซีนป้องกันโรคพิษสุนัขบ้า · Human PEP</h3>
+<div class="quick">
+<div class="card"><span class="micro">การสัมผัสที่บันทึก</span><strong>17,232</strong><span class="micro">ข้อมูลอนุมัติ 24 ต.ค. 2569</span></div>
+<div class="card"><span class="micro">เริ่มรับวัคซีน</span><strong>7,114</strong><span class="micro">ตามนิยามตัวชี้วัด HDC ในระบบ</span></div>
+<div class="card"><span class="micro">ได้รับ 3 เข็มขึ้นไป</span><strong>2,889</strong><span class="micro">ไม่ใช่ตัวแทนความครบถ้วนทุกสูตรวัคซีน</span></div>
+<div class="card"><span class="micro">การติดตามเชิงพื้นที่</span><strong>12</strong><span class="micro">อำเภอในนครพนม</span></div>
+</div>
+<p class="mutedbox">ข้อมูล PEP เป็นตัวเลขจากชุดอนุมัติที่ใช้อ้างอิงในการพัฒนา ไม่ใช่การดึง HDC ล่าสุดจาก Staging ให้เปิด <a href="pep-dashboard.html">PEP Vaccination Dashboard</a> เพื่อดูรายละเอียดและหมายเหตุของข้อมูลที่ได้รับอนุมัติแล้ว</p>
+<div class="flexlinks"><a class="link" href="pep-dashboard.html">ดู PEP Dashboard ที่ได้รับอนุมัติ</a><a class="link" href="index.html">ดู One Health GIS Prototype</a></div>
+</section>
 <h2>ระบบเฝ้าระวังโรคพิษสุนัขบ้าในสัตว์</h2><div class="grid">
 <article class="card"><h3>ThaiRabies.net Import & QC</h3><span class="badge">นำเข้า Staging ผ่าน</span><p>นำเข้าผลตรวจทางห้องปฏิบัติการ 676 รายการ แยกผลบวก/ผลลบและรายการที่ต้องตรวจคุณภาพพิกัด</p><a class="link" href="admin-animal-lab-import-v1.html">เปิด Import & QC (Admin)</a></article>
 <article class="card"><h3>Animal Lab Dashboard v1.1</h3><span class="badge">Functional UAT ผ่าน</span><p>สรุปผลตรวจรายปี รายอำเภอ และชนิดสัตว์ พร้อมตัวกรองและสถานะ Actual / Centroid</p><a class="link" href="admin-animal-lab-dashboard-v1.1.html">เปิด Dashboard (Admin)</a></article>
@@ -49,21 +74,4 @@ table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:11px 8px;
 <p class="links"><a class="link" href="index.html">กลับสู่ Prototype หลัก</a><a class="link" href="pep-dashboard.html">PEP Vaccination</a></p>
 <footer>Rabies One Health Intelligence Platform · Nakhon Phanom · หน้าสรุปความก้าวหน้า ณ วันที่ระบุ ไม่ใช่ข้อมูลเรียลไทม์ และไม่เท่ากับการอนุมัติเผยแพร่ข้อมูลทางระบาดวิทยา</footer>
 </main></div>
-<script>
-(() => {
-'use strict';
-const EXPECTED_HASH='b875b72493b89d8789417abaccdb1f8b8e45061a7696ddbc3e041991a3bd0360';
-const gate=document.getElementById('gate');
-const content=document.getElementById('content');
-const input=document.getElementById('teamCode');
-const error=document.getElementById('gateError');
-function unlock(){gate.classList.add('hidden');content.classList.remove('hidden');sessionStorage.setItem('rabies-dev-progress-v1','yes');}
-function lock(){sessionStorage.removeItem('rabies-dev-progress-v1');content.classList.add('hidden');gate.classList.remove('hidden');input.value='';error.textContent='';input.focus();}
-async function hash(text){const bytes=new TextEncoder().encode(text);const digest=await crypto.subtle.digest('SHA-256',bytes);return [...new Uint8Array(digest)].map(x=>x.toString(16).padStart(2,'0')).join('');}
-if(sessionStorage.getItem('rabies-dev-progress-v1')==='yes'){unlock();}
-document.getElementById('gateForm').addEventListener('submit',async (e)=>{e.preventDefault();error.textContent='';const value=input.value.trim();try{if(await hash(value)===EXPECTED_HASH){unlock();}else{error.textContent='รหัสไม่ถูกต้อง กรุณาลองใหม่';input.select();}}catch{error.textContent='ไม่สามารถตรวจสอบรหัสได้ กรุณาเปิดผ่าน HTTPS';}});
-document.getElementById('toggleCode').addEventListener('click',()=>{const showing=input.type==='text';input.type=showing?'password':'text';document.getElementById('toggleCode').textContent=showing?'แสดงรหัส':'ซ่อนรหัส';document.getElementById('toggleCode').setAttribute('aria-pressed',String(!showing));});
-document.getElementById('signOut').addEventListener('click',lock);
-})();
-</script>
 </body></html>
