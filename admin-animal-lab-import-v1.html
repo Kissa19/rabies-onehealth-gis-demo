@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rabies One Health | Animal Lab Import v1</title><style>
+:root{font-family:system-ui,'Noto Sans Thai',Tahoma,sans-serif;color:#ebf3fc;background:#091525}*{box-sizing:border-box}body{margin:0}header{padding:22px max(18px,calc((100vw - 1100px)/2));background:linear-gradient(105deg,#113148,#0c4351);border-bottom:1px solid #365370}header small{letter-spacing:1px;color:#bddaf0}h1{font-size:clamp(24px,3.7vw,38px);margin:8px 0}header p{color:#c8deee;margin-bottom:0}main{max-width:1100px;margin:auto;padding:24px 16px 55px}.panel{background:#14273d;border:1px solid #30506c;border-radius:16px;padding:22px;margin-bottom:19px}.row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.between{justify-content:space-between}.muted{color:#b1cbe0}.tag{display:inline-block;border:1px solid #6c8ba6;border-radius:99px;padding:4px 10px;font-size:12px}.info{padding:13px;border-radius:10px;background:#203b4e;color:#d9ebfa}.warning{background:#4d381f;color:#ffddaa}.success{background:#143e32;color:#b9f4d6}.error{background:#552532;color:#ffd3dd}input,button{font:inherit;padding:11px 14px;border-radius:9px}input{background:#071c2c;border:1px solid #55718b;color:#fff;max-width:100%}input[type=file]{width:100%}button{border:1px solid #3a79b1;background:#2676c3;color:#fff;font-weight:700;cursor:pointer}button.secondary{background:#263e58;border-color:#526d89}button:disabled{opacity:.45;cursor:not-allowed}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.metric{padding:15px;border:1px solid #33516e;border-radius:12px;background:#102036}.number{font-size:29px;font-weight:800;margin-top:6px}.tablewrap{overflow-x:auto}table{border-collapse:collapse;width:100%;min-width:690px}th,td{text-align:left;padding:11px;border-bottom:1px solid #2b4660;font-size:14px}th{color:#c3e1f4}code{background:#092237;color:#9fd2fa;padding:3px 6px;border-radius:4px;overflow-wrap:anywhere}.links a{color:#a3d5ff;margin-right:15px}progress{width:100%;height:13px;accent-color:#2aa892}section[hidden]{display:none!important}.small{font-size:13px}footer{color:#97b1c9;font-size:12px}@media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr)}.panel{padding:16px}}
+</style></head><body>
+<header><small>RABIES ONE HEALTH INTELLIGENCE · NAKHON PHANOM</small><h1>Animal Laboratory Import <span class="tag">v1 · STAGING ONLY</span></h1><p>นำเข้าข้อมูลผลส่งตรวจสัตว์จาก ThaiRabies.net แบบควบคุมสิทธิ์ · ตรวจคุณภาพก่อนใช้ประโยชน์ · ยังไม่เผยแพร่สู่สาธารณะ</p></header>
+<main><div class="panel warning">ข้อมูลนี้เป็นข้อมูลปฏิบัติการสำหรับผู้ดูแลเท่านั้น ไม่ใช่ระบบเผยแพร่หรืออนุมัติผลตรวจ · อย่าอัปโหลด Excel ต้นฉบับที่มีข้อมูลผู้ส่งตรวจ/ชื่อบุคคลลง GitHub</div>
+<section class="panel" id="login"><h2>เข้าสู่ระบบผู้ดูแล</h2><p class="muted">ใช้บัญชี Supabase Auth เดิมที่มีสิทธิ์ zone_admin / province_admin</p><form class="row" id="loginForm"><input id="email" type="email" autocomplete="username" placeholder="อีเมลผู้ดูแล" required><input id="password" type="password" autocomplete="current-password" placeholder="รหัสผ่าน" required><button>เข้าสู่ระบบ</button></form><p class="small" id="loginStatus" role="status"></p></section>
+<section id="workspace" hidden>
+<div class="panel"><div class="row between"><div><strong>ThaiRabies.net Import Control</strong><div class="muted small" id="userLabel"></div></div><div class="row"><button class="secondary" id="refresh">โหลดประวัติใหม่</button><button class="secondary" id="signout">ออกจากระบบ</button></div></div><p id="status" class="info" role="status">รอการโหลดข้อมูล</p></div>
+<div class="panel"><h2>1. เตรียมไฟล์ก่อนนำเข้า</h2><p>ใช้ชุดโปรแกรม <strong>ThaiRabies Import &amp; QC Pipeline v1</strong> แปลง Excel ต้นฉบับบนคอมพิวเตอร์ของเจ้าหน้าที่ให้ได้ไฟล์ <code>animal_lab_import_staging.csv</code> ก่อน แล้วเลือกไฟล์ CSV ที่ไม่บรรจุข้อมูลระบุตัวบุคคลนี้</p><p class="muted small">ขั้นนี้ยังไม่รองรับการอัปโหลดไฟล์ XLSX ต้นฉบับโดยตรง เพราะต้องตัดข้อมูลส่วนบุคคลออกก่อนส่งข้อมูลขึ้น Backend</p><label for="csvfile"><strong>เลือก CSV มาตรฐาน</strong></label><input id="csvfile" type="file" accept=".csv,text/csv"><p id="fileStatus" class="small muted" role="status">ยังไม่ได้เลือกไฟล์</p><div class="grid" id="previewStats" hidden><div class="metric">แถวข้อมูล<div class="number" id="total">–</div></div><div class="metric">ผลบวก<div class="number" id="positive">–</div></div><div class="metric">ผลลบ<div class="number" id="negative">–</div></div><div class="metric">ต้องทบทวน/บล็อก<div class="number" id="attention">–</div></div></div><p class="row"><button id="start" type="button" disabled>นำเข้า Staging เท่านั้น</button><span class="muted small">ระบบจะตรวจสิทธิ์อีกครั้งบน Backend</span></p><progress id="progress" value="0" max="100" hidden></progress><p class="small" id="uploadState" role="status"></p></div>
+<div class="panel"><h2>2. ประวัติชุดข้อมูลที่นำเข้า</h2><p class="muted small">รายการที่มี REVIEW/BLOCK ต้องให้เจ้าหน้าที่ตรวจสอบก่อนเข้าสู่ขั้นตอนถัดไป · ไม่มีการเผยแพร่จากหน้านี้</p><div class="tablewrap"><table><thead><tr><th>วันที่นำเข้า</th><th>ไฟล์ต้นทาง</th><th>รับแล้ว / ทั้งหมด</th><th>ผลบวก</th><th>ผลลบ</th><th>REVIEW</th><th>BLOCK</th><th>สถานะ</th></tr></thead><tbody id="batches"></tbody></table></div></div>
+<div class="panel"><h2>3. ตรวจรายละเอียด QC ของชุดที่เลือก</h2><p class="muted small">แสดงตัวอย่างรายการที่ต้องตรวจสอบสูงสุด 100 รายการ ไม่มีชื่อผู้ส่งตรวจหรือข้อมูลติดต่อ</p><div id="batchDetail">เลือกชุดข้อมูลจากตารางด้านบน</div><div class="tablewrap"><table><thead><tr><th>แถวต้นฉบับ</th><th>เลขทะเบียน</th><th>เลขตัวอย่าง</th><th>สถานะ QC</th><th>เหตุผล</th></tr></thead><tbody id="flags"></tbody></table></div></div>
+</section><footer class="links"><a href="./admin-review-queue-v1.2.html">HDC Admin Review</a><a href="./admin-publication-preflight-v1.3.html">HDC Preflight</a><a href="./pep-dashboard.html">Public PEP Dashboard</a><p>ThaiRabies.net Animal Lab Staging · ไม่มีการเผยแพร่ข้อมูลอัตโนมัติ · ไม่เก็บ Service Role Key ในหน้าเว็บ</p></footer>
+</main>
+<script type="module">
+import {createClient} from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.0/+esm';
+const PROJECT='https://fnazteahhsjooocuezut.supabase.co';
+const KEY='sb_publishable_Cko1Hj22yG74iWU8XfTjgA_w7wh1Bvl';
+const API=PROJECT+'/functions/v1/rabies-animal-lab-import-v1';
+const sb=createClient(PROJECT,KEY,{auth:{autoRefreshToken:true,persistSession:true,detectSessionInUrl:false}});
+const $=id=>document.getElementById(id);
+const fmt=d=>d?new Date(d).toLocaleString('th-TH',{timeZone:'Asia/Bangkok',dateStyle:'medium',timeStyle:'short'}):'-';
+let records=null, csvHash=null, fileName='', busy=false;
+function showUser(user){$('login').hidden=!!user;$('workspace').hidden=!user;$('userLabel').textContent=user?.email||'';}
+function setMessage(text,bad=false){$('status').textContent=text;$('status').className=bad?'info error':'info';}
+async function api(method,body,qs=''){
+ const {data:{session}}=await sb.auth.getSession();if(!session?.access_token)throw Error('Session หมดอายุ กรุณา Login ใหม่');
+ const res=await fetch(API+qs,{method,cache:'no-store',headers:{authorization:'Bearer '+session.access_token,apikey:KEY,...(body?{'content-type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{})});
+ let j;try{j=await res.json()}catch{throw Error('Backend returned invalid JSON')}
+ if(!res.ok||!j.ok)throw Error((j.error||'Unknown API error')+' · HTTP '+res.status);
+ return j;
+}
+function parseCSV(input){
+ const text=input.replace(/^\uFEFF/,'');const arr=[];let row=[],field='',quoted=false;
+ for(let i=0;i<text.length;i++){
+ const c=text[i];if(quoted){if(c==='"'&&text[i+1]==='"'){field+='"';i++}else if(c==='"'){quoted=false}else field+=c}
+ else if(c==='"'){if(field!=='')throw Error('Invalid CSV quote');quoted=true}
+ else if(c===','){row.push(field);field=''}else if(c==='\n'||c==='\r'){if(c==='\r'&&text[i+1]==='\n')i++;row.push(field);if(row.some(x=>x!==''))arr.push(row);row=[];field=''}
+ else field+=c;
+ }
+ if(quoted)throw Error('Unterminated CSV quotation');if(field!==''||row.length){row.push(field);arr.push(row)}return arr;
+}
+const ALLOWED=['source_excel_row','record_key','record_hash','registration_no','sample_no','lab_result_standard','lab_test_date','province_code','district_code','subdistrict_code','animal_species','coordinate_type','latitude','longitude','map_point_quality','dq_status','dq_flags'];
+$('csvfile').addEventListener('change',async e=>{
+ $('start').disabled=true;records=null;csvHash=null;$('previewStats').hidden=true;
+ const file=e.target.files?.[0];if(!file)return;
+ try{
+ if(!/\.csv$/i.test(file.name))throw Error('รองรับเฉพาะ CSV ที่แปลงจาก ThaiRabies Pipeline');
+ if(file.size>5*1024*1024)throw Error('ไฟล์ใหญ่เกิน 5 MB');
+ const binary=await file.arrayBuffer();const text=new TextDecoder('utf-8',{fatal:true}).decode(binary);
+ const rows=parseCSV(text);if(rows.length<2)throw Error('CSV ไม่มีรายการข้อมูล');
+ const header=rows[0].map(x=>x.trim());if(new Set(header).size!==header.length)throw Error('ชื่อคอลัมน์ซ้ำ');
+ for(const name of ALLOWED)if(!header.includes(name))throw Error('ไม่มีคอลัมน์สำคัญ: '+name);
+ if(rows.length-1>10000)throw Error('รองรับสูงสุด 10,000 รายการต่อไฟล์');
+ const positions=Object.fromEntries(ALLOWED.map(name=>[name,header.indexOf(name)]));
+ const converted=rows.slice(1).map((values,i)=>{if(values.length!==header.length)throw Error('จำนวนคอลัมน์ผิดที่แถว '+(i+2));return Object.fromEntries(ALLOWED.map(name=>[name,values[positions[name]]||'']))});
+ const srcRows=converted.map(r=>r.source_excel_row);if(new Set(srcRows).size!==srcRows.length)throw Error('มีเลขแถวต้นฉบับซ้ำ');
+ const abnormal=converted.filter(r=>r.dq_status!=='PASS');
+ csvHash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',binary))).map(x=>x.toString(16).padStart(2,'0')).join('');
+ records=converted;fileName=file.name;
+ $('total').textContent=records.length.toLocaleString();$('positive').textContent=records.filter(x=>x.lab_result_standard==='positive').length.toLocaleString();$('negative').textContent=records.filter(x=>x.lab_result_standard==='negative').length.toLocaleString();$('attention').textContent=abnormal.length.toLocaleString();
+ $('previewStats').hidden=false;$('start').disabled=false;$('fileStatus').textContent=file.name+' · ตรวจโครงสร้าง CSV แล้ว · ขนาด '+Math.round(file.size/1024)+' KB · ไม่มีการอัปโหลดจนกดปุ่มนำเข้า';
+ }catch(err){$('fileStatus').textContent='ไฟล์ไม่พร้อม: '+err.message}
+});
+async function history(){try{
+ const res=await api('GET');$('batches').replaceChildren();
+ for(const b of res.batches){const tr=document.createElement('tr');tr.style.cursor='pointer';for(const v of [fmt(b.created_at),b.source_filename,b.received_rows+' / '+b.expected_rows,b.positive_rows,b.negative_rows,b.review_rows,b.blocked_rows,b.status]){const td=document.createElement('td');td.textContent=v??'-';tr.appendChild(td)}tr.onclick=()=>detail(b.id);$('batches').appendChild(tr)}
+ if(!res.batches.length){$('batches').textContent='ยังไม่มีการนำเข้าข้อมูล'}
+ setMessage('เชื่อมต่อสำเร็จ · ข้อมูลอยู่ใน Staging ภายใน ไม่เผยแพร่สู่สาธารณะ');
+ }catch(e){setMessage('ไม่สามารถอ่านประวัติ: '+e.message,true)}}
+async function detail(id){try{
+ const j=await api('GET',null,'?batch_id='+encodeURIComponent(id));
+ const b=j.batch;$('batchDetail').textContent='Batch ID: '+b.id+' · สถานะ '+b.status+' · '+b.received_rows+'/'+b.expected_rows+' แถว · REVIEW '+b.review_rows+' · BLOCK '+b.blocked_rows;
+ $('flags').replaceChildren();for(const x of j.qc_flags_preview){const tr=document.createElement('tr');for(const v of [x.source_excel_row,x.registration_no,x.sample_no,x.dq_status,x.dq_flags]){const td=document.createElement('td');td.textContent=v??'-';tr.appendChild(td)}$('flags').appendChild(tr)}
+ }catch(err){$('batchDetail').textContent='ไม่สามารถอ่านรายการ: '+err.message}}
+$('start').addEventListener('click',async()=>{
+ if(busy||!records?.length||!csvHash)return;
+ if(!confirm('ยืนยันอัปโหลดเฉพาะข้อมูลมาตรฐานที่ตัด PII ออกแล้วเข้าสู่ Staging?\nไม่มีการเผยแพร่และยังไม่มีการอนุมัติ'))return;
+ busy=true;$('start').disabled=true;$('progress').hidden=false;$('progress').value=0;
+ try{
+ const response=await api('POST',{action:'begin',source_sha256:csvHash,source_filename:fileName,expected_rows:records.length});
+ const b=response.batch;
+ if(response.duplicate_file){$('uploadState').textContent='ไฟล์นี้เคยนำเข้าแล้ว · Batch ID: '+b.id+' · สถานะ '+b.status+' · ไม่สร้างรายการซ้ำ';await history();await detail(b.id);return}
+ for(let at=0;at<records.length;at+=80){const chunk=records.slice(at,at+80);await api('POST',{action:'add',batch_id:b.id,rows:chunk});$('progress').value=Math.round(Math.min(100,(at+chunk.length)/records.length*100));$('uploadState').textContent='อัปโหลด '+Math.min(at+chunk.length,records.length)+'/'+records.length+' แถว'}
+ const result=await api('POST',{action:'complete',batch_id:b.id});$('uploadState').textContent='บันทึก Staging สำเร็จ · '+result.batch.received_rows+' แถว · REVIEW '+result.batch.review_rows+' · BLOCK '+result.batch.blocked_rows+' · ไม่เผยแพร่ข้อมูล';await history();await detail(b.id);
+ }catch(err){$('uploadState').textContent='อัปโหลดไม่สมบูรณ์: '+err.message+' · ตรวจประวัติ Batch ก่อนลองใหม่ เพื่อหลีกเลี่ยงข้อมูลซ้ำ';await history()}
+ finally{busy=false;$('start').disabled=!records?.length}
+});
+$('refresh').addEventListener('click',history);
+$('loginForm').addEventListener('submit',async e=>{e.preventDefault();$('loginStatus').textContent='กำลังเข้าสู่ระบบ...';const {data,error}=await sb.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});$('password').value='';if(error){$('loginStatus').textContent='ไม่สำเร็จ: '+error.message;return}showUser(data.user);await history()});
+$('signout').addEventListener('click',async()=>{await sb.auth.signOut();records=null;csvHash=null;$('csvfile').value='';showUser(null)});
+(async()=>{const {data:{session}}=await sb.auth.getSession();showUser(session?.user||null);if(session)await history()})();
+</script></body></html>
