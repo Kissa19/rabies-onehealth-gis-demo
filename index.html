@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
-<title>Rabies One Health | Integrated Surveillance Development v2.2</title>
+<title>Rabies One Health v2.4.2 | Presentation Ready · | Integrated Surveillance Development v2.2</title>
 <meta name="description" content="Nakhon Phanom One Health development view with de-identified district snapshots, no individual records.">
 <style>
 :root{font-family:Kanit,"Noto Sans Thai",system-ui,sans-serif;color:#e8f2f5;background:#07121c;font-size:14px;font-weight:400;font-synthesis:none;--navy:#07121c;--sidebar:#091b27;--panel:#102331;--panel2:#122b3a;--line:#264351;--text:#eaf4f6;--muted:#92abb6;--teal:#2ce3c0;--cyan:#48b8e9;--yellow:#efc46f;--red:#ff7c86;--green:#54d9a4}
@@ -457,6 +457,70 @@ h1{color:#173647;font-weight:650}
 .oh-lang-control{display:flex;gap:7px;align-items:center;font-size:11px;color:#365d6d;white-space:nowrap;font-weight:700}.oh-lang-control select{padding:7px 9px;border:1px solid #a9cbd8;border-radius:8px;color:#19435b;background:#fff;font-weight:650;min-width:92px}.oh-lang-control select:focus-visible{outline:3px solid #2daaa4;outline-offset:2px}
 @media(max-width:700px){.topbar{flex-wrap:wrap;height:auto;min-height:60px;padding-top:9px;padding-bottom:9px}.oh-lang-control #ohLangLabel{display:none}.oh-lang-control select{min-width:80px;padding:6px}.top-actions{gap:5px}.status-pill{font-size:9px}}
 </style>
+<style id="oh242-presentation-css">
+:root{--p242-ink:#153c4b;--p242-teal:#087e76;--p242-soft:#f2f8fa;--p242-border:#dbe8ed}
+.cloud-app .main-content{max-width:1640px;padding-top:20px}
+.oh242-hero{position:relative;overflow:hidden;background:linear-gradient(119deg,#103b4e 0%,#0b5a65 59%,#12857a 100%);border-radius:20px;padding:25px 28px;color:#fff;box-shadow:0 14px 34px #17475b22;margin-bottom:18px}
+.oh242-hero:before{content:"";position:absolute;right:-55px;top:-130px;width:400px;height:400px;border:1px solid #ffffff30;border-radius:50%;pointer-events:none}
+.oh242-hero:after{content:"";position:absolute;right:60px;top:80px;width:220px;height:220px;border:1px solid #ffffff2b;border-radius:50%;pointer-events:none}
+.oh242-hero-inner{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;position:relative;z-index:1}
+.oh242-eyebrow{font:800 10px system-ui;letter-spacing:2px;color:#a4f0df;margin-bottom:9px}
+.oh242-hero h2{font-size:clamp(19px,2.4vw,28px);font-weight:750;color:#fff;margin:0 0 9px;line-height:1.3}
+.oh242-hero p{font-size:12px;line-height:1.7;color:#d2f2ee;margin:0;max-width:760px}
+.oh242-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px;justify-content:flex-end;max-width:380px}
+.oh242-btn{border:1px solid #ffffff65;background:#ffffff1c;color:#fff;border-radius:10px;padding:9px 12px;font-size:11px;font-weight:750;display:inline-flex;gap:6px;align-items:center;white-space:nowrap;cursor:pointer}
+.oh242-btn:hover,.oh242-btn:focus-visible{background:#ffffff38;outline:2px solid #fff;outline-offset:2px}
+.oh242-btn.primary{background:#fff;color:#135b5e;border-color:#fff}
+.oh242-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:20px;position:relative;z-index:1}
+.oh242-metric{background:#ffffff14;border:1px solid #ffffff3a;border-radius:12px;padding:13px 15px;min-width:0;backdrop-filter:blur(6px)}
+.oh242-metric .n{display:block;font:750 clamp(22px,2.3vw,31px) system-ui;letter-spacing:-.7px;line-height:1.24;font-variant-numeric:tabular-nums}
+.oh242-metric .k{display:block;color:#daf6f1;font-size:10.5px;margin-top:6px}
+.oh242-ribbon{display:grid;grid-template-columns:minmax(180px,1fr) minmax(180px,1fr) minmax(220px,1.2fr);gap:10px;margin:0 0 16px}
+.oh242-source{padding:12px 14px;background:white;border:1px solid var(--p242-border);border-radius:12px;box-shadow:0 2px 10px #12485a08;min-width:0}
+.oh242-source .t{font:700 10px system-ui;color:#698492;letter-spacing:.6px;display:block;margin-bottom:6px}
+.oh242-source strong{font-size:12px;color:#245469;display:block;overflow-wrap:anywhere}
+.oh242-source small{font-size:10px;color:#6a8693;display:block;margin-top:4px;line-height:1.5}
+.oh242-source[data-status="live"]{border-left:4px solid #1aaf84}
+.oh242-source[data-status="staging"]{border-left:4px solid #d29a48}
+.oh242-source[data-status="missing"]{border-left:4px solid #a9bcc6}
+.oh242-source[data-status="review"]{border-left:4px solid #ce8b38}
+.oh242-source[data-status="blocked"]{border-left:4px solid #c66e60}
+.oh242-context{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin:0 0 14px;color:#617d8b;font-size:11px}
+.oh242-context .oh242-pill{background:#e9f5f4;border:1px solid #cde8e1;color:#186e65;border-radius:99px;padding:5px 10px;font-weight:700}
+.oh242-context .oh242-muted{margin-left:auto;color:#718996}
+.oh242-navgroup{margin-top:8px}
+.oh242-navgroup .oh242-label{font:800 9px system-ui;letter-spacing:1.1px;color:#7794a1;padding:8px 8px 6px}
+.oh242-navgroup .nav-btn{border-radius:10px}
+.cloud-app .cloud-card{border-radius:14px;box-shadow:0 4px 18px #16495a0b}
+.cloud-app .cloud-card-head{padding:17px 18px 12px}
+.cloud-app .cloud-card-head h2{font-size:15px;font-weight:750}
+.cloud-app .cloud-stat{box-shadow:0 4px 14px #154b5d0b;border-radius:13px}
+.cloud-app .v11-map{height:520px!important;min-height:440px!important}
+.cloud-app .v11-toolbar{padding:11px 13px 13px}
+.cloud-app .v11-toolbar label{font-size:13px}
+.cloud-app .v12-legend{background:#f7fbfc;border-radius:9px;padding:12px;margin:2px 13px 8px}
+.cloud-app .oh24-summary>div{box-shadow:0 3px 12px #0c52650a;border-radius:12px}
+.cloud-app .oh-real-notice{border-radius:12px;line-height:1.7}
+.cloud-app .cloud-table th{font-weight:750}
+.cloud-app .cloud-table-wrap{border:1px solid #e1ebef;border-radius:11px}
+.cloud-app .cloud-table tbody tr:nth-child(even){background:#fafcfd}
+.cloud-app .cloud-info-bar{background:#f0f8f8;border-color:#cce6e1}
+.cloud-app .demo-banner{background:#fff9eb;border-color:#eedfbf;color:#755d30;line-height:1.6;padding:10px 14px}
+.cloud-app .demo-banner strong{color:#875d25}
+.cloud-app .page-heading{margin-top:18px}
+.cloud-app .page-heading .eyebrow{font-weight:800}
+.cloud-app .footer{line-height:1.6}
+body.oh242-present .sidebar{display:none!important}
+body.oh242-present .workspace{width:100%}
+body.oh242-present .topbar{height:53px}
+body.oh242-present .main-content{max-width:1760px;padding:18px 28px}
+body.oh242-present .demo-banner{font-size:10px}
+body.oh242-present .v11-map{height:635px!important}
+body.oh242-present .oh242-hero{padding:20px 26px}
+@media(max-width:1080px){.oh242-hero-inner{flex-direction:column}.oh242-actions{max-width:none;justify-content:flex-start}.oh242-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.oh242-ribbon{grid-template-columns:repeat(2,minmax(0,1fr))}.oh242-ribbon>:last-child{grid-column:1/-1}}
+@media(max-width:630px){.oh242-hero{padding:18px 16px;border-radius:15px}.oh242-metric{padding:11px}.oh242-ribbon{grid-template-columns:1fr}.oh242-ribbon>:last-child{grid-column:auto}.oh242-actions{gap:6px}.oh242-btn{font-size:10px;padding:8px 10px}.oh242-context .oh242-muted{margin-left:0}body.oh242-present .main-content{padding:12px}.cloud-app .v11-map{height:400px!important;min-height:350px!important}}
+@media print{.oh242-actions,.oh242-context .oh242-muted,.cloud-app .oh-portal-nav{display:none!important}.oh242-hero{-webkit-print-color-adjust:exact;print-color-adjust:exact;box-shadow:none}.oh242-ribbon{break-inside:avoid}.oh242-metrics{break-inside:avoid}}
+</style>
 </head>
 <body>
 <div id="app" class="shell cloud-app">
@@ -469,19 +533,14 @@ h1{color:#173647;font-weight:650}
   <div class="workspace">
     <header class="topbar"><button class="mobile-menu" id="mobileMenu" aria-label="เปิดเมนู">☰</button><div class="crumb"><span>ONE HEALTH /</span><strong id="crumbPage">GIS Intelligence</strong></div><div class="top-actions"><span id="connectionBadge" class="status-pill">● DEVELOPMENT SNAPSHOT · LOGIN FOR LIVE</span><label class="oh-lang-control" for="ohLangSwitch"><span id="ohLangLabel">Language / ภาษา</span><select id="ohLangSwitch" aria-label="Website language"><option value="th">ไทย</option><option value="en">English</option></select></label></div></header>
     <main class="main-content">
-<section class="oh-overview" aria-label="One Health development summary">
-<h2>ONE HEALTH | Animal + Human PEP</h2>
-<p>&#3586;&#3657;&#3629;&#3617;&#3641;&#3621;&#3626;&#3619;&#3640;&#3611;&#3626;&#3635;&#3627;&#3619;&#3633;&#3610;&#3605;&#3636;&#3604;&#3605;&#3634;&#3617;&#3585;&#3634;&#3619;&#3614;&#3633;&#3602;&#3609;&#3634;&#3619;&#3632;&#3610;&#3610; &#183; &#3605;&#3633;&#3623;&#3648;&#3621;&#3586;&#3604;&#3657;&#3634;&#3609;&#3621;&#3656;&#3634;&#3591;&#3648;&#3611;&#3655;&#3609; Snapshot &#3652;&#3617;&#3656;&#3651;&#3594;&#3656;&#3586;&#3657;&#3629;&#3617;&#3641;&#3621;&#3648;&#3619;&#3637;&#3618;&#3621;&#3652;&#3607;&#3617;&#3660; &#183; &#3648;&#3611;&#3636;&#3604; Dashboard &#3586;&#3629;&#3591;&#3649;&#3605;&#3656;&#3621;&#3632;&#3619;&#3632;&#3610;&#3610;&#3648;&#3614;&#3639;&#3656;&#3629;&#3604;&#3641;&#3586;&#3657;&#3629;&#3617;&#3641;&#3621;&#3614;&#3619;&#3657;&#3629;&#3617;&#3623;&#3633;&#3609;&#3607;&#3637;&#3656;&#3649;&#3621;&#3632;&#3626;&#3606;&#3634;&#3609;&#3632; QC</p>
-<div class="oh-overview-cards">
-<div class="oh-overview-card"><h3>ANIMAL RABIES</h3><b id="oh23AnimalCard">676 &#3605;&#3633;&#3623;&#3629;&#3618;&#3656;&#3634;&#3591;</b><span id="oh23AnimalCardNote">21 positive / 655 negative &#183; ThaiRabies.net Staging &#183; &#3619;&#3629;&#3607;&#3610;&#3607;&#3623;&#3609; QC</span><a href="admin-animal-lab-dashboard-v1.1.html">&#3604;&#3641; Animal Lab Dashboard (Admin)</a></div>
-<div class="oh-overview-card"><h3>HUMAN PEP</h3><b id="oh23PepCard">17,229 &#3612;&#3641;&#3657;&#3626;&#3633;&#3617;&#3612;&#3633;&#3626;</b><span id="oh23PepCardNote">7,114 primary / 2,897 >=3 doses &#183; HDC Staging 6 Nov 2026 &#183; &#3618;&#3633;&#3591;&#3652;&#3617;&#3656;&#3629;&#3609;&#3640;&#3617;&#3633;&#3605;&#3636;&#3648;&#3612;&#3618;&#3649;&#3614;&#3619;&#3656;</span><a href="pep-development-preview.html">&#3604;&#3641; PEP Staging Preview (Login)</a></div>
-</div></section>
-      
-<section class="oh23" id="onehealthV23" data-state="snapshot" aria-label="One Health Live Data Integration">
-<div class="oh23-head"><div><strong>One Health v2.3 · Automated Data Integration</strong><div class="oh23-state" id="oh23Status" role="status" aria-live="polite">SNAPSHOT · เข้าสู่ระบบทีมเพื่ออ่านข้อมูล Staging ล่าสุด</div></div><div class="oh23-buttons"><button id="oh23Refresh" type="button" class="oh23-outline">↻ ตรวจข้อมูลล่าสุด</button><button id="oh23LoginToggle" type="button">เข้าสู่ระบบทีม</button><button id="oh23Logout" type="button" class="oh23-outline" hidden>ออกจากระบบ</button></div></div>
-<form id="oh23LoginForm" class="oh23-form" hidden><label>อีเมลทีม<input id="oh23Email" type="email" autocomplete="username" required></label><label>รหัสผ่าน Supabase<input id="oh23Password" type="password" autocomplete="current-password" required></label><button type="submit">ยืนยันเข้าสู่ระบบ</button></form>
-<div class="oh23-note" id="oh23Note">แสดง Snapshot ล่าสุดที่บันทึกในเว็บไซต์จนกว่าจะมีบัญชีทีมที่ได้รับสิทธิ์ · หลังเข้าสู่ระบบจะอ่านข้อมูลสรุปอัตโนมัติเมื่อเปิดหน้า และตรวจซ้ำทุก 15 นาทีระหว่างเปิดแท็บ · ไม่มีการเผยแพร่ข้อมูล Staging ให้ผู้ที่ไม่ได้เข้าสู่ระบบ</div></section>
-      <div class="demo-banner"><span class="demo-icon">ⓘ</span><strong>ONE HEALTH DEVELOPMENT VIEW · AUTOMATED STAGING v2.3</strong><span>ข้อมูลสัตว์และ Human PEP ใช้ Snapshot สำรองจนกว่าทีมจะเข้าสู่ระบบ · เมื่อเข้าสู่ระบบจะอ่าน Staging ล่าสุดจาก Supabase (ไม่ได้อนุมัติเผยแพร่) • โมดูลตอบโต้/ประชากรสัตว์เดิมมีข้อมูลจำลองที่แยกป้ายกำกับ • ไม่ใช่อัตราป่วยหรือข้อมูลรายบุคคล</span></div>
+<section class="oh242-hero" id="oh242Hero" aria-label="One Health executive presentation header">
+ <div class="oh242-hero-inner"><div><div class="oh242-eyebrow">NAKHON PHANOM · ONE HEALTH INTELLIGENCE</div><h2 id="oh242HeroTitle">แพลตฟอร์มเฝ้าระวังโรคพิษสุนัขบ้าแบบบูรณาการ</h2><p id="oh242HeroSub">เชื่อมข้อมูลโรคพิษสุนัขบ้าในสัตว์และข้อมูลการรับวัคซีน PEP ของคน เพื่อสนับสนุนการวิเคราะห์และทบทวนข้อมูลร่วมกัน · ต้นแบบสำหรับการนำเสนอ</p></div>
+ <div class="oh242-actions"><button type="button" class="oh242-btn primary" data-nav="overview" id="oh242Overview">▦ <span data-oh242="overview">ภาพรวม</span></button><button type="button" class="oh242-btn" data-nav="gis" id="oh242Map">◈ <span data-oh242="map">แผนที่ GIS</span></button><button type="button" class="oh242-btn" data-nav="intelligence" id="oh242Quality">⚑ <span data-oh242="quality">Data Quality</span></button><button type="button" class="oh242-btn" id="oh242Present" aria-pressed="false">▣ <span data-oh242="present">โหมดนำเสนอ</span></button></div></div>
+ <div class="oh242-metrics"><div class="oh242-metric"><span class="n" id="oh242Samples">676</span><span class="k" data-oh242="samples">ตัวอย่างสัตว์ส่งตรวจ</span></div><div class="oh242-metric"><span class="n" id="oh242Positive">21</span><span class="k" data-oh242="positive">ตัวอย่างสัตว์ผลบวก</span></div><div class="oh242-metric"><span class="n" id="oh242Contacts">17,229</span><span class="k" data-oh242="contacts">ผู้สัมผัสสัตว์จาก HDC</span></div><div class="oh242-metric"><span class="n" id="oh242Started">7,114</span><span class="k" data-oh242="started">เริ่มรับวัคซีน PEP</span></div></div>
+</section>
+<section class="oh242-ribbon" aria-label="Data source and governance status"><div class="oh242-source" id="oh242AnimalSource" data-status="staging"><span class="t" data-oh242="animalSource">ANIMAL LAB · SOURCE</span><strong>ThaiRabies.net · Staging</strong><small data-oh242="animalPeriod">ตัวอย่างปี 2021–2026 · อยู่ระหว่างตรวจทาน</small></div><div class="oh242-source" id="oh242PepSource" data-status="staging"><span class="t" data-oh242="pepSource">HUMAN PEP · SOURCE</span><strong>HDC · <span id="oh242HDCDate">6 พ.ย. 2569</span></strong><small id="oh242HDCState">Staging · อ่านข้อมูลหลังเข้าสู่ระบบ</small></div><div class="oh242-source" id="oh242GovSource" data-status="blocked"><span class="t" data-oh242="governance">DATA GOVERNANCE</span><strong id="oh242QC">QC: Snapshot · Publication blocked</strong><small data-oh242="governanceNote">ข้อมูล Staging ไม่ได้อนุมัติเผยแพร่เป็น Production</small></div></section>
+<div class="oh242-context"><span class="oh242-pill" id="oh242Scope">● DEVELOPMENT SNAPSHOT</span><span id="oh242Caution">จำนวนจากสัตว์และ PEP มีช่วงเวลาต่างกัน · ไม่ใช่คะแนนความเสี่ยง</span><span class="oh242-muted">Presentation UI v2.4.2 · Read-only</span></div>
+<div class="demo-banner"><span class="demo-icon">ⓘ</span><strong>ONE HEALTH DEVELOPMENT VIEW · AUTOMATED STAGING v2.3</strong><span>ข้อมูลสัตว์และ Human PEP ใช้ Snapshot สำรองจนกว่าทีมจะเข้าสู่ระบบ · เมื่อเข้าสู่ระบบจะอ่าน Staging ล่าสุดจาก Supabase (ไม่ได้อนุมัติเผยแพร่) • โมดูลตอบโต้/ประชากรสัตว์เดิมมีข้อมูลจำลองที่แยกป้ายกำกับ • ไม่ใช่อัตราป่วยหรือข้อมูลรายบุคคล</span></div>
       <section class="page-heading"><div><div class="eyebrow">ONE HEALTH SPATIAL INTELLIGENCE</div><h1 id="pageTitle">GIS Intelligence</h1><p id="pageDesc">ข้อมูลจำลองสำหรับการนำเสนอ • เปิดได้โดยไม่ต้อง Login</p></div><div class="heading-actions"><label class="filter-caption" for="districtFilter">อำเภอ</label><select id="districtFilter" aria-label="เลือกพื้นที่" disabled><option value="all">นครพนม · ทุกอำเภอ</option></select><button class="btn btn-ghost" type="button" id="refreshBtn" disabled>↻ ล้างตัวกรอง</button><button class="btn btn-ghost" type="button" id="exportBtn" disabled>↧ CSV</button></div></section>
       <div class="cloud-info-bar"><span class="live-dot"></span><span id="dataStatus">กำลังเตรียมชุดข้อมูลสาธิต</span><span class="cloud-info-right" id="dataStamp">ชุดข้อมูลสังเคราะห์ • ค่าคงที่</span></div>
       <div id="pageContent" aria-live="polite"><div class="cloud-placeholder">กำลังเตรียม Public Demo…</div></div>
@@ -923,7 +982,7 @@ function gis(){
  return `${ohSource('One Health GIS · '+GIS_LAYER[state.gisMode])}${summaryStats()}<div class="cloud-infonote"><b>ข้อมูลสรุป Staging รายอำเภอ:</b> ผลตรวจสัตว์ 2021–2026 และ PEP ปีงบ 2569 ไม่ใช่ช่วงเวลาที่เท่ากัน • สีแผนที่แสดงจำนวนเชิงเปรียบเทียบ ไม่ใช่ระดับความเสี่ยง • ไม่ใช้ Centroid เป็นจุดเกิดเหตุ</div><div class="cloud-row">${mapPanel()}${panel('ข้อมูลจริงแยกรายอำเภอ','คลิกพื้นที่บนแผนที่เพื่อเลือกอำเภอ',ohTable(rows,[['อำเภอ',x=>ohDistrLink(x.d)],['ส่งตรวจสัตว์',x=>fmt(x.animal_samples)],['ผลบวกสัตว์',x=>fmt(x.animal_positive)],['ผู้สัมผัส',x=>fmt(x.pep_contacts)],['เริ่ม PEP',x=>fmt(x.pep_started)],['≥3 เข็ม',x=>fmt(x.pep_three)]]))}</div><div class="oh-actions"><a class="oh-action" href="admin-animal-lab-dashboard-v1.1.html">Animal Lab Dashboard</a><a class="oh-action" href="pep-development-preview.html">PEP Staging Preview</a></div>`;
 }
 function render(){if(!state.loadedAt)return;clearMap();const current=MENUS.find(x=>x[0]===state.page);$('crumbPage').textContent=current?.[1]||'GIS';$('pageTitle').textContent=current?.[1]||'GIS';$('pageDesc').textContent=['overview','intelligence','animals','pep','population'].includes(state.page)?'One Health DEV · ข้อมูลสรุปจาก Supabase ณ วันที่ระบุ · '+provinceFilter():state.page==='gis'?'แผนที่รวม Snapshot สัตว์และ PEP + ชั้นสาธิตที่ติดป้ายชัดเจน': 'ระบบตอบโต้เป็นข้อมูลจำลองเพื่อทดสอบขั้นตอนการทำงาน';renderMenu();
-  const pages={overview,gis,intelligence:oh24Page,animals,pep,population,response:responsePage};$('pageContent').innerHTML=(state.error?`<div class="cloud-error">${safe(state.error)}</div>`:'')+(pages[state.page]||gis)();if(state.page==='gis')loadLeafletMap();}
+  const pages={overview,gis,intelligence:oh24Page,animals,pep,population,response:responsePage};$('pageContent').innerHTML=(state.error?`<div class="cloud-error">${safe(state.error)}</div>`:'')+(pages[state.page]||gis)();if(state.page==='gis')loadLeafletMap();window.dispatchEvent(new CustomEvent('oh242:data',{detail:{stats:ohStats(ohDistricts().map(d=>ohPair(d.area_code))),live:!!OH_LIVE,sync:OH_LAST_SYNC,qc:OH_QC,page:state.page}}));}
 let leafletLoad=null;
 function ensureLeaflet(){if(window.L)return Promise.resolve(window.L);if(leafletLoad)return leafletLoad;
   leafletLoad=new Promise((resolve,reject)=>{const css=document.createElement('link');css.rel='stylesheet';css.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';css.integrity='sha256-p4NxAoJBhIIN+hmNHrzxZNs1tk0O+4yXYH5FydWDaI=';css.crossOrigin='anonymous';document.head.appendChild(css);const js=document.createElement('script');js.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';js.integrity='sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=';js.crossOrigin='anonymous';js.onload=()=>resolve(window.L);js.onerror=()=>reject(new Error('tile/map library unavailable'));document.head.appendChild(js)});return leafletLoad}
@@ -1183,6 +1242,22 @@ setInterval(()=>{if(!document.hidden&&Date.now()-lastSuccess>14*60*1000)reload()
   const observer=new MutationObserver(schedule);
   ui.addEventListener('change',()=>{current=ui.value==='en'?'en':'th';try{localStorage.setItem(storageKey,current);}catch(_){}schedule();});
   transform();
+})();
+</script>
+<script id="oh242-presentation-script">
+(()=>{'use strict';
+const dict={th:{title:'แพลตฟอร์มเฝ้าระวังโรคพิษสุนัขบ้าแบบบูรณาการ',sub:'เชื่อมข้อมูลโรคพิษสุนัขบ้าในสัตว์และข้อมูลการรับวัคซีน PEP ของคน เพื่อสนับสนุนการวิเคราะห์และทบทวนข้อมูลร่วมกัน · ต้นแบบสำหรับการนำเสนอ',overview:'ภาพรวม',map:'แผนที่ GIS',quality:'Data Quality',present:'โหมดนำเสนอ',exit:'ออกจากโหมดนำเสนอ',samples:'ตัวอย่างสัตว์ส่งตรวจ',positive:'ตัวอย่างสัตว์ผลบวก',contacts:'ผู้สัมผัสสัตว์จาก HDC',started:'เริ่มรับวัคซีน PEP',animalSource:'ANIMAL LAB · แหล่งข้อมูล',animalPeriod:'ตัวอย่างปี 2021–2026 · อยู่ระหว่างตรวจทาน',pepSource:'HUMAN PEP · แหล่งข้อมูล',governance:'สถานะการกำกับข้อมูล',governanceNote:'ข้อมูล Staging ไม่ได้อนุมัติเผยแพร่เป็น Production',caution:'จำนวนจากสัตว์และ PEP มีช่วงเวลาต่างกัน · ไม่ใช่คะแนนความเสี่ยง',snapshot:'● DEVELOPMENT SNAPSHOT',live:'● LIVE STAGING · AUTHORIZED',staging:'Staging · อ่านข้อมูลหลังเข้าสู่ระบบ',authenticated:'Staging · ข้อมูลสรุปสำหรับผู้มีสิทธิ์'},en:{title:'Integrated Rabies One Health Surveillance',sub:'Combining animal rabies laboratory surveillance with human exposure and PEP summaries to support joint review and public health decisions · Presentation prototype',overview:'Overview',map:'GIS Map',quality:'Data Quality',present:'Presentation mode',exit:'Exit presentation',samples:'Animal specimens tested',positive:'Animal-positive specimens',contacts:'Human exposure reports',started:'PEP initiated',animalSource:'ANIMAL LAB · SOURCE',animalPeriod:'2021–2026 specimens · under review',pepSource:'HUMAN PEP · SOURCE',governance:'DATA GOVERNANCE',governanceNote:'Staging data has not been approved for production publication',caution:'Animal and PEP datasets cover different periods · Not a risk score',snapshot:'● DEVELOPMENT SNAPSHOT',live:'● LIVE STAGING · AUTHORIZED',staging:'Staging · sign in for latest data',authenticated:'Staging · authorized aggregate preview'}};
+let last=null;const get=id=>document.getElementById(id);const fmt=n=>Number(n||0).toLocaleString('en-US');const lang=()=>get('ohLangSwitch')?.value==='en'?'en':'th';
+function syncText(){const d=dict[lang()];for(const el of document.querySelectorAll('[data-oh242]')){const k=el.dataset.oh242;if(d[k]!=null)el.textContent=k==='present'&&document.body.classList.contains('oh242-present')?d.exit:d[k]};get('oh242HeroTitle').textContent=d.title;get('oh242HeroSub').textContent=d.sub;get('oh242Caution').textContent=d.caution;
+get('oh242Scope').textContent=last?.live?d.live:d.snapshot;get('oh242HDCState').textContent=last?.live?d.authenticated:d.staging;}
+function applyData(detail){if(!detail?.stats)return;last=detail;const n=detail.stats;for(const [id,key] of [['oh242Samples','animal'],['oh242Positive','positive'],['oh242Contacts','contacts'],['oh242Started','started']])get(id).textContent=fmt(n[key]);if(detail.sync)get('oh242HDCDate').textContent=String(detail.sync);if(detail.qc)get('oh242QC').textContent='QC · '+String(detail.qc).slice(0,180);get('oh242AnimalSource').dataset.status=detail.live?'live':'staging';get('oh242PepSource').dataset.status=detail.live?'live':'staging';get('oh242GovSource').dataset.status=/blocked/i.test(String(detail.qc))?'blocked':'review';syncText();}
+function present(on){document.body.classList.toggle('oh242-present',on);const b=get('oh242Present');b.setAttribute('aria-pressed',String(on));syncText();try{localStorage.setItem('oh242_presentation',on?'1':'0')}catch{};
+if(on&&get('sidebar')?.classList.contains('open'))get('sidebar').classList.remove('open');}
+get('oh242Present')?.addEventListener('click',()=>present(!document.body.classList.contains('oh242-present')));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.body.classList.contains('oh242-present'))present(false)});
+get('ohLangSwitch')?.addEventListener('change',syncText);
+window.addEventListener('oh242:data',e=>applyData(e.detail));
+let was=false;try{was=localStorage.getItem('oh242_presentation')==='1'}catch{};if(was)present(true);syncText();
 })();
 </script>
 </body></html>
