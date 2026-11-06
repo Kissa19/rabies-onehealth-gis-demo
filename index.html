@@ -449,6 +449,10 @@ h1{color:#173647;font-weight:650}
 .oh23-note{margin-top:8px;font-size:11px;line-height:1.65;color:#657e8a}.oh23 .oh23-error{color:#aa3246;font-weight:650}.oh23[data-state="live"]{background:#e7f8f0;border-color:#81c5ad}.oh23[data-state="pending"]{background:#f7f4e9;border-color:#e6cf93}
 @media(max-width:760px){.oh23-form{grid-template-columns:1fr}.oh23-form button{width:100%}}
 </style>
+
+<style id="onehealth-v24-css">
+.oh24-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:0 0 15px}.oh24-summary>div{padding:15px;background:white;border:1px solid #dce9eb;border-radius:12px}.oh24-summary b{font-size:24px;color:#16556b;display:block}.oh24-summary span{font-size:11px;color:#647e8c}.oh24-note{border-left:4px solid #e0a748;border-radius:9px;padding:14px;background:#fff9ea;color:#79592b;margin-bottom:14px;line-height:1.75;font-size:12px}.oh24-note.good{background:#eaf8f2;border-color:#20a38e;color:#206358}.oh24-sev{display:inline-block;border-radius:20px;padding:4px 8px;background:#f0f5f8;color:#516875;font-size:10px;font-weight:800}.oh24-sev.review{background:#fff0db;color:#855318}.oh24-sev.info{background:#eaf3ff;color:#24668a}.oh24-flag{font-size:11px;color:#607a88;line-height:1.6}.oh24-explain{font-size:12px;color:#496b78;line-height:1.7;padding:12px;background:#f1f8fa;border-radius:9px}.oh24-two{display:grid;grid-template-columns:1fr 1fr;gap:14px}.oh24-range{display:inline-block;background:#e9f6f3;color:#087a70;border:1px solid #c1e8e0;border-radius:8px;padding:6px 10px;font-size:11px}.oh24-live{display:block;font-weight:800;font-size:12px;margin-bottom:9px;color:#246c75}@media(max-width:960px){.oh24-two{grid-template-columns:1fr}.oh24-summary{grid-template-columns:repeat(2,1fr)}}@media(max-width:520px){.oh24-summary{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 <div id="app" class="shell cloud-app">
@@ -500,6 +504,7 @@ const FIELDS={
 const MENUS=[
   ['overview','ภาพรวม One Health','Executive Overview','▦'],
   ['gis','GIS & Spatial Intelligence','แผนที่และพื้นที่','◈'],
+  ['intelligence','One Health Intelligence','Data Quality & Analysis · v2.4','⚑'],
   ['animals','เฝ้าระวังสัตว์และ Lab','Event Registry','♞'],
   ['pep','ผู้สัมผัสและ PEP','Human Exposure','♙'],
   ['population','ประชากรสัตว์และวัคซีน','Population Monitoring','◎'],
@@ -913,8 +918,8 @@ function gis(){
  const rows=ohDistricts().map(d=>({d,...ohPair(d.area_code)}));
  return `${ohSource('One Health GIS · '+GIS_LAYER[state.gisMode])}${summaryStats()}<div class="cloud-infonote"><b>ข้อมูลสรุป Staging รายอำเภอ:</b> ผลตรวจสัตว์ 2021–2026 และ PEP ปีงบ 2569 ไม่ใช่ช่วงเวลาที่เท่ากัน • สีแผนที่แสดงจำนวนเชิงเปรียบเทียบ ไม่ใช่ระดับความเสี่ยง • ไม่ใช้ Centroid เป็นจุดเกิดเหตุ</div><div class="cloud-row">${mapPanel()}${panel('ข้อมูลจริงแยกรายอำเภอ','คลิกพื้นที่บนแผนที่เพื่อเลือกอำเภอ',ohTable(rows,[['อำเภอ',x=>ohDistrLink(x.d)],['ส่งตรวจสัตว์',x=>fmt(x.animal_samples)],['ผลบวกสัตว์',x=>fmt(x.animal_positive)],['ผู้สัมผัส',x=>fmt(x.pep_contacts)],['เริ่ม PEP',x=>fmt(x.pep_started)],['≥3 เข็ม',x=>fmt(x.pep_three)]]))}</div><div class="oh-actions"><a class="oh-action" href="admin-animal-lab-dashboard-v1.1.html">Animal Lab Dashboard</a><a class="oh-action" href="pep-development-preview.html">PEP Staging Preview</a></div>`;
 }
-function render(){if(!state.loadedAt)return;clearMap();const current=MENUS.find(x=>x[0]===state.page);$('crumbPage').textContent=current?.[1]||'GIS';$('pageTitle').textContent=current?.[1]||'GIS';$('pageDesc').textContent=['overview','animals','pep','population'].includes(state.page)?'One Health DEV · ข้อมูลสรุปจาก Supabase ณ วันที่ระบุ · '+provinceFilter():state.page==='gis'?'แผนที่รวม Snapshot สัตว์และ PEP + ชั้นสาธิตที่ติดป้ายชัดเจน': 'ระบบตอบโต้เป็นข้อมูลจำลองเพื่อทดสอบขั้นตอนการทำงาน';renderMenu();
-  const pages={overview,gis,animals,pep,population,response:responsePage};$('pageContent').innerHTML=(state.error?`<div class="cloud-error">${safe(state.error)}</div>`:'')+(pages[state.page]||gis)();if(state.page==='gis')loadLeafletMap();}
+function render(){if(!state.loadedAt)return;clearMap();const current=MENUS.find(x=>x[0]===state.page);$('crumbPage').textContent=current?.[1]||'GIS';$('pageTitle').textContent=current?.[1]||'GIS';$('pageDesc').textContent=['overview','intelligence','animals','pep','population'].includes(state.page)?'One Health DEV · ข้อมูลสรุปจาก Supabase ณ วันที่ระบุ · '+provinceFilter():state.page==='gis'?'แผนที่รวม Snapshot สัตว์และ PEP + ชั้นสาธิตที่ติดป้ายชัดเจน': 'ระบบตอบโต้เป็นข้อมูลจำลองเพื่อทดสอบขั้นตอนการทำงาน';renderMenu();
+  const pages={overview,gis,intelligence:oh24Page,animals,pep,population,response:responsePage};$('pageContent').innerHTML=(state.error?`<div class="cloud-error">${safe(state.error)}</div>`:'')+(pages[state.page]||gis)();if(state.page==='gis')loadLeafletMap();}
 let leafletLoad=null;
 function ensureLeaflet(){if(window.L)return Promise.resolve(window.L);if(leafletLoad)return leafletLoad;
   leafletLoad=new Promise((resolve,reject)=>{const css=document.createElement('link');css.rel='stylesheet';css.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';css.integrity='sha256-p4NxAoJBhIIN+hmNHrzxZNs1tk0O+4yXYH5FydWDaI=';css.crossOrigin='anonymous';document.head.appendChild(css);const js=document.createElement('script');js.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';js.integrity='sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=';js.crossOrigin='anonymous';js.onload=()=>resolve(window.L);js.onerror=()=>reject(new Error('tile/map library unavailable'));document.head.appendChild(js)});return leafletLoad}
@@ -984,6 +989,39 @@ document.addEventListener('click',e=>{if(e.target.closest('[data-v16clear]')){v1
 document.addEventListener('click',e=>{const tab=e.target.closest('[data-v14tab]');if(tab){v14Tab=tab.dataset.v14tab;render();return;}const dist=e.target.closest('[data-v14district]');if(dist){focusDistrict(dist.dataset.v14district);return;}});
 document.addEventListener('keydown',e=>{const dist=e.target.closest('[data-v14district]');if(dist&&(e.key==='Enter'||e.key===' ')){e.preventDefault();focusDistrict(dist.dataset.v14district);}});
 document.addEventListener('click',e=>{const nav=e.target.closest('[data-nav]');if(nav){navigate(nav.dataset.nav);return}const dist=e.target.closest('[data-focus]');if(dist){focusDistrict(dist.dataset.focus);return}});
+
+/* ONEHEALTH_V24_DQ - explanatory screening rules, read-only */
+function oh24Number(n){return Number(n||0)}
+function oh24Rate(a,b){return Number(b)>0?(100*Number(a||0)/Number(b)).toFixed(1)+'%':'—'}
+function oh24Rows(){return ohDistricts().map(d=>({d,...ohPair(d.area_code)}));}
+function oh24Flags(r){
+ const out=[];
+ const contacts=oh24Number(r.pep_contacts),started=oh24Number(r.pep_started),three=oh24Number(r.pep_three);
+ if(contacts>=100&&started===0)out.push({level:'review',label:'PEP_START_ZERO',detail:'มีผู้สัมผัสตั้งแต่ 100 ราย แต่จำนวนเริ่ม PEP เป็นศูนย์ — ตรวจ mapping และความครบถ้วนการส่งข้อมูล ไม่ใช่ข้อสรุปว่าทุกคนไม่ได้รับวัคซีน'});
+ else if(contacts>=100&&started/contacts<.10)out.push({level:'review',label:'PEP_START_LOW',detail:'สัดส่วนเริ่ม PEP ต่อจำนวนรายงานผู้สัมผัสต่ำกว่า 10% (เกณฑ์คัดกรองสำหรับการทดสอบ) ควรตรวจคำจำกัดความและหน่วยบริการ'});
+ if(started>=30&&three/started<.10)out.push({level:'review',label:'PEP_3DOSE_LOW',detail:'C/A ต่ำกว่า 10% และมีจำนวนเริ่ม PEP ตั้งแต่ 30 ราย — ตรวจการรายงานจำนวนเข็มและช่วงเวลาสะสม'});
+ if(started>contacts)out.push({level:'review',label:'PEP_START_GT_CONTACT',detail:'จำนวนเริ่ม PEP มากกว่าจำนวนผู้สัมผัสในชุดสรุปเดียวกัน — ตรวจนิยามตัวตั้ง ตัวหาร และการซ้ำซ้อน'});
+ if(three>started)out.push({level:'review',label:'PEP_3DOSE_GT_START',detail:'จำนวน ≥3 เข็ม มากกว่าจำนวนเริ่ม PEP — ตรวจนิยามและชุดการรายงาน'});
+ if(oh24Number(r.animal_samples)>0&&oh24Number(r.animal_positive)>0)out.push({level:'info',label:'ANIMAL_LAB_POSITIVE',detail:'มีผลตรวจสัตว์เป็นบวกในตัวอย่างส่งตรวจ ไม่ใช่อัตราป่วยหรือข้อสรุปความเสี่ยงประชากร'});
+ return out;
+}
+function oh24Page(){
+ const rows=oh24Rows(), flags=rows.flatMap(r=>oh24Flags(r).map(f=>({...f,row:r}))), review=flags.filter(x=>x.level==='review');
+ const totals=ohStats(rows), allRows=districts().map(d=>({...d,...ohPair(d.area_code)}));
+ const live=!!OH_LIVE;const cat=OH_LIVE?.animal||{};
+ const pct=cat.centroid!=null&&totals.animal?oh24Rate(cat.centroid,totals.animal):'96.9% (Snapshot)';
+ const timeLine=(OH_LIVE?.animal?.by_year||OH_LAB_YEARS).map(x=>`<tr><td>${safe(x.year)}</td><td>${fmt(x.total)}</td><td>${fmt(x.positive)}</td><td>${oh24Rate(x.positive,x.total)}</td></tr>`).join('');
+ const qc=OH_LIVE?OH_QC:'รอเข้าสู่ระบบเพื่ออ่าน QC จาก Supabase · กำลังแสดง Snapshot สำรอง';
+ const rowHtml=rows.map(r=>{const f=oh24Flags(r),warn=f.filter(x=>x.level==='review');return `<tr><td>${ohDistrLink(r.d)}</td><td>${fmt(r.animal_samples)} / ${fmt(r.animal_positive)}</td><td>${fmt(r.pep_contacts)}</td><td>${fmt(r.pep_started)}</td><td>${oh24Rate(r.pep_three,r.pep_started)}</td><td><span class="oh24-sev ${warn.length?'review':'info'}">${warn.length?warn.length+' REVIEW':'ไม่มี REVIEW จากกฎ'}</span>${f.map(x=>`<div class="oh24-flag">${safe(x.label)}</div>`).join('')}</td></tr>`}).join('');
+ return `${ohSource('One Health Intelligence v2.4')}
+ <div class="oh24-live">${live?'AUTHORIZED LIVE STAGING':'SNAPSHOT FALLBACK (ไม่ได้ตรวจข้อมูลใหม่)'}</div>
+ <div class="oh24-note"><b>การเปรียบเทียบสัตว์กับคนยังไม่ใช่การวิเคราะห์ความสัมพันธ์เชิงเวลา</b> · ข้อมูลผลตรวจสัตว์มีช่วงปี 2021–2026 แต่ข้อมูล PEP เป็นยอด HDC ปีงบประมาณเดียว จึงเปรียบเทียบเพื่อทบทวนความครบถ้วนเชิงพื้นที่เท่านั้น ไม่สรุปความเสี่ยงโรคหรือความสัมพันธ์เชิงสาเหตุ</div>
+ <div class="oh24-summary"><div><b>${fmt(totals.animal)}</b><span>ตัวอย่างสัตว์ส่งตรวจ</span></div><div><b>${fmt(totals.positive)}</b><span>ผลบวกในตัวอย่างสัตว์</span></div><div><b>${fmt(totals.contacts)}</b><span>ผู้สัมผัสสัตว์ (HDC)</span></div><div><b>${review.length}</b><span>DQ Rules ที่ต้องตรวจ (เฉพาะพื้นที่ที่เลือก)</span></div></div>
+ ${panel('Data Quality Watchlist · ตรวจการรายงาน','กฎคัดกรองเชิงทดลอง ไม่ใช่มาตรฐานทางคลินิกหรือการประเมินความเสี่ยงโรค',`<div class="oh24-explain">เกณฑ์ทดสอบ: ผู้สัมผัส ≥100 แต่เริ่ม PEP เป็น 0; เริ่ม PEP / ผู้สัมผัส ต่ำกว่า 10%; C/A ต่ำกว่า 10% เมื่อเริ่ม PEP ≥30; และตัวตั้งมากกว่าตัวหาร โดยกฎเหล่านี้ <b>แจ้งให้ตรวจสอบ</b> ไม่ตัดสินความผิดปกติทางคลินิกอัตโนมัติ</div>${ohTable(flags.filter(f=>f.level==='review'),[['อำเภอ',x=>ohDistrLink(x.row.d)],['กฎ',x=>'<span class="oh24-sev review">'+safe(x.label)+'</span>'],['เหตุผล',x=>safe(x.detail)]])}${!review.length?'<p class="cloud-footnote">ไม่พบ REVIEW ตามเกณฑ์ทดสอบสำหรับพื้นที่ที่เลือก</p>':''}`)}
+ ${panel('One Health · เปรียบเทียบรายอำเภอ','แสดงตัวชี้วัดคนและสัตว์ควบคู่ ไม่คำนวณคะแนนเสี่ยงรวม',`<div class="cloud-table-wrap"><table class="cloud-table"><thead><tr><th>อำเภอ</th><th>สัตว์ ส่งตรวจ / บวก</th><th>ผู้สัมผัส</th><th>เริ่ม PEP</th><th>C/A</th><th>ข้อสังเกต DQ</th></tr></thead><tbody>${rowHtml}</tbody></table></div>`)}
+ <div class="oh24-two">${panel('Temporal Intelligence · ผลตรวจสัตว์รายปี','ชุดส่งตรวจจริง ไม่ใช่จำนวนสัตว์ป่วยทั้งหมด',`<div class="cloud-table-wrap"><table class="cloud-table"><thead><tr><th>ปี ค.ศ.</th><th>ส่งตรวจ</th><th>ผลบวก</th><th>Positivity ในตัวอย่าง</th></tr></thead><tbody>${timeLine}</tbody></table></div><p class="cloud-footnote">ข้อมูลรายปีนี้เป็นผลรวมทั้งจังหวัด ไม่แยกรายอำเภอในรุ่นนี้</p>`)}${panel('ความพร้อมของข้อมูล One Health','ระบุช่องว่างก่อนออกแบบการวิเคราะห์เชิงความสัมพันธ์',`<div class="oh24-explain"><b>คุณภาพพิกัดสัตว์:</b> Centroid ${safe(pct)} ของตัวอย่าง ไม่ควรใช้เป็นจุดเกิดโรคจริง<br><b>สถานะ HDC:</b> ${safe(qc)}<br><b>Animal Vaccination:</b> ยังไม่มีตัวหารประชากรและความครอบคลุมวัคซีนสัตว์จริงที่ผ่านการรับรอง<br><b>Time alignment:</b> ต้องได้ข้อมูล HDC PEP รายเดือนที่มีนิยามเดียวกันก่อนเปรียบเทียบแนวโน้มกับผลตรวจสัตว์</div><p class="cloud-footnote">QC Alert ในหน้านี้คำนวณใหม่เมื่อ v2.3 ส่งชุดข้อมูลล่าสุดมา ไม่เขียนกลับฐานและไม่เปลี่ยน Publication Gate</p>`)} </div>
+ ${panel('One Health Brief · สำหรับประชุมร่วมสาธารณสุขและปศุสัตว์','ข้อค้นพบเชิงระบบ ข้อควรตรวจ และงานถัดไป',`<div class="oh24-explain">ข้อมูลสัตว์และ PEP ครอบคลุม 12 อำเภอในมิติพื้นที่ แต่ไม่ใช่ชุดประชากรเดียวกันและยังเทียบช่วงเวลาไม่ได้ตามหลักวิเคราะห์แนวโน้มร่วม กฎคัดกรองพบ ${review.length} รายการที่ควรตรวจสอบในพื้นที่ที่เลือก และยังไม่สามารถคำนวณความครอบคลุมวัคซีนสัตว์ได้ ควรทบทวนรหัสหน่วยบริการและนิยามข้อมูล PEP, ตรวจพิกัดสัตว์ที่เป็น Centroid, ประสานข้อมูลประชากรสัตว์/วัคซีนกับกรมปศุสัตว์ และจัดชุดข้อมูลรายเดือนก่อนประเมินความสัมพันธ์ระหว่างสัตว์กับคน</div>`)}`;
+}
 
 /* ONEHEALTH_V23 Internal event bridge. Never writes to Supabase. */
 window.addEventListener('oh23-data',e=>{
