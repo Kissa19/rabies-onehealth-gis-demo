@@ -539,7 +539,31 @@ function readPoint(geom){if(!geom)return null;let g=geom;try{if(typeof g==='stri
 // Verifiable geographic boundaries (not invented): Thailand Canonical Admin-Names v1.0.0, ADM2 polygons derived from OCHA COD, 2019. CC BY 4.0 / CC BY 3.0 IGO attribution in README. Simplified boundaries: visualization only.
 const NAKHON_ADM2_GEOJSON={"type":"FeatureCollection","features":[{"type":"Feature","properties":{"area_code":"4801","area_name_th":"เมืองนครพนม","source":"Thailand Canonical ADM2 v1.0.0, OCHA COD polygons, 2019, CC BY"},"geometry":{"type":"Polygon","coordinates":[[[104.78842,17.12754],[104.80061,17.39316],[104.72793,17.49151],[104.64757,17.42694],[104.55431,17.43205],[104.49251,17.36968],[104.41271,17.3614],[104.41605,17.32124],[104.46383,17.285],[104.63066,17.27784],[104.66985,17.33249],[104.68376,17.22268],[104.64558,17.15522],[104.66202,17.16286],[104.71103,17.17931],[104.78842,17.12754]]]}},{"type":"Feature","properties":{"area_code":"4802","area_name_th":"ปลาปาก","source":"Thailand Canonical ADM2 v1.0.0, OCHA COD polygons, 2019, CC BY"},"geometry":{"type":"Polygon","coordinates":[[[104.64558,17.15522],[104.68376,17.22268],[104.66985,17.33249],[104.63066,17.27784],[104.46383,17.285],[104.41605,17.32124],[104.40565,17.28011],[104.43507,17.241],[104.40882,17.13865],[104.51716,17.09684],[104.57326,17.07395],[104.64558,17.15522]]]}},{"type":"Feature","properties":{"area_code":"4803","area_name_th":"ท่าอุเทน","source":"Thailand Canonical ADM2 v1.0.0, OCHA COD polygons, 2019, CC BY"},"geometry":{"type":"Polygon","coordinates":[[[104.72793,17.49151],[104.70554,17.52644],[104.46651,17.65666],[104.36107,17.81487],[104.3008,17.84539],[104.2998,17.74439],[104.38949,17.65458],[104.41259,17.54709],[104.53114,17.5521],[104.64757,17.42694],[104.72793,17.49151]]]}},{"type":"Feature","properties":{"area_code":"4804","area_name_th":"บ้านแพง","source":"Thailand Canonical ADM2 v1.0.0, OCHA COD polygons, 2019, CC BY"},"geometry":{"type":"Polygon","coordinates":[[[104.3008,17.84539],[104.18998,18.02374],[104.11182,18.00481],[104.13414,17.95593],[104.1911,17.88489],[104.17885,17.78663],[104.22368,17.72902],[104.2998,17.74439],[104.3008,17.84539]]]}},{"type":"Feature","properties":{"area_code":"4805","area_name_th":"ธาตุพนม","source":"Thailand Canonical ADM2 v1.0.0, OCHA COD polygons, 2019, CC BY"},"geometry":{"type":"Polygon","coordinates":[[[104.78842,17.12754],[104.71103,17.17931],[104.66202,17.16286],[104.71665,17.10321],[104.71497,17.02479],[104.63332,16.95156],[104.62833,16.86311],[104.65999,16.79227],[104.69236,16.79042],[104.73726,16.80471],[104.76242,16.84092],[104.72935,17.00104],[104.78842,17.12754]]]}},{"type":"Feature","properties":{"area_code":"4806","area_name_th":"เรณูนคร","source":"Thailand Canonical ADM2 v1.0.0, OCHA COD polygons, 2019, CC BY"},"geometry":{"type":"Polygon","coordinates":[[[104.63332,16.95156],[104.71497,17.02479],[104.71665,17.10321],[104.66202,17.16286],[104.64558,17.15522],[104.57326,17.07395],[104.58102,16.98008],[104.63332,16.95156]]]}},{"type":"Feature","properties":{"area_code":"4807","area_name_th":"นาแก","source":"Thailand Canonical ADM2 v1.0.0, OCHA COD polygons, 2019, CC BY"},"geometry":{"type":"Polygon","coordinates":[[[104.57326,17.07395],[104.51716,17.09684],[104.52848,17.05679],[104.43108,17.00151],[104.39669,17.03442],[104.26678,16.92042],[104.25218,16.90693],[104.29602,16.83777],[104.40735,16.8962],[104.48356,16.85355],[104.62833,16.86311],[104.63332,16.95156],[104.58102,16.98008],[104.57326,17.07395]]]}},{"type":"Feature","properties":{"area_code":"4808","area_name_th":"ศรีสงคราม","source":"Thailand Canonical ADM2 v1.0.0, OCHA COD polygons, 2019, CC BY"},"geometry":{"type":"Polygon","coordinates":[[[104.17885,17.78663],[104.06658,17.74021],[104.07115,17.65158],[104.13861,17.59162],[104.13145,17.50948],[104.17852,17.50266],[104.26427,17.50119],[104.41259,17.54709],[104.38949,17.65458],[104.2998,17.74439],[104.22368,17.72902],[104.17885,17.78663]]]}},{"type":"Feature","properties":{"area_code":"4809","area_name_th":"นาหว้า","source":"Thailand Canonical ADM2 v1.0.0, OCHA COD polygons, 2019, CC BY"},"geometry":{"type":"Polygon","coordinates":[[[104.17852,17.50266],[104.13145,17.50948],[104.13861,17.59162],[104.07115,17.65158],[104.01574,17.46211],[104.06281,17.38887],[104.07248,17.37794],[104.19778,17.42938],[104.17852,17.50266]]]}},{"type":"Feature","properties":{"area_code":"4810","area_name_th":"โพนสวรรค์","source":"Thailand Canonical ADM2 v1.0.0, OCHA COD polygons, 2019, CC BY"},"geometry":{"type":"Polygon","coordinates":[[[104.64757,17.42694],[104.53114,17.5521],[104.41259,17.54709],[104.26427,17.50119],[104.17852,17.50266],[104.19778,17.42938],[104.39248,17.41438],[104.41271,17.3614],[104.49251,17.36968],[104.55431,17.43205],[104.64757,17.42694]]]}},{"type":"Feature","properties":{"area_code":"4811","area_name_th":"นาทม","source":"Thailand Canonical ADM2 v1.0.0, OCHA COD polygons, 2019, CC BY"},"geometry":{"type":"Polygon","coordinates":[[[104.17885,17.78663],[104.1911,17.88489],[104.13414,17.95593],[104.06946,17.87816],[103.99929,17.89305],[104.01223,17.8108],[104.06658,17.74021],[104.17885,17.78663]]]}},{"type":"Feature","properties":{"area_code":"4812","area_name_th":"วังยาง","source":"Thailand Canonical ADM2 v1.0.0, OCHA COD polygons, 2019, CC BY"},"geometry":{"type":"Polygon","coordinates":[[[104.51716,17.09684],[104.40882,17.13865],[104.36237,17.09942],[104.39669,17.03442],[104.43108,17.00151],[104.52848,17.05679],[104.51716,17.09684]]]}}]};
 
+/* OH_GIS_LAYERS_V2_1: province 48, aggregated staging snapshots. */
+const OH_REAL_NAMES={"4801":"\u0e40\u0e21\u0e37\u0e2d\u0e07\u0e19\u0e04\u0e23\u0e1e\u0e19\u0e21","4802":"\u0e1b\u0e25\u0e32\u0e1b\u0e32\u0e01","4803":"\u0e17\u0e48\u0e32\u0e2d\u0e38\u0e40\u0e17\u0e19","4804":"\u0e1a\u0e49\u0e32\u0e19\u0e41\u0e1e\u0e07","4805":"\u0e18\u0e32\u0e15\u0e38\u0e1e\u0e19\u0e21","4806":"\u0e40\u0e23\u0e13\u0e39\u0e19\u0e04\u0e23","4807":"\u0e19\u0e32\u0e41\u0e01","4808":"\u0e28\u0e23\u0e35\u0e2a\u0e07\u0e04\u0e23\u0e32\u0e21","4809":"\u0e19\u0e32\u0e2b\u0e27\u0e49\u0e32","4810":"\u0e42\u0e1e\u0e19\u0e2a\u0e27\u0e23\u0e23\u0e04\u0e4c","4811":"\u0e19\u0e32\u0e17\u0e21","4812":"\u0e27\u0e31\u0e07\u0e22\u0e32\u0e07"};
+const OH_GIS_VALUES={"4801":{"animal_samples":107,"animal_positive":13,"pep_contacts":4100,"pep_started":2033,"pep_three":587},"4802":{"animal_samples":61,"animal_positive":3,"pep_contacts":1426,"pep_started":203,"pep_three":2},"4803":{"animal_samples":55,"animal_positive":0,"pep_contacts":1047,"pep_started":267,"pep_three":43},"4804":{"animal_samples":36,"animal_positive":0,"pep_contacts":1088,"pep_started":563,"pep_three":248},"4805":{"animal_samples":79,"animal_positive":0,"pep_contacts":1518,"pep_started":7,"pep_three":1},"4806":{"animal_samples":62,"animal_positive":5,"pep_contacts":1209,"pep_started":173,"pep_three":21},"4807":{"animal_samples":79,"animal_positive":0,"pep_contacts":1733,"pep_started":1402,"pep_three":749},"4808":{"animal_samples":62,"animal_positive":0,"pep_contacts":1388,"pep_started":0,"pep_three":0},"4809":{"animal_samples":44,"animal_positive":0,"pep_contacts":1624,"pep_started":798,"pep_three":324},"4810":{"animal_samples":51,"animal_positive":0,"pep_contacts":1052,"pep_started":981,"pep_three":572},"4811":{"animal_samples":21,"animal_positive":0,"pep_contacts":607,"pep_started":482,"pep_three":265},"4812":{"animal_samples":19,"animal_positive":0,"pep_contacts":437,"pep_started":205,"pep_three":85}};
+const OH_GIS_LABELS={"animal_samples":"\u0e15\u0e31\u0e27\u0e2d\u0e22\u0e48\u0e32\u0e07\u0e2a\u0e48\u0e07\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e31\u0e15\u0e27\u0e4c (Staging Snapshot)","animal_positive":"\u0e2a\u0e31\u0e15\u0e27\u0e4c\u0e1c\u0e25\u0e1a\u0e27\u0e01 (Staging Snapshot)","pep_contacts":"\u0e1c\u0e39\u0e49\u0e2a\u0e31\u0e21\u0e1c\u0e31\u0e2a\u0e2a\u0e31\u0e15\u0e27\u0e4c (HDC Snapshot)","pep_started":"\u0e40\u0e23\u0e34\u0e48\u0e21\u0e27\u0e31\u0e04\u0e0b\u0e35\u0e19 PEP (HDC Snapshot)","pep_three":"\u0e44\u0e14\u0e49\u0e23\u0e31\u0e1a\u0e27\u0e31\u0e04\u0e0b\u0e35\u0e19 3 \u0e40\u0e02\u0e47\u0e21\u0e02\u0e36\u0e49\u0e19\u0e44\u0e1b (HDC Snapshot)","onehealth_compare":"\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e2a\u0e31\u0e15\u0e27\u0e4c\u0e41\u0e25\u0e30 PEP \u0e40\u0e17\u0e35\u0e22\u0e1a\u0e23\u0e32\u0e22\u0e2d\u0e33\u0e40\u0e20\u0e2d"};
+const OH_GIS_KEYS=Object.keys(OH_GIS_LABELS);
+const OH_GIS_SOURCE_NOTE='Animal ThaiRabies.net staging: sample dates 2021-2026; HDC staging: synced 6 Nov 2026 02:00 ICT. Prototype snapshots, not approved public releases. No sample location dots.';
+function ohGisMetric(code,mode){
+ const r=OH_GIS_VALUES[code];if(!r)return {value:null,text:'No staging summary for this district',tone:'none'};
+ if(mode==='onehealth_compare')return {value:r.animal_positive,text:`Animal positive: ${r.animal_positive} / ${r.animal_samples} samples; PEP contacts: ${r.pep_contacts}; PEP started: ${r.pep_started}`,tone:'data'};
+ const v=r[mode];return {value:v,text:Number(v).toLocaleString('th-TH')+' records',tone:'data'};
+}
+function ohGisColor(code,mode){const r=OH_GIS_VALUES[code];if(!r)return '#e5eaef';const key=mode==='onehealth_compare'?'animal_positive':mode;
+ const v=Number(r[key]||0),max=Math.max(...Object.values(OH_GIS_VALUES).map(x=>Number(x[key]||0)));
+ if(v===0)return '#e1eaf0';const pct=max?v/max:0;
+ return pct>=.67?'#087f83':pct>=.34?'#56bcb4':'#b7e1dc';
+}
+function ohGisLegend(){return '<div class="v12-legend"><span><i style="background:#e1eaf0"></i>0</span><span><i style="background:#b7e1dc"></i>Low</span><span><i style="background:#56bcb4"></i>Medium</span><span><i style="background:#087f83"></i>High</span></div><p class="v12-legend-note">Relative district totals within the selected indicator. Separate scales for each indicator; not risk grades. Animal lab and HDC periods are different. Staging snapshots only.</p>'}
+
 const GIS_LAYER={
+  'animal_samples':OH_GIS_LABELS.animal_samples,
+ 'animal_positive':OH_GIS_LABELS.animal_positive,
+ 'pep_contacts':OH_GIS_LABELS.pep_contacts,
+ 'pep_started':OH_GIS_LABELS.pep_started,
+ 'pep_three':OH_GIS_LABELS.pep_three,
+ 'onehealth_compare':OH_GIS_LABELS.onehealth_compare,
  dog_density:'ความหนาแน่นสุนัข (ตัว/ตร.กม.)',
  cat_density:'ความหนาแน่นแมว (ตัว/ตร.กม.)',
  vaccination:'ความครอบคลุมวัคซีนสุนัข (%)',
@@ -590,7 +614,7 @@ function priorityFor(code){
  return {score,label,tone,eligible:true,density,vaccination,eventPts,vaxPts,densityPts};
 }
 function metric(code){
- const m=metricsFor(code),mode=state.gisMode;
+ const m=metricsFor(code),mode=state.gisMode; if(OH_GIS_LABELS[mode])return ohGisMetric(code,mode);
  if(mode==='signals'){
   const e=eventRecordStatus(code);
   return {value:e.status,text:e.label,tone:e.status==='confirmed'?'high':e.status==='suspected'?'watch':e.status==='discarded'?'quiet':e.status==='unrecorded'?'none':'quiet'};
@@ -617,7 +641,7 @@ function metric(code){
 }
 function legendText(){
  const mode=state.gisMode;
- if(mode==='signals')return 'เทา = ไม่มีรายการเหตุการณ์ในชุดสาธิต (ไม่ใช่ไม่มีโรค) · เขียว = มีรายการแต่ตัดออก · ส้ม = สงสัย · แดง = ยืนยัน';
+ if(OH_GIS_LABELS[mode])return OH_GIS_SOURCE_NOTE; if(mode==='signals')return 'เทา = ไม่มีรายการเหตุการณ์ในชุดสาธิต (ไม่ใช่ไม่มีโรค) · เขียว = มีรายการแต่ตัดออก · ส้ม = สงสัย · แดง = ยืนยัน';
  if(mode==='completeness')return 'เทา = ไม่มีข้อมูลสำรวจสัตว์ · เขียวอ่อน = มีข้อมูลชนิดเดียว · เขียวเข้ม = มีทั้งสุนัขและแมว';
  if(mode==='priority')return 'คะแนนสาธิต: เทา = ข้อมูลไม่ครบ · เขียว = ต่ำกว่า 40 · ส้ม = 40–64 · แดง = ตั้งแต่ 65 · ไม่ใช่ระดับความเสี่ยงจริง';
  if(mode==='vaccination')return 'เทา = ไม่มีข้อมูล · เขียวอ่อน = ต่ำกว่า 55% · เขียวกลาง = 55–<75% · เขียวเข้ม = ตั้งแต่ 75%';
@@ -625,7 +649,7 @@ function legendText(){
  return 'เทา = ไม่มีข้อมูล · เขียวอ่อน = ต่ำกว่า 5 · เขียวกลาง = 5–<10 · เขียวเข้ม = ตั้งแต่ 10 ตัว/ตร.กม.';
 }
 function metricColor(code){
- const m=metric(code);if(m.tone==='none'||m.value===null)return V11_COLORS.none;
+ const m=metric(code);if(OH_GIS_LABELS[state.gisMode])return ohGisColor(code,state.gisMode);if(m.tone==='none'||m.value===null)return V11_COLORS.none;
  const mode=state.gisMode;
  if(mode==='signals')return m.tone==='high'?V11_COLORS.alert:m.tone==='watch'?V11_COLORS.watch:V11_COLORS.quiet;
  if(mode==='completeness')return m.value===2?V11_COLORS.high:V11_COLORS.mid;
@@ -636,7 +660,7 @@ function metricColor(code){
 function dynamicLegend(){
  const mode=state.gisMode;
  let entries;
- if(mode==='signals')entries=[['#e5eaef','ไม่มีรายการ'],['#c0dfd5','ตัดออก'],['#edab62','สงสัย'],['#dd635c','ยืนยัน']];
+ if(OH_GIS_LABELS[mode])return ohGisLegend(); if(mode==='signals')entries=[['#e5eaef','ไม่มีรายการ'],['#c0dfd5','ตัดออก'],['#edab62','สงสัย'],['#dd635c','ยืนยัน']];
  else if(mode==='completeness')entries=[['#e5eaef','ไม่มีข้อมูล'],['#68c5b6','ชนิดเดียว'],['#0b8d89','ครบ 2 ชนิด']];
  else if(mode==='priority')entries=[['#e5eaef','คำนวณไม่ได้'],['#89c9b8','<40'],['#e9a758','40–64'],['#de605b','≥65']];
  else if(mode==='vaccination')entries=[['#e5eaef','ไม่มีข้อมูล'],['#bce5dc','<55%'],['#68c5b6','55–<75%'],['#0b8d89','≥75%']];
@@ -648,7 +672,7 @@ function dynamicLegend(){
 function geometryStatus(){const n=state.boundaries?.length||0;return n===12?`GeoJSON ในเว็บ: พร้อมใช้ ${n}/12 อำเภอ`:'GeoJSON: '+state.boundaryStatus}
 function boundaryPopup(code){
  const m=metricsFor(code),out=metric(code),c=coverageFor(code),p=priorityFor(code);
- return `<div class="v11-popup"><strong>อ.${safe(areaName(code))}</strong><span>${safe(GIS_LAYER[state.gisMode])}: <b>${safe(out.text)}</b></span><span>ข้อมูลสัตว์: ${safe(c.label)}</span><span>จัดลำดับติดตาม: ${p.eligible?p.score+'/100':'ไม่มีข้อมูลครบ'}</span><span>พื้นที่คำนวณจาก GIS: ${m.hasArea?m.area.toFixed(1)+' ตร.กม.':'—'}</span><small>ตัวเลขและคะแนนทั้งหมดเป็นการสาธิต ไม่ใช่การประเมินโรคจริง</small><button type="button" data-focus="${safe(code)}">ดูรายละเอียดอำเภอนี้ →</button></div>`;
+ return `<div class="v11-popup"><strong>อ.${safe(areaName(code))}</strong><span>${safe(GIS_LAYER[state.gisMode])}: <b>${safe(out.text)}</b></span><span>ข้อมูลสัตว์: ${safe(c.label)}</span><span>จัดลำดับติดตาม: ${p.eligible?p.score+'/100':'ไม่มีข้อมูลครบ'}</span><span>พื้นที่คำนวณจาก GIS: ${m.hasArea?m.area.toFixed(1)+' ตร.กม.':'—'}</span><small>${OH_GIS_LABELS[state.gisMode] ? OH_GIS_SOURCE_NOTE : legendText()}</small><button type="button" data-focus="${safe(code)}">ดูรายละเอียดอำเภอนี้ →</button></div>`;
 }
 function v11MetricsRows(){
  return visibleGeo().map(d=>{
@@ -869,7 +893,7 @@ async function loadOSMMap(){const mount=$('cloudMapCanvas');if(!mount)return;try
  if(state.boundaries?.length){const target=state.district;const geo=L.geoJSON({type:'FeatureCollection',features:state.boundaries},{style:f=>{const code=f.properties.area_code,highlight=target==='all'||code===target;return {color:highlight?'#176d79':'#a1b3be',weight:highlight?1.8:1,fillColor:metricColor(code),fillOpacity:highlight?.67:.12,opacity:1};},onEachFeature:(f,layer)=>{const code=f.properties.area_code;layer.bindPopup(boundaryPopup(code));layer.bindTooltip('อ.'+areaName(code),{sticky:true,direction:'auto'});layer.on('mouseover',()=>layer.setStyle({weight:3,color:'#074c59',fillOpacity:.84}));layer.on('mouseout',()=>{if(map===state.map)geo.resetStyle(layer)});layer.on('click',()=>{if(map===state.map)focusDistrict(code)});}}).addTo(map);
  const bounds=target==='all'?geo.getBounds():L.geoJSON(state.boundaries.filter(f=>f.properties.area_code===target)).getBounds();if(bounds.isValid())map.fitBounds(bounds,{padding:[20,20],maxZoom:11});
  }else{const statusDiv=L.control({position:'topright'});statusDiv.onAdd=()=>{const d=L.DomUtil.create('div','v11-map-warning');d.textContent='ยังไม่ได้ขอบเขต GISTDA • ไม่มี polygon จำลอง';return d};statusDiv.addTo(map)}
- for(const e of filtered('animal_events')){const pt=readPoint(e.location_point);if(pt){L.circleMarker(pt,{radius:8,color:'#fff',weight:2,fillColor:'#e56b66',fillOpacity:.95}).addTo(map).bindPopup(`${safe(e.event_code)} • ${safe(areaName(e.area_code))} (สมมติ)`)} }
+ for(const e of (OH_GIS_LABELS[state.gisMode]?[]:filtered('animal_events'))){const pt=readPoint(e.location_point);if(pt){L.circleMarker(pt,{radius:8,color:'#fff',weight:2,fillColor:'#e56b66',fillOpacity:.95}).addTo(map).bindPopup(`${safe(e.event_code)} • ${safe(areaName(e.area_code))} (สมมติ)`)} }
  setTimeout(()=>{if(map===state.map)map.invalidateSize()},70);
  }catch(e){if(mount.isConnected)drawFastVectorMap();}}
 function navigate(page){if(!MENUS.some(x=>x[0]===page))return;state.page=page;$('sidebar').classList.remove('open');render()}
