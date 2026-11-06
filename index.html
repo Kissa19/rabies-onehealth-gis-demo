@@ -453,6 +453,10 @@ h1{color:#173647;font-weight:650}
 <style id="onehealth-v24-css">
 .oh24-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:0 0 15px}.oh24-summary>div{padding:15px;background:white;border:1px solid #dce9eb;border-radius:12px}.oh24-summary b{font-size:24px;color:#16556b;display:block}.oh24-summary span{font-size:11px;color:#647e8c}.oh24-note{border-left:4px solid #e0a748;border-radius:9px;padding:14px;background:#fff9ea;color:#79592b;margin-bottom:14px;line-height:1.75;font-size:12px}.oh24-note.good{background:#eaf8f2;border-color:#20a38e;color:#206358}.oh24-sev{display:inline-block;border-radius:20px;padding:4px 8px;background:#f0f5f8;color:#516875;font-size:10px;font-weight:800}.oh24-sev.review{background:#fff0db;color:#855318}.oh24-sev.info{background:#eaf3ff;color:#24668a}.oh24-flag{font-size:11px;color:#607a88;line-height:1.6}.oh24-explain{font-size:12px;color:#496b78;line-height:1.7;padding:12px;background:#f1f8fa;border-radius:9px}.oh24-two{display:grid;grid-template-columns:1fr 1fr;gap:14px}.oh24-range{display:inline-block;background:#e9f6f3;color:#087a70;border:1px solid #c1e8e0;border-radius:8px;padding:6px 10px;font-size:11px}.oh24-live{display:block;font-weight:800;font-size:12px;margin-bottom:9px;color:#246c75}@media(max-width:960px){.oh24-two{grid-template-columns:1fr}.oh24-summary{grid-template-columns:repeat(2,1fr)}}@media(max-width:520px){.oh24-summary{grid-template-columns:1fr}}
 </style>
+<style id="oh-bilingual-css">
+.oh-lang-control{display:flex;gap:7px;align-items:center;font-size:11px;color:#365d6d;white-space:nowrap;font-weight:700}.oh-lang-control select{padding:7px 9px;border:1px solid #a9cbd8;border-radius:8px;color:#19435b;background:#fff;font-weight:650;min-width:92px}.oh-lang-control select:focus-visible{outline:3px solid #2daaa4;outline-offset:2px}
+@media(max-width:700px){.topbar{flex-wrap:wrap;height:auto;min-height:60px;padding-top:9px;padding-bottom:9px}.oh-lang-control #ohLangLabel{display:none}.oh-lang-control select{min-width:80px;padding:6px}.top-actions{gap:5px}.status-pill{font-size:9px}}
+</style>
 </head>
 <body>
 <div id="app" class="shell cloud-app">
@@ -463,7 +467,7 @@ h1{color:#173647;font-weight:650}
     <div class="sidebar-bottom"><div class="small-prompt"><span class="pulse"></span><span>One Health Development Preview<br><strong>Animal Lab + Human PEP Summary</strong></span></div><div class="side-mini">จังหวัดนครพนม · พื้นที่นำร่อง<br>ออกแบบรองรับเขตสุขภาพที่ 8</div><div class="version">v2.3 AUTOMATED ONE HEALTH STAGING</div></div>
   </aside>
   <div class="workspace">
-    <header class="topbar"><button class="mobile-menu" id="mobileMenu" aria-label="เปิดเมนู">☰</button><div class="crumb"><span>ONE HEALTH /</span><strong id="crumbPage">GIS Intelligence</strong></div><div class="top-actions"><span id="connectionBadge" class="status-pill">● DEVELOPMENT SNAPSHOT · LOGIN FOR LIVE</span></div></header>
+    <header class="topbar"><button class="mobile-menu" id="mobileMenu" aria-label="เปิดเมนู">☰</button><div class="crumb"><span>ONE HEALTH /</span><strong id="crumbPage">GIS Intelligence</strong></div><div class="top-actions"><span id="connectionBadge" class="status-pill">● DEVELOPMENT SNAPSHOT · LOGIN FOR LIVE</span><label class="oh-lang-control" for="ohLangSwitch"><span id="ohLangLabel">Language / ภาษา</span><select id="ohLangSwitch" aria-label="Website language"><option value="th">ไทย</option><option value="en">English</option></select></label></div></header>
     <main class="main-content">
 <section class="oh-overview" aria-label="One Health development summary">
 <h2>ONE HEALTH | Animal + Human PEP</h2>
@@ -1118,5 +1122,67 @@ $('oh23Refresh').addEventListener('click',reload);
 $('oh23Logout').addEventListener('click',async()=>{await sb.auth.signOut();showLoggedOut();window.dispatchEvent(new Event('oh23-reset'));});
 await reload();
 setInterval(()=>{if(!document.hidden&&Date.now()-lastSuccess>14*60*1000)reload();},15*60*1000);
+</script>
+<script id="oh-bilingual-script">
+(() => {
+  'use strict';
+  const translations = [["หลังเข้าสู่ระบบจะอ่านข้อมูลสรุปอัตโนมัติเมื่อเปิดหน้า และตรวจซ้ำทุก 15 นาทีระหว่างเปิดแท็บ","After sign-in, aggregated data is refreshed on opening and every 15 minutes while the tab remains open"],["แสดง Snapshot ล่าสุดที่บันทึกในเว็บไซต์จนกว่าจะมีบัญชีทีมที่ได้รับสิทธิ์","Showing the latest saved website snapshot until an authorized team account signs in"],["ไม่มีการเผยแพร่ข้อมูล Staging ให้ผู้ที่ไม่ได้เข้าสู่ระบบ","Staging data is not exposed to unauthenticated visitors"],["เข้าสู่ระบบทีมเพื่ออ่านข้อมูล Staging ล่าสุด","Sign in to view the latest staging data"],["ดู Animal Lab Dashboard (Admin)","Open Animal Lab Dashboard (Admin)"],["ดู PEP Staging Preview (Login)","Open PEP Staging Preview (Login)"],["ยังไม่มีข้อมูลประชากรสัตว์จริง","Verified Animal Population Data Not Available"],["ข้อมูลโรคพิษสุนัขบ้าในสัตว์","Animal Rabies Surveillance"],["GIS & Spatial Intelligence","GIS & Spatial Intelligence"],["ออกแบบรองรับเขตสุขภาพที่ 8","Designed for Health Region 8"],["เปิดพื้นหลัง OpenStreetMap","Enable OpenStreetMap Basemap"],["วัคซีน PEP ที่อนุมัติแล้ว","Approved PEP Dashboard"],["ได้รับวัคซีน 3 เข็มขึ้นไป","Received ≥3 Doses"],["ข้อสังเกตด้านคุณภาพข้อมูล","Data Quality Observations"],["วัคซีน PEP ในคน · ล่าสุด","Human PEP · Latest Staging"],["ตรวจความพร้อมเผยแพร่ PEP","PEP Publication Preflight"],["ข้อมูลสัตว์และ Human PEP","Animal and Human PEP Data"],["นำเข้าข้อมูลสัตว์และ QC","Animal Data Import & QC"],["สรุปเพื่อการประชุมร่วม","Joint Meeting Brief"],["เฝ้าระวังสัตว์และ Lab","Animal Surveillance & Lab"],["ประชากรสัตว์และวัคซีน","Animal Population & Vaccination"],["โรคพิษสุนัขบ้าในสัตว์","Animal Rabies"],["ไม่ใช่คะแนนความเสี่ยง","Not a Risk Score"],["การเปรียบเทียบพื้นที่","Spatial Comparison"],["แจ้งเตือนคุณภาพข้อมูล","Data Quality Alerts"],["ไม่ใช่จุดเกิดเหตุจริง","Not an Actual Event Location"],["ยังไม่ได้เชื่อมข้อมูล","Data Source Not Connected"],["ต้องมีข้อมูลสัตว์จริง","Verified Animal Data Required"],["ความก้าวหน้าการพัฒนา","Development Progress"],["ตัวอย่างส่งตรวจสัตว์","Animal Specimens Tested"],["จำนวนตัวอย่างส่งตรวจ","Specimens Tested"],["ได้รับวัคซีน ≥3 เข็ม","Received ≥3 Doses"],["ข้อมูลสรุประดับอำเภอ","District-Level Aggregate Data"],["ดูรายละเอียดอำเภอนี้","View District Details"],["ยังไม่อนุมัติเผยแพร่","Not Approved for Publication"],["ไม่ได้อนุมัติเผยแพร่","Not Approved for Publication"],["ลำดับการทบทวนพื้นที่","Area Review Priority"],["อย่าใช้เป็นอัตราป่วย","Do Not Interpret as Incidence"],["ตรวจทบทวนข้อมูล PEP","PEP Review Queue"],["จำนวนผู้สัมผัสสัตว์","People Exposed to Animals"],["ได้รับ 3 เข็มขึ้นไป","Received ≥3 Doses"],["เปรียบเทียบรายอำเภอ","District Comparison"],["ไม่สามารถอ่านข้อมูล","Unable to Read Data"],["ข้อมูล ณ วันที่ระบุ","Data as of the Shown Date"],["ข้อมูลที่ควรตรวจสอบ","Records Requiring Review"],["สัญญาณทางระบาดวิทยา","Epidemiological Signal"],["จำนวนส่งตรวจทั้งหมด","Total Specimens Tested"],["สถานะเหตุการณ์สัตว์","Animal Event Status"],["ภาพรวมการเฝ้าระวัง","Surveillance Overview"],["ความครอบคลุมวัคซีน","Vaccination Coverage"],["ข้อมูลสรุปรายอำเภอ","District Summaries"],["ข้อมูลสัตว์และ PEP","Animal and PEP Data"],["ข้อมูลต้องการทบทวน","Data Needs Review"],["จำนวนตัวอย่างสัตว์","Animal Specimen Count"],["ภาพรวม One Health","One Health Overview"],["จำแนกตามชนิดสัตว์","by Animal Species"],["ผู้ได้รับ ≥3 เข็ม","People Receiving ≥3 Doses"],["วิเคราะห์รายอำเภอ","District Analysis"],["ยืนยันเข้าสู่ระบบ","Confirm Sign-in"],["รหัสผ่าน Supabase","Supabase Password"],["แสดงแผนที่แบบเร็ว","Show Fast Vector Map"],["แผนที่เชิงพื้นที่","Spatial Map"],["ข้อจำกัดของข้อมูล","Data Limitations"],["ไม่มีประชากรสัตว์","No Animal Population Data"],["แผนที่และพื้นที่","Maps & Spatial Data"],["ผู้สัมผัสและ PEP","Human Exposure & PEP"],["ข้อมูลสัตว์และคน","Animal and Human Data"],["พื้นที่เฝ้าระวัง","Surveillance Areas"],["ข้อมูลสังเคราะห์","Synthetic Data"],["อยู่ระหว่างพัฒนา","Under Development"],["ตรวจข้อมูลล่าสุด","Refresh Latest Data"],["ความหนาแน่นสุนัข","Dog Density"],["ยังประเมินไม่ได้","Not Yet Evaluable"],["ตารางเปรียบเทียบ","Comparison Table"],["ตัวอย่างทั้งหมด","Total Specimens"],["แยกตามชนิดสัตว์","by Animal Species"],["ไม่ใช่อัตราป่วย","Not an Incidence Rate"],["เลือกชั้นข้อมูล","Select Map Layer"],["รายการแจ้งเตือน","Alerts"],["จุดเกิดเหตุจริง","Actual Event Location"],["ติดตามเพิ่มเติม","Additional Follow-up"],["ข้อมูลรายเดือน","Monthly Data"],["ผู้สัมผัสสัตว์","People Exposed"],["เริ่มรับวัคซีน","PEP Initiated"],["ผลการวิเคราะห์","Analysis Results"],["ผ่านการตรวจสอบ","Validated"],["เข้าสู่ระบบทีม","Team Sign-in"],["ยังไม่มีข้อมูล","Data Not Available"],["ไม่สามารถคำนวณ","Cannot Calculate"],["ชุดข้อมูลสัตว์","Animal Dataset"],["ประเด็นตรวจสอบ","Review Items"],["ระดับความสำคัญ","Priority"],["พิกัด Centroid","Centroid Coordinates"],["ความหนาแน่นแมว","Cat Density"],["อ่านอย่างเดียว","Read Only"],["ข้อมูลรายบุคคล","Individual-level Data"],["ไม่ใช่ข้อมูลสด","Not Live Data"],["จังหวัดนครพนม","Nakhon Phanom Province"],["พื้นที่นำร่อง","Pilot Area"],["ข้อมูลส่งตรวจ","Specimen Data"],["สรุปสถานการณ์","Situation Summary"],["สัญญาณผิดปกติ","Unusual Signal"],["สรุปผลการตรวจ","Laboratory Summary"],["อ.เมืองนครพนม","Mueang Nakhon Phanom District"],["ไม่สามารถอ่าน","Unable to Read"],["การประชุมร่วม","Joint Meeting"],["การสอบสวนร่วม","Joint Investigation"],["ข้อมูลผู้ป่วย","Patient Data"],["ส่งตรวจสัตว์","Animal Specimens Tested"],["ผลบวกในสัตว์","Positive Animal Tests"],["จำนวนส่งตรวจ","Specimens Tested"],["สัดส่วนผลบวก","Test Positivity"],["แนวโน้มรายปี","Annual Trends"],["การเฝ้าระวัง","Surveillance"],["งานเฝ้าระวัง","Surveillance"],["ข้อมูลคุณภาพ","Data Quality"],["คุณภาพข้อมูล","Data Quality"],["ประชากรสัตว์","Animal Population"],["ประชากรสุนัข","Dog Population"],["สถานการณ์โรค","Disease Situation"],["เลือกพื้นที่","Select Area"],["วันที่ข้อมูล","Data Date"],["แสดงผลล่าสุด","Latest Results"],["รีเฟรชข้อมูล","Refresh Data"],["ข้อมูลไม่ครบ","Incomplete Data"],["จาก Supabase","from Supabase"],["กดเพื่อเลือก","Click to Select"],["ทบทวนตามปกติ","Routine Review"],["เชื่อมข้อมูล","Data Integration"],["กฎตรวจข้อมูล","Data Quality Rules"],["การแจ้งเตือน","Alerts"],["ต้องปรับปรุง","Improvement Needed"],["ข้อมูลสมมติ","Synthetic Data"],["ผลตรวจสัตว์","Animal Laboratory Results"],["เริ่มวัคซีน","PEP Initiated"],["วัคซีนสัตว์","Animal Vaccination"],["วัคซีนสุนัข","Dog Vaccination"],["ความครบถ้วน","Completeness"],["เปรียบเทียบ","Compare"],["ความแตกต่าง","Differences"],["ข้อมูลจำลอง","Synthetic Data"],["ข้อมูลสาธิต","Demo Data"],["สถานะข้อมูล","Data Status"],["ซิงก์ล่าสุด","Last Sync"],["วันที่ซิงก์","Sync Date"],["เข้าสู่ระบบ","Sign In"],["ไม่พบข้อมูล","No Data Found"],["ไม่มีข้อมูล","No Data"],["ไม่มีตัวหาร","No Denominator"],["ชุดข้อมูลคน","Human Dataset"],["ล้างตัวกรอง","Clear Filters"],["ข้อมูลสัตว์","Animal Data"],["พิกัดตัวแทน","Representative Coordinates"],["อ.ศรีสงคราม","Si Songkhram District"],["อ.โพนสวรรค์","Phon Sawan District"],["เมืองนครพนม","Mueang Nakhon Phanom"],["คะแนนติดตาม","Follow-up Score"],["แหล่งข้อมูล","Data Source"],["อยู่ระหว่าง","In Progress"],["ผลบวกสัตว์","Positive Animal Tests"],["วัคซีน PEP","PEP Vaccination"],["ความเสี่ยง","Risk"],["ข้อมูลสรุป","Summary Data"],["ประชากรแมว","Cat Population"],["เลือกอำเภอ","Select District"],["ข้อมูลจริง","Actual Data"],["รอทบทวน QC","QC Review Pending"],["ออกจากระบบ","Sign Out"],["ชั้นข้อมูล","Map Layer"],["ข้อมูล PEP","PEP Data"],["ควรตรวจสอบ","Verification Recommended"],["ปีงบประมาณ","Fiscal Year"],["อ.ท่าอุเทน","Tha Uthen District"],["สัตว์ผลบวก","Positive Animal Results"],["การเผยแพร่","Publication"],["ไม่อนุมัติ","Not Approved"],["จำนวนสัตว์","Animal Count"],["ทุกพื้นที่","All Areas"],["ค่าที่แสดง","Displayed Value"],["ผู้สัมผัส","exposed persons"],["ชนิดสัตว์","Animal Species"],["เริ่ม PEP","PEP Initiated"],["ตัวชี้วัด","Indicator"],["กำลังโหลด","Loading"],["ชุดข้อมูล","Dataset"],["แผนที่รวม","Integrated Map"],["ข้อสังเกต","Observations"],["ปีที่ตรวจ","Test Year"],["พิกัดจริง","Actual Coordinates"],["เขตสุขภาพ","Health Region"],["อ.บ้านแพง","Ban Phaeng District"],["อ.ธาตุพนม","That Phanom District"],["อ.เรณูนคร","Renu Nakhon District"],["ศรีสงคราม","Si Songkhram"],["โพนสวรรค์","Phon Sawan"],["ทบทวนก่อน","Priority Review"],["สาธารณสุข","Public Health"],["อัตราส่วน","Ratio"],["ขาดข้อมูล","Missing Data"],["เข้าเกณฑ์","Meets Criteria"],["เมนูหลัก","Main navigation"],["ตัวอย่าง","specimens"],["รายอำเภอ","by District"],["ทุกอำเภอ","All Districts"],["อีเมลทีม","Team Email"],["รหัสผ่าน","Password"],["ควรทบทวน","Review Recommended"],["ข้อจำกัด","Limitations"],["อ.ปลาปาก","Pla Pak District"],["อ.นาหว้า","Na Wa District"],["อ.วังยาง","Wang Yang District"],["ท่าอุเทน","Tha Uthen"],["น้อยกว่า","Below"],["ปศุสัตว์","Livestock Department"],["พร้อมใช้","Ready"],["รายบุคคล","Individual-level"],["การพัฒนา","Development"],["สถานะ QC","QC Status"],["แนวโน้ม","Trends"],["สัดส่วน","Proportion"],["พื้นที่","Area"],["รอทบทวน","Under Review"],["ตัวกรอง","Filters"],["คำเตือน","Warning"],["ปี ค.ศ.","Calendar Year"],["บ้านแพง","Ban Phaeng"],["ธาตุพนม","That Phanom"],["เรณูนคร","Renu Nakhon"],["มากกว่า","Above"],["อนุมัติ","Approved"],["ปานกลาง","Medium"],["ผลตรวจ","Lab Results"],["ตัวเลข","Figures"],["รีเซ็ต","Reset"],["แผนที่","Map"],["วันที่","Date"],["กระรอก","Squirrel"],["อ.นาแก","Na Kae District"],["อ.นาทม","Na Thom District"],["ปลาปาก","Pla Pak"],["นาหว้า","Na Wa"],["วังยาง","Wang Yang"],["นครพนม","Nakhon Phanom"],["ผลบวก","Positive"],["รายปี","by Year"],["จำนวน","Count"],["อำเภอ","District"],["ตาราง","Table"],["เลือก","Select"],["ทุกปี","All Years"],["สำคัญ","Important"],["ผลรวม","Total"],["เดือน","Month"],["สุนัข","Dog"],["กระแต","Treeshrew"],["ผลลบ","Negative"],["กราฟ","Chart"],["กรอง","Filter"],["นาแก","Na Kae"],["นาทม","Na Thom"],["รวม","Total"],["แมว","Cat"],["หนู","Rat"],["แพะ","Goat"],["สูง","High"],["ต่ำ","Low"],["ปี","Year"],["โค","Cattle"]];
+  const districtNames = {"4801":"Mueang Nakhon Phanom","4802":"Pla Pak","4803":"Tha Uthen","4804":"Ban Phaeng","4805":"That Phanom","4806":"Renu Nakhon","4807":"Na Kae","4808":"Si Songkhram","4809":"Na Wa","4810":"Phon Sawan","4811":"Na Thom","4812":"Wang Yang"};
+  const originalText = new WeakMap();
+  const originalAttrs = new WeakMap();
+  const ui = document.getElementById('ohLangSwitch');
+  if (!ui) return;
+  const storageKey='rabies_onehealth_locale_v1';
+  let current = 'th';
+  try { current=localStorage.getItem(storageKey)==='en'?'en':'th'; } catch (_) {}
+  let queued = false;
+  const thaiPattern=/[\u0e00-\u0e7f]/;
+  const attrNames=['title','aria-label','placeholder'];
+  function translate(str) {
+    if (!thaiPattern.test(str)) return str;
+    let out=str;
+    for (const [th,en] of translations) out=out.split(th).join(en);
+    out=out.replace(/\bDistrict\s+(480[1-9]|481[0-2])\b/g,(m,id)=>districtNames[id]+' District');
+    return out;
+  }
+  function transform() {
+    observer.disconnect();
+    document.documentElement.lang=current;
+    document.title=current==='en'?'Rabies One Health | Intelligence Platform':'Rabies One Health | แพลตฟอร์มเฝ้าระวัง One Health';
+    ui.value=current;
+    const root=document.getElementById('app');
+    if (root) {
+      const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{
+        acceptNode(node){return node.parentElement?.closest('#ohLangSwitch,script,style,textarea')?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT;}
+      });
+      let n;
+      while ((n=walker.nextNode())) {
+        const text=n.nodeValue;
+        if (!originalText.has(n)) originalText.set(n,text);
+        else if (current==='en' && thaiPattern.test(text)) originalText.set(n,text);
+        else if (current==='th' && thaiPattern.test(text)) originalText.set(n,text);
+        const source=originalText.get(n);
+        const dest=current==='en'?translate(source):source;
+        if (n.nodeValue!==dest) n.nodeValue=dest;
+      }
+      for(const el of root.querySelectorAll('[title],[aria-label],[placeholder]')) {
+        let attr=originalAttrs.get(el);
+        if (!attr) {attr={};originalAttrs.set(el,attr);}
+        for (const name of attrNames) {
+          if (!el.hasAttribute(name))continue;
+          const val=el.getAttribute(name);
+          if (!(name in attr)||thaiPattern.test(val))attr[name]=val;
+          const translated=current==='en'?translate(attr[name]):attr[name];
+          if (val!==translated)el.setAttribute(name,translated);
+        }
+      }
+    }
+    observer.observe(document.getElementById('app')||document.body,{subtree:true,childList:true,characterData:true,attributes:false});
+  }
+  function schedule(){ if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;transform();}); }
+  const observer=new MutationObserver(schedule);
+  ui.addEventListener('change',()=>{current=ui.value==='en'?'en':'th';try{localStorage.setItem(storageKey,current);}catch(_){}schedule();});
+  transform();
+})();
 </script>
 </body></html>
