@@ -1,0 +1,12 @@
+{
+  "schema": "rabies-animal-public-5km-v1",
+  "approval": {
+    "status": "pending",
+    "scope": "public-animal-only",
+    "release_id": null,
+    "approved_by": null,
+    "approved_at": null
+  },
+  "areas": [],
+  "notes": "Do not set status approved or add coordinates until responsible agency explicitly reviews generalized monitoring area geometry for public disclosure. No human coordinates."
+}
