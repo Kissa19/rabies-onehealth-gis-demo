@@ -533,6 +533,12 @@ body.oh242-present .oh242-hero{padding:20px 26px}
 @media print{.oh242-actions,.oh242-context .oh242-muted,.cloud-app .oh-portal-nav{display:none!important}.oh242-hero{-webkit-print-color-adjust:exact;print-color-adjust:exact;box-shadow:none}.oh242-ribbon{break-inside:avoid}.oh242-metrics{break-inside:avoid}}
 </style>
 <style id="oh243-fast-map-css">
+/* v2.4.5 predictable map: visible vector is painted first; Leaflet on a sized child */
+#cloudMapCanvas{position:relative!important;overflow:hidden!important;min-height:370px!important;background:#eaf3f6}
+#cloudMapCanvas #oh245LeafletInner{position:absolute!important;inset:0!important;height:100%!important;width:100%!important;z-index:2!important;background:#eaf3f6}
+#cloudMapCanvas #oh245LeafletInner.leaflet-container{height:100%!important;width:100%!important}
+#cloudMapCanvas .v111-vector-map{position:relative;z-index:1;width:100%;height:100%}
+
 /* v2.4.4 Online GIS tile repair and verified 5 km investigation buffers */
 #cloudMapCanvas .leaflet-container{width:100%!important;height:100%!important;position:relative;overflow:hidden;background:#eaf3f6}
 #cloudMapCanvas .leaflet-tile-pane img.leaflet-tile{max-width:none!important;max-height:none!important;display:block!important}
@@ -1029,8 +1035,36 @@ function gis(){
 function render(){if(!state.loadedAt)return;clearMap();const current=MENUS.find(x=>x[0]===state.page);$('crumbPage').textContent=current?.[1]||'GIS';$('pageTitle').textContent=current?.[1]||'GIS';$('pageDesc').textContent=['overview','intelligence','animals','pep','population'].includes(state.page)?'One Health DEV · ข้อมูลสรุปจาก Supabase ณ วันที่ระบุ · '+provinceFilter():state.page==='gis'?'แผนที่รวม Snapshot สัตว์และ PEP + ชั้นสาธิตที่ติดป้ายชัดเจน': 'ระบบตอบโต้เป็นข้อมูลจำลองเพื่อทดสอบขั้นตอนการทำงาน';renderMenu();
   const pages={overview,gis,intelligence:oh24Page,animals,pep,population,response:responsePage};$('pageContent').innerHTML=(state.error?`<div class="cloud-error">${safe(state.error)}</div>`:'')+(pages[state.page]||gis)();if(state.page==='gis')loadLeafletMap();if(state.page==='overview')drawFastVectorMap('overviewMapCanvas');window.dispatchEvent(new CustomEvent('oh242:data',{detail:{stats:ohStats(ohDistricts().map(d=>ohPair(d.area_code))),live:!!OH_LIVE,sync:OH_LAST_SYNC,qc:OH_QC,page:state.page}}));}
 let leafletLoad=null;
-function ensureLeaflet(){if(window.L)return Promise.resolve(window.L);if(leafletLoad)return leafletLoad;
-  leafletLoad=new Promise((resolve,reject)=>{const css=document.createElement('link');css.rel='stylesheet';css.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';css.integrity='sha256-p4NxAoJBhIIN+hmNHrzxZNs1tk0O+4yXYH5FydWDaI=';css.crossOrigin='anonymous';document.head.appendChild(css);const js=document.createElement('script');js.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';js.integrity='sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=';js.crossOrigin='anonymous';js.onload=()=>resolve(window.L);js.onerror=()=>reject(new Error('tile/map library unavailable'));document.head.appendChild(js)});return leafletLoad}
+// v2.4.5: bounded library loading, with independent fallback sources.
+function ensureLeaflet(){
+ if(leafletLoad)return leafletLoad;
+ const cssReady=(()=>{
+  if([...document.styleSheets].some(x=>/leaflet(?:\.min)?\.css/.test(x.href||'')))return Promise.resolve();
+  const loadCSS=url=>new Promise((resolve,reject)=>{
+   const link=document.createElement('link');link.rel='stylesheet';link.href=url;link.dataset.oh245Leaflet='1';
+   let settled=false;
+   const finish=ok=>{if(settled)return;settled=true;clearTimeout(timer);link.onload=null;link.onerror=null;if(ok)resolve();else{link.remove();reject(new Error('Leaflet CSS unavailable'));}};
+   const timer=setTimeout(()=>finish(false),4000);
+   link.onload=()=>finish(true);link.onerror=()=>finish(false);document.head.appendChild(link);
+  });
+  return loadCSS('https://unpkg.com/leaflet@1.9.4/dist/leaflet.css')
+   .catch(()=>loadCSS('https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css'));
+ })();
+ const jsReady=(()=>{
+  if(window.L&&typeof window.L.map==='function')return Promise.resolve(window.L);
+  const loadScript=(url)=>new Promise((resolve,reject)=>{
+   const script=document.createElement('script');script.src=url;script.async=true;
+   let settled=false;
+   const finish=(ok)=>{if(settled)return;settled=true;clearTimeout(timer);script.onload=null;script.onerror=null;if(ok&&window.L)resolve(window.L);else{script.remove();reject(new Error('Leaflet JS unavailable'));}};
+   const timer=setTimeout(()=>finish(false),4000);
+   script.onload=()=>finish(true);script.onerror=()=>finish(false);document.head.appendChild(script);
+  });
+  return loadScript('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js')
+   .catch(()=>loadScript('https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js'));
+ })();
+ leafletLoad=Promise.all([cssReady,jsReady]).then(([,L])=>L).catch(e=>{leafletLoad=null;throw e});
+ return leafletLoad;
+}
 let OH244_POINTS=[];let OH244_POINTS_ENABLED=true;let OH244_RADIUS_ENABLED=true;let OH244_MAP_REQUEST_ID=0;
 function drawFastVectorMap(mountId='cloudMapCanvas'){
  const mount=$(mountId);if(!mount||!state.boundaries?.length)return;
@@ -1065,16 +1099,38 @@ function loadLeafletMap(){
 async function loadOSMMap(){
  const mount=$('cloudMapCanvas');if(!mount)return;
  const id=++OH244_MAP_REQUEST_ID;
+ // Draw immediately, before any remote JavaScript, CSS or tiles are requested.
+ // This makes a blank map impossible during an external service outage.
+ drawFastVectorMap();
+ const status=$('v11BoundaryStatus');
+ if(status)status.textContent='ขอบเขต 12 อำเภอพร้อมใช้ • กำลังเชื่อมแผนที่ออนไลน์…';
+ let map=null, timeout=null;
+ const alive=()=>id===OH244_MAP_REQUEST_ID&&mount.isConnected&&state.page==='gis'&&state.basemap==='osm';
+ const fallback=(reason)=>{
+  if(!alive())return;
+  clearTimeout(timeout);
+  if(map){try{map.remove()}catch{};map=null;state.map=null;}
+  state.basemap='vector';
+  drawFastVectorMap();
+  document.querySelectorAll('[data-mapbase]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mapbase==='vector')));
+  if(status&&status.isConnected)status.textContent=reason+' • แสดงขอบเขตอำเภอแบบเร็ว';
+ };
  try{
   const L=await ensureLeaflet();
-  if(id!==OH244_MAP_REQUEST_ID||!mount.isConnected||state.page!=='gis'||state.basemap!=='osm')return;
-  clearMap();mount.innerHTML='';
-  const map=L.map(mount,{zoomControl:true,scrollWheelZoom:false,preferCanvas:true,zoomSnap:0.5,attributionControl:true});
+  if(!alive())return;
+  // Leaflet gets its own sized child. Previous versions attached directly to
+  // the outer mount and discarded the only map while remote resources loaded.
+  const inner=document.createElement('div');inner.id='oh245LeafletInner';
+  inner.setAttribute('aria-label','Online OpenStreetMap');mount.appendChild(inner);
+  map=L.map(inner,{zoomControl:true,scrollWheelZoom:false,preferCanvas:true,zoomSnap:0.5,attributionControl:true});
   state.map=map;
-  // A single online tile layer. The fast local map remains a manual fallback.
-  const tiles=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap contributors',maxZoom:18,minZoom:5,keepBuffer:2,updateWhenIdle:true,crossOrigin:true});
+  const tiles=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{
+   attribution:'© OpenStreetMap contributors',maxZoom:18,minZoom:5,keepBuffer:1,updateWhenIdle:true
+  });
   let loaded=0,failed=0;
-  tiles.on('tileload',()=>{loaded++;});tiles.on('tileerror',()=>{failed++;});tiles.addTo(map);
+  tiles.on('tileload',()=>{loaded++;if(status&&status.isConnected)status.textContent='Online OSM • ขอบเขต 12 อำเภอพร้อมใช้';});
+  tiles.on('tileerror',()=>{failed++;});
+  tiles.addTo(map);
   const fs=state.boundaries||[];
   if(fs.length){
    const geo=L.geoJSON({type:'FeatureCollection',features:fs},{style:f=>{
@@ -1087,29 +1143,23 @@ async function loadOSMMap(){
     layer.on('mouseout',()=>{if(state.map===map)geo.resetStyle(layer)});
     layer.on('click',()=>{if(state.map===map)focusDistrict(code)});
    }}).addTo(map);
-   const focused=state.district==='all'?geo.getBounds():L.geoJSON(fs.filter(f=>f.properties.area_code===state.district)).getBounds();
-   if(focused.isValid())map.fitBounds(focused,{padding:[25,25],maxZoom:11,animate:false});
+   const subset=state.district==='all'?fs:fs.filter(f=>f.properties.area_code===state.district);
+   const bounds=subset.length?L.geoJSON(subset).getBounds():geo.getBounds();
+   if(bounds.isValid())map.fitBounds(bounds,{padding:[24,24],maxZoom:11,animate:false});
    else map.setView([17.42,104.58],9);
   }else map.setView([17.42,104.58],9);
-  // Only genuine, QC-passed field coordinates are plotted as points.
-  if(OH244_POINTS_ENABLED){
-   for(const p of OH244_POINTS){
-    if(state.district!=='all'&&p.district_code!==state.district)continue;
-    if(OH244_RADIUS_ENABLED)L.circle([p.lat,p.lon],{radius:5000,color:'#c04754',weight:1.5,dashArray:'5 5',fillColor:'#e56a72',fillOpacity:0.09,interactive:false}).addTo(map);
-    L.circleMarker([p.lat,p.lon],{radius:6.5,color:'#fff',weight:2,fillColor:'#b73548',fillOpacity:1})
-     .bindPopup(`<strong>ผลตรวจบวก · QC PASS</strong><div>อ.${safe(areaName(p.district_code))} · ${safe(p.species||'ไม่ระบุชนิดสัตว์')}</div><div>เดือนตรวจ: ${safe(p.test_month||'ไม่ระบุ')}</div><small>พิกัดจริง · วง 5 กม. สำหรับติดตามเท่านั้น</small>`).addTo(map);
-   }
+  if(OH244_POINTS_ENABLED)for(const p of OH244_POINTS){
+   if(state.district!=='all'&&p.district_code!==state.district)continue;
+   if(OH244_RADIUS_ENABLED)L.circle([p.lat,p.lon],{radius:5000,color:'#c04754',weight:1.5,dashArray:'5 5',fillColor:'#e56a72',fillOpacity:0.09,interactive:false}).addTo(map);
+   L.circleMarker([p.lat,p.lon],{radius:6.5,color:'#fff',weight:2,fillColor:'#b73548',fillOpacity:1})
+    .bindPopup(`<strong>ผลตรวจบวก · QC PASS</strong><div>อ.${safe(areaName(p.district_code))} · ${safe(p.species||'ไม่ระบุชนิดสัตว์')}</div><div>เดือนตรวจ: ${safe(p.test_month||'ไม่ระบุ')}</div><small>พิกัดจริง · วง 5 กม. สำหรับติดตามเท่านั้น</small>`).addTo(map);
   }
-  // Leaflet must calculate tile positions after the container is visible, not before.
-  const resize=()=>{if(map===state.map&&mount.isConnected)map.invalidateSize({pan:false,debounceMoveend:true});};
+  const resize=()=>{if(map===state.map&&inner.isConnected)map.invalidateSize({pan:false});};
   requestAnimationFrame(()=>requestAnimationFrame(resize));
-  const observer=new ResizeObserver(resize);observer.observe(mount);
-  map.on('unload',()=>observer.disconnect());
-  // If tile service is unavailable, preserve working local geometry rather than a broken checkerboard.
-  setTimeout(()=>{if(map!==state.map||!mount.isConnected||state.basemap!=='osm')return;
-    resize();if(loaded===0){state.basemap='vector';clearMap();drawFastVectorMap();const n=$('v11BoundaryStatus');if(n)n.textContent='OSM ไม่ตอบสนองภายใน 8 วินาที · สลับเป็นขอบเขตเร็ว';}
-  },8000);
- }catch(e){if(id===OH244_MAP_REQUEST_ID&&mount.isConnected){state.basemap='vector';clearMap();drawFastVectorMap();}}
+  const observer=new ResizeObserver(resize);observer.observe(inner);
+  map.on('unload',()=>{observer.disconnect();clearTimeout(timeout)});
+  timeout=setTimeout(()=>{if(alive()&&map===state.map&&loaded===0)fallback('OSM ยังไม่ส่งภาพแผนที่');},8000);
+ }catch(error){fallback('ไม่สามารถเริ่มแผนที่ออนไลน์ได้');}
 }
 function navigate(page){if(!MENUS.some(x=>x[0]===page))return;state.page=page;$('sidebar').classList.remove('open');render()}
 function focusDistrict(code){state.district=code;updateDistrictFilter();render()}
@@ -1375,5 +1425,5 @@ window.addEventListener('oh242:data',e=>applyData(e.detail));
 let was=false;try{was=localStorage.getItem('oh242_presentation')==='1'}catch{};if(was)present(true);syncText();
 })();
 </script>
-<!-- v2.4.3 Fast Map + Overview · supplied GIS district polygons -->
+<!-- v2.4.5 OSM loader bounded fallback • QC-positive points preserved -->
 </body></html>
