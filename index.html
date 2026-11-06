@@ -562,6 +562,30 @@ body.oh242-present .oh242-hero{padding:20px 26px}
 @media(min-width:1100px){.oh243-overview .cloud-card-body{padding:14px 20px}.oh243-map svg{max-height:425px}}
 @media(max-width:740px){.oh243-map{min-height:220px}.oh243-tools{flex-direction:column;align-items:stretch}.oh243-tools label{justify-content:space-between}.oh243-map svg{max-height:none}}
 </style>
+
+<style id="oh-team-login-css">
+.oh-team-login-btn{background:#117e85;color:#fff;border:1px solid #0f7880;padding:8px 12px;border-radius:10px;font-weight:700;font-size:11px;white-space:nowrap;cursor:pointer}
+.oh-team-login-btn:hover,.oh-team-login-btn:focus-visible{background:#09646b;outline:2px solid #81d4cb;outline-offset:2px}
+.oh-team-backdrop[hidden],.oh-team-form[hidden],.oh-team-logged-actions button[hidden]{display:none!important}
+.oh-team-backdrop{position:fixed;inset:0;z-index:9999;background:rgba(5,24,36,.62);display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
+.oh-team-dialog{width:min(470px,100%);margin:auto;background:white;border:1px solid #c8dfe1;border-radius:18px;box-shadow:0 24px 70px #00151e44;padding:24px;color:#173f4d}
+.oh-team-dialog-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.oh-team-dialog h2{margin:5px 0 8px;font-size:20px;font-weight:700;color:#153c4b}
+.oh-team-dialog-head p{margin:0;color:#5c7885;font-size:12px;line-height:1.65}
+.oh-team-kicker{font-size:10px;color:#087d81;font-weight:800;letter-spacing:1.1px}
+.oh-team-close{border:1px solid #d6e3e8;background:#f7fbfc;color:#3a5a68;border-radius:9px;padding:6px 10px;cursor:pointer}
+.oh-team-status{margin-top:16px;border-radius:9px;padding:10px;background:#eaf5f7;line-height:1.5;overflow-wrap:anywhere}
+.oh-team-form{margin-top:14px;display:grid;grid-template-columns:1fr;gap:12px}
+.oh-team-form label{display:grid;gap:6px;font-size:12px;font-weight:650;color:#365664}
+.oh-team-form input{height:42px;border:1px solid #b8d2da;border-radius:10px;padding:9px 12px;background:white;color:#193d4d;font-size:14px}
+.oh-team-form input:focus{border-color:#149f96;outline:2px solid #2baea52f}
+.oh-team-submit{padding:12px;border:0;border-radius:10px;background:#087d7c;color:white;font-weight:700;cursor:pointer}
+.oh-team-logged-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}
+.oh-team-logged-actions button{padding:9px 12px;border:1px solid #b7d4dc;border-radius:9px;background:#f4fbfb;color:#185669;cursor:pointer;font-size:12px}
+.oh-team-dialog .oh23-note{margin:15px 0 0}
+@media(max-width:900px){.top-actions{gap:7px!important}.oh-team-login-btn{padding:7px 9px;font-size:10px}}
+@media(max-width:600px){.oh-team-login-btn{font-size:0}.oh-team-login-btn:before{content:'🔐 Login';font-size:11px}}
+</style>
 </head>
 <body>
 <div id="app" class="shell cloud-app">
@@ -572,7 +596,7 @@ body.oh242-present .oh242-hero{padding:20px 26px}
     <div class="sidebar-bottom"><div class="small-prompt"><span class="pulse"></span><span>One Health Development Preview<br><strong>Animal Lab + Human PEP Summary</strong></span></div><div class="side-mini">จังหวัดนครพนม · พื้นที่นำร่อง<br>ออกแบบรองรับเขตสุขภาพที่ 8</div><div class="version">v2.3 AUTOMATED ONE HEALTH STAGING</div></div>
   </aside>
   <div class="workspace">
-    <header class="topbar"><button class="mobile-menu" id="mobileMenu" aria-label="เปิดเมนู">☰</button><div class="crumb"><span>ONE HEALTH /</span><strong id="crumbPage">GIS Intelligence</strong></div><div class="top-actions"><span id="connectionBadge" class="status-pill">● DEVELOPMENT SNAPSHOT · LOGIN FOR LIVE</span><label class="oh-lang-control" for="ohLangSwitch"><span id="ohLangLabel">Language / ภาษา</span><select id="ohLangSwitch" aria-label="Website language"><option value="th">ไทย</option><option value="en">English</option></select></label></div></header>
+    <header class="topbar"><button class="mobile-menu" id="mobileMenu" aria-label="เปิดเมนู">☰</button><div class="crumb"><span>ONE HEALTH /</span><strong id="crumbPage">GIS Intelligence</strong></div><div class="top-actions"><button type="button" id="ohTeamLoginButton" class="oh-team-login-btn" aria-haspopup="dialog" aria-controls="ohTeamAuthDialog">🔐 เข้าสู่ระบบทีม / Team Login</button><span id="connectionBadge" class="status-pill">● DEVELOPMENT SNAPSHOT · LOGIN FOR LIVE</span><label class="oh-lang-control" for="ohLangSwitch"><span id="ohLangLabel">Language / ภาษา</span><select id="ohLangSwitch" aria-label="Website language"><option value="th">ไทย</option><option value="en">English</option></select></label></div></header>
     <main class="main-content">
 <section class="oh242-hero" id="oh242Hero" aria-label="One Health executive presentation header">
  <div class="oh242-hero-inner"><div><div class="oh242-eyebrow">NAKHON PHANOM · ONE HEALTH INTELLIGENCE</div><h2 id="oh242HeroTitle">แพลตฟอร์มเฝ้าระวังโรคพิษสุนัขบ้าแบบบูรณาการ</h2><p id="oh242HeroSub">เชื่อมข้อมูลโรคพิษสุนัขบ้าในสัตว์และข้อมูลการรับวัคซีน PEP ของคน เพื่อสนับสนุนการวิเคราะห์และทบทวนข้อมูลร่วมกัน · ต้นแบบสำหรับการนำเสนอ</p></div>
@@ -1307,8 +1331,8 @@ const sb=createClient(host,key,{auth:{persistSession:true,autoRefreshToken:true,
 const $=id=>document.getElementById(id);
 let busy=false,lastSuccess=0;
 const setState=(mode,txt)=>{$('onehealthV23').dataset.state=mode;$('oh23Status').textContent=txt;};
-function showLogged(user){$('oh23LoginForm').hidden=true;$('oh23LoginToggle').hidden=true;$('oh23Logout').hidden=false;$('oh23Note').textContent='บัญชีที่เข้าสู่ระบบ: '+(user.email||'บัญชีผู้ใช้')+' · สรุปจาก Staging ใช้เฉพาะเพื่อพัฒนา ไม่ใช่ชุดข้อมูลที่อนุมัติเผยแพร่';}
-function showLoggedOut(){ $('oh23LoginToggle').hidden=false;$('oh23Logout').hidden=true;$('oh23LoginForm').hidden=true;}
+function showLogged(user){$('oh23LoginForm').hidden=true;$('oh23LoginToggle').hidden=true;$('oh23Logout').hidden=false;$('ohTeamLoginButton').textContent='✓ ทีมออนไลน์ / Team Online';$('oh23Note').textContent='บัญชีที่เข้าสู่ระบบ: '+(user.email||'บัญชีผู้ใช้')+' · สรุปจาก Staging ใช้เฉพาะเพื่อพัฒนา ไม่ใช่ชุดข้อมูลที่อนุมัติเผยแพร่';}
+function showLoggedOut(){ $('oh23LoginToggle').hidden=true;$('oh23Logout').hidden=true;$('oh23LoginForm').hidden=false;$('ohTeamLoginButton').textContent='🔐 เข้าสู่ระบบทีม / Team Login';}
 async function reload(){
  if(busy)return;busy=true;
  try{
@@ -1333,6 +1357,15 @@ async function reload(){
  }catch(e){setState(lastSuccess?'live':'snapshot','ไม่สามารถอัปเดตข้อมูล: '+String(e.message||e)+(lastSuccess?' · ยังคงแสดงข้อมูลที่ดึงสำเร็จครั้งก่อน':' · แสดง Snapshot สำรอง'));}
  finally{busy=false;}
 }
+const dialog=$('ohTeamAuthDialog');
+const topButton=$('ohTeamLoginButton');
+const closeButton=$('ohTeamAuthClose');
+function openTeamDialog(){dialog.hidden=false;document.body.style.overflow='hidden';const el=$('oh23LoginForm').hidden?closeButton:$('oh23Email');el.focus();}
+function closeTeamDialog(){dialog.hidden=true;document.body.style.overflow='';topButton.focus();}
+topButton.addEventListener('click',openTeamDialog);
+closeButton.addEventListener('click',closeTeamDialog);
+dialog.addEventListener('click',e=>{if(e.target===dialog)closeTeamDialog();});
+document.addEventListener('keydown',e=>{if(!dialog.hidden&&e.key==='Escape'){e.preventDefault();closeTeamDialog();}});
 $('oh23LoginToggle').addEventListener('click',()=>{$('oh23LoginForm').hidden=!$('oh23LoginForm').hidden;});
 $('oh23LoginForm').addEventListener('submit',async e=>{
  e.preventDefault();setState('pending','กำลังตรวจสอบบัญชี...');
@@ -1340,7 +1373,7 @@ $('oh23LoginForm').addEventListener('submit',async e=>{
  $('oh23Password').value='';
  const {data,error}=await sb.auth.signInWithPassword({email,password});
  if(error){setState('snapshot','เข้าสู่ระบบไม่สำเร็จ: '+error.message);return;}
- if(data?.user){showLogged(data.user);await reload();}
+ if(data?.user){showLogged(data.user);await reload();if($('onehealthV23').dataset.state==='live')closeTeamDialog();}
 });
 $('oh23Refresh').addEventListener('click',reload);
 $('oh23Logout').addEventListener('click',async()=>{await sb.auth.signOut();showLoggedOut();window.dispatchEvent(new Event('oh23-reset'));});
@@ -1426,4 +1459,22 @@ let was=false;try{was=localStorage.getItem('oh242_presentation')==='1'}catch{};i
 })();
 </script>
 <!-- v2.4.5 OSM loader bounded fallback • QC-positive points preserved -->
+
+<div class="oh-team-backdrop" id="ohTeamAuthDialog" role="dialog" aria-modal="true" aria-labelledby="ohTeamAuthTitle" hidden>
+  <section class="oh-team-dialog oh23" id="onehealthV23" data-state="snapshot" tabindex="-1">
+    <div class="oh-team-dialog-head">
+      <div><div class="oh-team-kicker">RABIES ONE HEALTH · TEAM ACCESS</div><h2 id="ohTeamAuthTitle">เข้าสู่ระบบทีม / Team Sign-in</h2><p>ใช้บัญชี Supabase ของทีมที่ได้รับสิทธิ์ เพื่อดู Staging และหมุดพิกัดที่ผ่าน QC</p></div>
+      <button type="button" class="oh-team-close" id="ohTeamAuthClose" aria-label="Close login dialog">✕</button>
+    </div>
+    <div class="oh-team-status oh23-state" id="oh23Status" role="status" aria-live="polite">SNAPSHOT · เข้าสู่ระบบเพื่อดึงข้อมูลล่าสุด</div>
+    <button type="button" id="oh23LoginToggle" hidden>เข้าสู่ระบบทีม</button>
+    <form class="oh-team-form" id="oh23LoginForm" autocomplete="on">
+      <label for="oh23Email">อีเมล / Email <input type="email" id="oh23Email" name="email" autocomplete="username" required placeholder="team@example.org"></label>
+      <label for="oh23Password">รหัสผ่าน / Password <input type="password" id="oh23Password" name="password" autocomplete="current-password" required></label>
+      <button class="oh-team-submit" id="ohTeamSubmit" type="submit">เข้าสู่ระบบ / Sign in</button>
+    </form>
+    <div class="oh-team-logged-actions"><button type="button" id="oh23Refresh">↻ รีเฟรชข้อมูล / Refresh</button><button type="button" id="oh23Logout" hidden>ออกจากระบบ / Sign out</button></div>
+    <p class="oh23-note" id="oh23Note">ข้อมูลพิกัดละเอียดแสดงเฉพาะผู้มีสิทธิ์; ไม่มีการเผยแพร่ข้อมูล Staging อัตโนมัติ</p>
+  </section>
+</div>
 </body></html>
